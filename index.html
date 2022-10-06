@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barcode Price Tag</title>
+    <link rel="stylesheet" href="index.css"></link>
+  </head>
+  <body>
+    <div id="layout-wrapper" class="d-flex">
+      <!-- 1 Start: Side Control Layout -->
+      <div id="side-control-layout" class="d-flex align-items-center">
+        <!-- 2 Start: Image Size -->
+        <div class="label-header">
+          <hr />
+          <label>Image Size</label>
+        </div>
+        <div class="label-input">
+          <label>Width</label>
+          <input id="image-size-width"/>
+        </div>
+        <div class="label-input">
+          <label>Height</label>
+          <input id="image-size-height"/>
+        </div>
+        <!-- 2 End: Image Size -->
+        <!-- 2 Start: Item List -->
+        <div class="label-header">
+          <hr />
+          <label>Item List</label>
+          <label id="item-add" role="button">Add Item</label>
+        </div>
+        <div id="item-list">
+
+          <!-- TODO: Script 바로 위에다가 놓고, 스크립트 시작하면 복사하고나서 원본 삭제해야함 -->
+          <!-- 0 Start: only for copy  -->
+          <div class="item">
+            <div class="item-header">
+              <span data-id="item-type-text">Barcode</span>
+              <div>
+                <button data-id="event-modify">Modify</button>
+                <button data-id="event-delete">Delete</button>
+              </div>
+            </div>
+            <div class="item-data">
+              <span data-id="item-data">A01CA1D001</span>
+            </div>
+            <div class="item-layout-header">
+              <hr />
+              <label>Layout</label>
+              <button data-id="event-layout-toggle">▼</button>
+            </div>
+            <div class="item-layout-control">
+              <!-- TODO: X, Y 좌표 및 폰트 사이즈, 바코드 종류 표시 -->
+            </div>
+          </div>
+          <!-- 0 End: only for copy  -->
+
+        </div>
+        <!-- 2 End: Item List -->
+        <!-- 2 Start: Save Image Button -->
+        <div class="w-100 h-100 position-relative">
+          <button id="image-save-btn" class="bottom">이미지 저장</button>
+        </div>
+        <!-- 2 End: Save Image Button -->
+      </div>
+      <!-- 1 End: Side Control Layout -->
+      <!-- 1 Start: Main Canvas Layout -->
+      <div id="main-canvas-layout">
+        <canvas id="main-canvas"></canvas>
+      </div>
+      <!-- 1 End: Main Canvas Layout -->
+    </div>
+
+    <!-- 0 Script -->
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -5,62 +5,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Barcode Price Tag</title>
-    <link rel="stylesheet" href="index.css"></link>
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
+    <!-- Number is depth -->
+
+    <!-- 0 Start: View Layout -->
     <div id="layout-wrapper" class="d-flex">
       <!-- 1 Start: Side Control Layout -->
       <div id="side-control-layout" class="d-flex align-items-center">
         <!-- 2 Start: Image Size -->
         <div class="label-header">
           <hr />
-          <label>Image Size</label>
+          <label class="none-select">Image Size</label>
         </div>
         <div class="label-input">
-          <label>Width</label>
-          <input id="image-size-width"/>
+          <label class="none-select" for="image-size-width">Width</label>
+          <input id="image-size-width" />
         </div>
         <div class="label-input">
-          <label>Height</label>
-          <input id="image-size-height"/>
+          <label class="none-select" for="image-size-height">Height</label>
+          <input id="image-size-height" />
         </div>
         <!-- 2 End: Image Size -->
         <!-- 2 Start: Item List -->
         <div class="label-header">
           <hr />
-          <label>Item List</label>
-          <label id="item-add" role="button">Add Item</label>
+          <label class="none-select">Item List</label>
+          <label id="item-add" class="none-select" role="button">
+            Add Item
+          </label>
         </div>
-        <div id="item-list">
-
-          <!-- TODO: Script 바로 위에다가 놓고, 스크립트 시작하면 복사하고나서 원본 삭제해야함 -->
-          <!-- 0 Start: only for copy  -->
-          <div class="item">
-            <div class="item-header">
-              <span data-id="item-type-text">Barcode</span>
-              <div>
-                <button data-id="event-modify">Modify</button>
-                <button data-id="event-delete">Delete</button>
-              </div>
-            </div>
-            <div class="item-data">
-              <span data-id="item-data">A01CA1D001</span>
-            </div>
-            <div class="item-layout-header">
-              <hr />
-              <label>Layout</label>
-              <button data-id="event-layout-toggle">▼</button>
-            </div>
-            <div class="item-layout-control">
-              <!-- TODO: X, Y 좌표 및 폰트 사이즈, 바코드 종류 표시 -->
-            </div>
-          </div>
-          <!-- 0 End: only for copy  -->
-
-        </div>
+        <div id="item-list"></div>
         <!-- 2 End: Item List -->
         <!-- 2 Start: Save Image Button -->
-        <div class="w-100 h-100 position-relative">
+        <div class="w-100 flex-1 position-relative">
           <button id="image-save-btn" class="bottom">이미지 저장</button>
         </div>
         <!-- 2 End: Save Image Button -->
@@ -72,8 +51,54 @@
       </div>
       <!-- 1 End: Main Canvas Layout -->
     </div>
+    <!-- 0 End: View Layout -->
+
+    <!-- 0 Start: ITEM - only for copy  -->
+    <div data-id="item" class="item">
+      <div class="item-header">
+        <span class="none-select" data-id="item-type-text">Barcode</span>
+        <div>
+          <button data-id="event-modify">Modify</button>
+          <button data-id="event-delete">Delete</button>
+        </div>
+      </div>
+      <div class="item-data">
+        <input data-id="item-data" value="A01CA1D001" readonly />
+      </div>
+      <div class="item-layout-header" data-id="event-layout-toggle">
+        <hr />
+        <label class="none-select">Layout</label>
+        <span class="none-select">▼</span>
+      </div>
+      <div class="item-layout-control hide">
+        <div class="label-input" data-id="item-input-x">
+          <label class="none-select">X</label>
+          <input data-id="item-x" />
+        </div>
+        <div class="label-input" data-id="item-input-y">
+          <label class="none-select">Y</label>
+          <input data-id="item-y" />
+        </div>
+        <div class="label-input" data-id="item-input-font-size">
+          <label class="none-select">Size</label>
+          <input data-id="item-font-size" />
+        </div>
+        <div class="label-input" data-id="item-input-barcode-type">
+          <label class="none-select">Type</label>
+          <input data-id="item-barcode-type" />
+        </div>
+      </div>
+    </div>
+    <!-- 0 End: ITEM - only for copy  -->
+
+    <!-- 0 Start: ADD ITEM POPUP  -->
+    <!-- TODO: 팝업 레이아웃 작성 -->
+    <!-- TODO: 타입 설정 및 초기 값 작성 -->
+    <!-- TODO: 수정 팝업으로도 쓸 수 있게 하기 -->
+    <!-- 0 End: ADD ITEM POPUP  -->
 
     <!-- 0 Script -->
     <script src="index.js"></script>
+    <script src="item.js"></script>
   </body>
 </html>

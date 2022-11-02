@@ -1,3 +1,5 @@
+/* ---------------------------- [ INIT ] */
+
 body {
   width: 100vw;
   height: 100vh;
@@ -73,13 +75,35 @@ button {
   align-self: flex-end;
 }
 .label-input > label {
+  width: 25%;
   vertical-align: bottom;
 }
 .label-input > input {
-  margin-left: 0.6rem;
+  margin-left: 0.2rem;
   text-align: end;
 }
 .label-input + .label-input {
+  margin-bottom: 1rem;
+}
+
+/* Label Select */
+.label-select {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  margin: 0.4rem 1.4rem 0.4rem 1.2rem;
+  align-self: flex-end;
+}
+.label-select > label {
+  width: 25%;
+  vertical-align: bottom;
+}
+.label-select > select {
+  width: 100%;
+  margin-left: 0.2rem;
+  text-align: end;
+}
+.label-select + .label-select {
   margin-bottom: 1rem;
 }
 
@@ -148,20 +172,16 @@ button {
 .item > .item-layout-control.hide {
   display: none;
 }
-.item > .item-layout-control > .label-input {
+.item > .item-layout-control > .label-input,
+.item > .item-layout-control > .label-select {
   display: flex;
   justify-content: flex-end;
   margin: 0.4rem 0;
   color: white;
 }
-.item > .item-layout-control > .label-input > input {
-  margin-left: 0.2rem;
-}
-.item.item-type-text div[data-id="item-input-barcode-type"] {
-  display: none;
-}
-.item.item-type-barcode div[data-id="item-input-font-size"] {
-  display: none;
+.item > .item-layout-control > .label-input > input,
+.item > .item-layout-control > .label-select > select {
+  margin-left: 0.6rem;
 }
 
 /* ---------------------------- [ UNIQUE ] */
@@ -223,4 +243,22 @@ button {
 
 #main-canvas {
   background-color: white;
+}
+
+#item-popup-layout {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  z-index: 2;
+}
+#item-popup-layout > .item-popup-background {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
 }

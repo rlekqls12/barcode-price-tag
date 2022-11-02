@@ -8,27 +8,21 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <!-- Number is depth -->
-
-    <!-- 0 Start: View Layout -->
     <div id="layout-wrapper" class="d-flex">
-      <!-- 1 Start: Side Control Layout -->
+      <!-- side control layout -->
       <div id="side-control-layout" class="d-flex align-items-center">
-        <!-- 2 Start: Image Size -->
         <div class="label-header">
           <hr />
           <label class="none-select">Image Size</label>
         </div>
         <div class="label-input">
           <label class="none-select" for="image-size-width">Width</label>
-          <input id="image-size-width" />
+          <input id="image-size-width" type="number" />
         </div>
         <div class="label-input">
           <label class="none-select" for="image-size-height">Height</label>
-          <input id="image-size-height" />
+          <input id="image-size-height" type="number" />
         </div>
-        <!-- 2 End: Image Size -->
-        <!-- 2 Start: Item List -->
         <div class="label-header">
           <hr />
           <label class="none-select">Item List</label>
@@ -37,33 +31,26 @@
           </label>
         </div>
         <div id="item-list"></div>
-        <!-- 2 End: Item List -->
-        <!-- 2 Start: Save Image Button -->
         <div class="w-100 flex-1 position-relative">
           <button id="image-save-btn" class="bottom">이미지 저장</button>
         </div>
-        <!-- 2 End: Save Image Button -->
       </div>
-      <!-- 1 End: Side Control Layout -->
-      <!-- 1 Start: Main Canvas Layout -->
+      <!-- main canvas layout -->
       <div id="main-canvas-layout">
         <canvas id="main-canvas"></canvas>
       </div>
-      <!-- 1 End: Main Canvas Layout -->
     </div>
-    <!-- 0 End: View Layout -->
 
-    <!-- 0 Start: ITEM - only for copy  -->
+    <!-- item -->
     <div data-id="item" class="item">
       <div class="item-header">
-        <span class="none-select" data-id="item-type-text">Barcode</span>
+        <span class="none-select" data-id="item-type-text">Text</span>
         <div>
-          <button data-id="event-modify">Modify</button>
           <button data-id="event-delete">Delete</button>
         </div>
       </div>
       <div class="item-data">
-        <input data-id="item-data" value="A01CA1D001" readonly />
+        <input data-id="item-input-data" value="A01CA1D001" />
       </div>
       <div class="item-layout-header" data-id="event-layout-toggle">
         <hr />
@@ -71,34 +58,42 @@
         <span class="none-select">▼</span>
       </div>
       <div class="item-layout-control hide">
-        <div class="label-input" data-id="item-input-x">
+        <div class="label-input" data-id="item-layout-x">
           <label class="none-select">X</label>
-          <input data-id="item-x" />
+          <input type="number" data-id="item-input-x" />
         </div>
-        <div class="label-input" data-id="item-input-y">
+        <div class="label-input" data-id="item-layout-y">
           <label class="none-select">Y</label>
-          <input data-id="item-y" />
+          <input type="number" data-id="item-input-y" />
         </div>
-        <div class="label-input" data-id="item-input-font-size">
+        <div class="label-input" data-id="item-layout-font-size">
           <label class="none-select">Size</label>
-          <input data-id="item-font-size" />
+          <input type="number" data-id="item-input-font-size" />
         </div>
-        <div class="label-input" data-id="item-input-barcode-type">
+        <div class="label-select" data-id="item-layout-barcode-type">
           <label class="none-select">Type</label>
-          <input data-id="item-barcode-type" />
+          <select data-id="item-select-barcode-type"></select>
         </div>
       </div>
     </div>
-    <!-- 0 End: ITEM - only for copy  -->
 
-    <!-- 0 Start: ADD ITEM POPUP  -->
+    <!-- popup  -->
+    <div id="item-popup-layout">
+      <div class="item-popup-background"></div>
+    </div>
     <!-- TODO: 팝업 레이아웃 작성 -->
-    <!-- TODO: 타입 설정 및 초기 값 작성 -->
-    <!-- TODO: 수정 팝업으로도 쓸 수 있게 하기 -->
-    <!-- 0 End: ADD ITEM POPUP  -->
+    <!-- TODO: 팝업 - 타입 설정 및 초기 값 작성 -->
 
-    <!-- 0 Script -->
-    <script src="index.js"></script>
+    <!-- TODO: 아이템 - 이미지 타입 추가하기 -->
+
+    <!-- TODO: drawCanvas - Item 그리기 -->
+    <!-- TODO: canvas - 전체 크기로 해놓고 가운데 drawRect 그려서, 바코드 이미지 캡쳐 구간 만들기 -->
+
+    <!-- TODO: canvas - 캡쳐 바코드 이미지 저장 -->
+    <!-- TODO: 아이템 - 현재 상태 저장 이름.barcode -->
+
+    <!-- script -->
     <script src="item.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

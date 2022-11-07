@@ -1,7 +1,7 @@
 const initItemType = "text";
 const initItemData = {
   text: { x: 0, y: 0, text: "", fontSize: 14 },
-  barcode: { x: 0, y: 0, data: "", type: "" },
+  barcode: { x: 0, y: 0, data: "", type: "CODE128" },
   qr: { x: 0, y: 0, data: "" },
 };
 

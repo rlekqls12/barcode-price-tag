@@ -1,5 +1,5 @@
-const initType = "text";
-const initData = {
+const initItemType = "text";
+const initItemData = {
   text: { x: 0, y: 0, text: "", fontSize: 14 },
   barcode: { x: 0, y: 0, data: "", type: "" },
   qr: { x: 0, y: 0, data: "" },
@@ -14,10 +14,10 @@ class Item {
   constructor(type, data) {
     // default type and data
     if (Boolean(type) === false) {
-      type = initType;
+      type = initItemType;
     }
     if (Boolean(data) === false) {
-      data = initData[type];
+      data = initItemData[type];
     }
 
     // type available check
@@ -61,7 +61,7 @@ class Item {
     const itemIndex = globalData.itemList.findIndex((item) => item.id === $id);
     globalData.itemList.splice(itemIndex, 1);
 
-    // reset value
+    // reset data
     this.id = null;
     this.element = null;
     this.type = null;

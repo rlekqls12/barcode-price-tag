@@ -32,7 +32,7 @@
         </div>
         <div id="item-list"></div>
         <div class="w-100 flex-1 position-relative">
-          <button id="image-save-btn" class="bottom">이미지 저장</button>
+          <button id="image-save-btn" class="bottom">Save Image</button>
         </div>
       </div>
       <!-- main canvas layout -->
@@ -80,14 +80,87 @@
     <!-- popup  -->
     <div id="item-popup-layout">
       <div class="item-popup-background"></div>
-    </div>
-    <!-- TODO: 팝업 레이아웃 작성 -->
-    <!-- TODO: 팝업 - 타입 설정 및 초기 값 작성 -->
+      <div class="item-popup-content">
+        <div class="item-popup-close none-select" data-id="event-popup-close">
+          Close
+        </div>
+        <span class="none-select">Add Item</span>
 
+        <select
+          class="item-popup-select-type"
+          data-id="item-popup-select-item-type"
+        >
+          <option value="text" selected>Text</option>
+          <option value="barcode">Barcode</option>
+          <option value="qr">Qr</option>
+        </select>
+
+        <div
+          class="item-popup-input-layout"
+          data-id="item-popup-input-layout-text"
+        >
+          <div class="item-popup-type">
+            <span>Text Item</span>
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Text</label>
+            <input data-id="item-popup-input-text" placeholder="text to show" />
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Font Size</label>
+            <input
+              type="number"
+              data-id="item-popup-input-font-size"
+              placeholder="14"
+            />
+          </div>
+        </div>
+
+        <div
+          class="item-popup-input-layout"
+          data-id="item-popup-input-layout-barcode"
+        >
+          <div class="item-popup-type">
+            <span>Barcode Item</span>
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Data</label>
+            <input
+              data-id="item-popup-input-data"
+              placeholder="barcode to show"
+            />
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Barcode Type</label>
+            <select data-id="item-popup-input-barcode-type">
+              <option value="" disabled selected>select barcode type</option>
+            </select>
+          </div>
+        </div>
+
+        <div
+          class="item-popup-input-layout"
+          data-id="item-popup-input-layout-qr"
+        >
+          <div class="item-popup-type">
+            <span>QR Item</span>
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Data</label>
+            <input data-id="item-popup-input-data" placeholder="qr to show" />
+          </div>
+        </div>
+
+        <div class="item-popup-add">
+          <button data-id="event-popup-add-item">Add Item</button>
+        </div>
+      </div>
+    </div>
+    <!-- TODO: 바코드 타입 넣기 -->
     <!-- TODO: 아이템 - 이미지 타입 추가하기 -->
 
-    <!-- TODO: drawCanvas - Item 그리기 -->
     <!-- TODO: canvas - 전체 크기로 해놓고 가운데 drawRect 그려서, 바코드 이미지 캡쳐 구간 만들기 -->
+    <!-- TODO: drawCanvas - Item 그리기 -->
 
     <!-- TODO: canvas - 캡쳐 바코드 이미지 저장 -->
     <!-- TODO: 아이템 - 현재 상태 저장 이름.barcode -->
@@ -95,5 +168,6 @@
     <!-- script -->
     <script src="item.js"></script>
     <script src="index.js"></script>
+    <script src="popup.js"></script>
   </body>
 </html>

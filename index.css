@@ -252,6 +252,8 @@ button {
   width: 100vw;
   height: 100vh;
   display: none;
+  align-items: center;
+  justify-content: center;
   z-index: 2;
 }
 #item-popup-layout > .item-popup-background {
@@ -261,4 +263,85 @@ button {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
+}
+#item-popup-layout > .item-popup-content {
+  position: relative;
+  width: 240px;
+  height: 300px;
+  padding: 0.6rem 0.4rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: white;
+  z-index: 1;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+#item-popup-layout > .item-popup-content::-webkit-scrollbar {
+  display: none;
+}
+#item-popup-layout > .item-popup-content > .item-popup-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.4rem;
+  cursor: pointer;
+}
+#item-popup-layout > .item-popup-content > .item-popup-select-type {
+  margin: 0.6rem 0.4rem 0 0.4rem;
+}
+#item-popup-layout > .item-popup-content > .item-popup-input-layout {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.4rem;
+}
+#item-popup-layout
+  > .item-popup-content
+  > .item-popup-input-layout
+  > .item-popup-type {
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
+  color: deepskyblue;
+}
+#item-popup-layout
+  > .item-popup-content
+  > .item-popup-input-layout
+  > .item-popup-input-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#item-popup-layout
+  > .item-popup-content
+  > .item-popup-input-layout
+  > .item-popup-input-wrap
+  + .item-popup-input-wrap {
+  margin-top: 0.6rem;
+}
+#item-popup-layout
+  > .item-popup-content
+  > .item-popup-input-layout
+  > .item-popup-input-wrap
+  > input[type="number"] {
+  text-align: right;
+}
+#item-popup-layout
+  > .item-popup-content
+  > .item-popup-input-layout
+  > .item-popup-input-wrap
+  > select {
+  width: 100%;
+  text-align: end;
+}
+#item-popup-layout > .item-popup-content > .item-popup-add {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+}
+#item-popup-layout > .item-popup-content > .item-popup-add > button {
+  width: -webkit-fill-available;
+  height: 2rem;
+  border: none;
+  color: white;
+  background-color: deepskyblue;
 }

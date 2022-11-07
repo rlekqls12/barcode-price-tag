@@ -97,8 +97,7 @@ function addItemWithPopup() {
     itemData.data = dataValue || initItemData.qr.data;
   }
 
-  const newItem = new Item(selectedType, itemData);
-  globalData.itemList.push(newItem);
+  addItem(selectedType, itemData);
 
   closeAddItemPopup();
 }

@@ -26,14 +26,17 @@ window.addEventListener("DOMContentLoaded", () => {
     syncCanvasSize();
   });
 
-  // sync canvas size
-  syncCanvasSize();
-
   // add item - event listener
   const addItemButton = document.querySelector("#item-add");
   addItemButton.addEventListener("click", () => {
     openAddItemPopup(); // popup.js
   });
+
+  // add default item set (text, barcode)
+  const textData = { x: 120, y: 100, text: "1011011001", fontSize: 14 };
+  const barcodeData = { x: 120, y: 30, data: "1011011001", type: "CODE128" };
+  addItem("text", textData);
+  addItem("barcode", barcodeData);
 
   // draw canvas
   drawCanvas();

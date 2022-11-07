@@ -5,6 +5,15 @@ const initItemData = {
   qr: { x: 0, y: 0, data: "" },
 };
 
+/**
+ * @param {'text'|'barcode'|'qr'} type
+ * @param {*} data
+ */
+function addItem(type, data) {
+  const newItem = new Item(type, data);
+  globalData.itemList.push(newItem);
+}
+
 class Item {
   id = null; // random
   element = null; // dom element

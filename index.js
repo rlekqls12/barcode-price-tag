@@ -26,14 +26,16 @@ window.addEventListener("DOMContentLoaded", () => {
     syncCanvasSize();
   });
 
-  // add window resize - canvas resize event listener
+  // canvas resize - event listener
   window.addEventListener("resize", syncCanvasSize);
+
+  // save image - event listener
+  const saveImageButton = document.querySelector("#image-save-btn");
+  saveImageButton.addEventListener("click", saveIamge);
 
   // add item - event listener
   const addItemButton = document.querySelector("#item-add");
-  addItemButton.addEventListener("click", () => {
-    openAddItemPopup(); // popup.js
-  });
+  addItemButton.addEventListener("click", openAddItemPopup); // popup.js
 
   // add default item set (text, barcode)
   const textData = { x: 120, y: 100, text: "barcode text", fontSize: 14 };
@@ -68,11 +70,35 @@ function addItem(type, data) {
   globalData.itemList.push(newItem);
 }
 
+function saveIamge() {
+  const canvas = document.querySelector("#main-canvas");
+  const context = canvas.getContext("2d");
+  const cropImageData = context.getImageData(
+    canvas.width / 2 - globalData.image.width / 2,
+    canvas.height / 2 - globalData.image.height / 2,
+    globalData.image.width,
+    globalData.image.height
+  );
+
+  const offset = window.devicePixelRatio || 1;
+  const tempCanvas = document.createElement("canvas");
+  tempCanvas.width = globalData.image.width * offset;
+  tempCanvas.height = globalData.image.height * offset;
+
+  const tempContext = tempCanvas.getContext("2d");
+  tempContext.putImageData(cropImageData, 0, 0);
+
+  const downloadElement = document.createElement("a");
+  downloadElement.download = true;
+  downloadElement.href = tempCanvas.toDataURL();
+  downloadElement.click();
+}
+
 function drawCanvas() {
   const canvas = document.querySelector("#main-canvas");
   const context = canvas.getContext("2d");
 
-  const offset = devicePixelRatio || 1;
+  const offset = window.devicePixelRatio || 1;
   const image = globalData.image;
   context.clearRect(0, 0, image.width * offset, image.height * offset);
 
@@ -98,7 +124,7 @@ function syncCanvasSize() {
   const wrapWidth = canvasWrap.offsetWidth;
   const wrapHeight = canvasWrap.offsetHeight;
 
-  const offset = devicePixelRatio || 1;
+  const offset = window.devicePixelRatio || 1;
 
   canvas.width = wrapWidth * offset;
   canvas.height = wrapHeight * offset;

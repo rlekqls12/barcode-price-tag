@@ -33,7 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // add default item set (text, barcode)
-  const textData = { x: 120, y: 100, text: "1011011001", fontSize: 14 };
+  const textData = { x: 120, y: 100, text: "barcode text", fontSize: 14 };
   const barcodeData = { x: 120, y: 30, data: "1011011001", type: "CODE128" };
   addItem("text", textData);
   addItem("barcode", barcodeData);

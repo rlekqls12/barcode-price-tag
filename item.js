@@ -1,12 +1,17 @@
+/**
+ * @typedef {'text' | 'barcode' | 'qr' | 'image'} ItemType
+ */
+
 const initItemType = "text";
 const initItemData = {
   text: { x: 0, y: 0, text: "", fontSize: 14 },
   barcode: { x: 0, y: 0, data: "", type: "CODE128" },
   qr: { x: 0, y: 0, data: "" },
+  image: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src" }, // type: src, blob
 };
 
 /**
- * @param {'text'|'barcode'|'qr'} type
+ * @param {ItemType} type
  * @param {*} data
  */
 function addItem(type, data) {
@@ -30,7 +35,7 @@ class Item {
     }
 
     // type available check
-    const availableTypes = ["text", "barcode", "qr"];
+    const availableTypes = ["text", "barcode", "qr", "image"];
     if (availableTypes.includes(type) === false) {
       throw new Error(`${type} is not includes [${availableTypes.join(", ")}]`);
     }
@@ -137,6 +142,13 @@ class Item {
         if (this.type === "qr") {
           this.data.data = value;
         }
+        if (this.type === "image") {
+          if (this.data.type === 'src') {
+            this.data.data = value;
+          } else if (this.data.type === 'blob') {
+            this.data.data = targetDOM.files?.[0];
+          }
+        }
       }
 
       // x
@@ -149,14 +161,47 @@ class Item {
         this.data.y = number;
       }
 
-      // font size
-      if (dataID === "item-input-font-size") {
-        this.data.fontSize = number;
+      // width
+      if (dataID === "item-input-width") {
+        if (this.type === "image") {
+          this.data.width = value;
+        }
       }
 
-      // barcode-type
+      // height
+      if (dataID === "item-input-height") {
+        if (this.type === "image") {
+          this.data.height = value;
+        }
+      }
+
+      // font size
+      if (dataID === "item-input-font-size") {
+        if (this.type === "text") {
+          this.data.fontSize = number;
+        }
+      }
+
+      // barcode type
       if (dataID === "item-select-barcode-type") {
-        this.data.type = value;
+        if (this.type === "barcode") {
+          this.data.type = value;
+        }
+      }
+
+      // image type
+      if (dataID === "item-select-image-type") {
+        if (this.type === "image") {
+          this.data.type = value;
+          this.data.data = "";
+
+          const imageDataElement = this.element.querySelector('input[data-id="item-input-data"]')
+          if (value === 'src') {
+            imageDataElement.type = 'text';
+          } else if (value === 'blob') {
+            imageDataElement.type = 'file';
+          }
+        }
       }
     });
   }
@@ -179,6 +224,9 @@ class Item {
         // check my event
         if (event.target !== $element) return;
 
+        // id
+        getElement("span", "item-id-text").textContent = `#${$id}`;
+
         // data x
         getElement("input", "item-input-x").value = $data.x;
 
@@ -188,7 +236,7 @@ class Item {
         // -------------------------  text type
         if ($type === "text") {
           // type text
-          getElement("span", "item-type-text").textContent = `Text#${$id}`;
+          getElement("span", "item-type-text").textContent = `Text`;
 
           // data text
           getElement("input", "item-input-data").value = $data.text;
@@ -197,13 +245,16 @@ class Item {
           getElement("input", "item-input-font-size").value = $data.fontSize;
 
           // remove other type element
+          getElement("div", "item-layout-width").remove();
+          getElement("div", "item-layout-height").remove();
           getElement("div", "item-layout-barcode-type").remove();
+          getElement("div", "item-layout-image-type").remove();
         }
 
         // -------------------------  barcode type
         if ($type === "barcode") {
           // type text
-          getElement("span", "item-type-text").textContent = `Barcode#${$id}`;
+          getElement("span", "item-type-text").textContent = `Barcode`;
 
           // data text
           getElement("input", "item-input-data").value = $data.data;
@@ -212,21 +263,56 @@ class Item {
           getElement("select", "item-select-barcode-type").value = $data.type;
 
           // remove other type element
+          getElement("div", "item-layout-width").remove();
+          getElement("div", "item-layout-height").remove();
           getElement("div", "item-layout-font-size").remove();
+          getElement("div", "item-layout-image-type").remove();
         }
 
         // -------------------------  qr type
         if ($type === "qr") {
           // type text
-          getElement("span", "item-type-text").textContent = `QR#${$id}`;
+          getElement("span", "item-type-text").textContent = `QR`;
 
           // data text
           getElement("input", "item-input-data").value = $data.data;
 
           // remove other type element
+          getElement("div", "item-layout-width").remove();
+          getElement("div", "item-layout-height").remove();
+          getElement("div", "item-layout-font-size").remove();
+          getElement("div", "item-layout-barcode-type").remove();
+          getElement("div", "item-layout-image-type").remove();
+        }
+
+        // -------------------------  image type
+        if ($type === "image") {
+          // type text
+          getElement("span", "item-type-text").textContent = `Image`;
+
+          // data text
+          if ($data.type === 'src') {
+            getElement("input", "item-input-data").type = 'text';
+            getElement("input", "item-input-data").value = $data.data;
+          } else if ($data.type === 'blob') {
+            getElement("input", "item-input-data").type = 'file';
+            getElement("input", "item-input-data").value = "";
+          }
+
+          // width
+          getElement("input", "item-input-width").value = $data.width;
+
+          // height
+          getElement("input", "item-input-height").value = $data.height;
+
+          // image type
+          getElement("select", "item-select-image-type").value = $data.type;
+
+          // remove other type element
           getElement("div", "item-layout-font-size").remove();
           getElement("div", "item-layout-barcode-type").remove();
         }
+
 
         // remove event
         itemListDOM.removeEventListener("DOMNodeInserted", eventFunction);

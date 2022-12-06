@@ -1,3 +1,7 @@
+/**
+ * @typedef {'text' | 'barcode' | 'qr' | 'image'} ItemType
+ */
+
 function openAddItemPopup() {
   resetAddItemPopup();
 
@@ -20,6 +24,9 @@ function resetAddItemPopup() {
     inputLayout.style.display = "";
   });
 
+  const imageDataInput = popup.querySelector('input[data-id="item-popup-input-data"]');
+  imageDataInput.type = 'text';
+
   const inputs = popup.querySelectorAll("input");
   inputs.forEach((input) => {
     input.value = "";
@@ -37,7 +44,7 @@ function resetAddItemPopup() {
 }
 
 /**
- * @param {'text' | 'barcode' | 'qr'} layout
+ * @param {ItemType} layout
  */
 function showAddItemPopupLayout(layout) {
   const popup = document.querySelector("#item-popup-layout");
@@ -85,7 +92,7 @@ function addItemWithPopup() {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const typeValue = getElement(
       "select",
-      "item-popup-input-barcode-type"
+      "item-popup-select-barcode-type"
     ).value;
 
     itemData.data = dataValue || initItemData.barcode.data;
@@ -95,6 +102,20 @@ function addItemWithPopup() {
     const dataValue = getElement("input", "item-popup-input-data").value;
 
     itemData.data = dataValue || initItemData.qr.data;
+  }
+  if (selectedType === "image") {
+    const dataValue = getElement("input", "item-popup-input-data").value;
+    const widthValue = getElement("input", "item-popup-input-width").value;
+    const heightValue = getElement("input", "item-popup-input-height").value;
+    const typeValue = getElement(
+      "select",
+      "item-popup-select-image-type"
+    ).value;
+
+    itemData.data = dataValue || initItemData.image.data;
+    itemData.width = dataValue || initItemData.image.width;
+    itemData.height = dataValue || initItemData.image.height;
+    itemData.type = typeValue || initItemData.image.type;
   }
 
   addItem(selectedType, itemData);

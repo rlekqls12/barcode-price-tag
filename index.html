@@ -41,10 +41,13 @@
       </div>
     </div>
 
-    <!-- item -->
+    <!-- input -->
     <div data-id="item" class="item">
       <div class="item-header">
-        <span class="none-select" data-id="item-type-text">Text</span>
+        <div>
+          <span class="none-select" data-id="item-type-text">Text</span>
+          <span class="none-select" data-id="item-id-text">#</span>
+        </div>
         <div>
           <button data-id="event-delete">Delete</button>
         </div>
@@ -65,6 +68,14 @@
         <div class="label-input" data-id="item-layout-y">
           <label class="none-select">Y</label>
           <input type="number" data-id="item-input-y" />
+        </div>
+        <div class="label-input" data-id="item-layout-width">
+          <label class="none-select">W</label>
+          <input type="number" data-id="item-input-width" />
+        </div>
+        <div class="label-input" data-id="item-layout-height">
+          <label class="none-select">H</label>
+          <input type="number" data-id="item-input-height" />
         </div>
         <div class="label-input" data-id="item-layout-font-size">
           <label class="none-select">Size</label>
@@ -91,6 +102,13 @@
             <option value="pharmacode">Pharmacode</option>
           </select>
         </div>
+        <div class="label-select" data-id="item-layout-image-type">
+          <label class="none-select">Type</label>
+          <select data-id="item-select-image-type">
+            <option value="src" selected>Url</option>
+            <option value="blob">Upload</option>
+          </select>
+        </div>
       </div>
     </div>
 
@@ -103,6 +121,7 @@
         </div>
         <span class="none-select">Add Item</span>
 
+        <!-- select type -->
         <select
           class="item-popup-select-type"
           data-id="item-popup-select-item-type"
@@ -110,8 +129,10 @@
           <option value="text" selected>Text</option>
           <option value="barcode">Barcode</option>
           <option value="qr">Qr</option>
+          <option value="image">Image</option>
         </select>
 
+        <!-- text input -->
         <div
           class="item-popup-input-layout"
           data-id="item-popup-input-layout-text"
@@ -121,7 +142,7 @@
           </div>
           <div class="item-popup-input-wrap">
             <label class="none-select">Text</label>
-            <input data-id="item-popup-input-text" placeholder="text to show" />
+            <input data-id="item-popup-input-text" placeholder="input text" />
           </div>
           <div class="item-popup-input-wrap">
             <label class="none-select">Font Size</label>
@@ -133,6 +154,7 @@
           </div>
         </div>
 
+        <!-- barcode input -->
         <div
           class="item-popup-input-layout"
           data-id="item-popup-input-layout-barcode"
@@ -144,14 +166,14 @@
             <label class="none-select">Data</label>
             <input
               data-id="item-popup-input-data"
-              placeholder="barcode to show"
+              placeholder="input barcode"
             />
           </div>
           <div class="item-popup-input-wrap">
             <label class="none-select">Barcode Type</label>
-            <select data-id="item-popup-input-barcode-type">
+            <select data-id="item-popup-select-barcode-type">
               <option value="" disabled selected>select barcode type</option>
-              <option value="CODE128" selected>CODE128 auto</option>
+              <option value="CODE128">CODE128 auto</option>
               <option value="CODE128A">CODE128 A</option>
               <option value="CODE128B">CODE128 B</option>
               <option value="CODE128C">CODE128 C</option>
@@ -171,6 +193,7 @@
           </div>
         </div>
 
+        <!-- qr input -->
         <div
           class="item-popup-input-layout"
           data-id="item-popup-input-layout-qr"
@@ -180,17 +203,56 @@
           </div>
           <div class="item-popup-input-wrap">
             <label class="none-select">Data</label>
-            <input data-id="item-popup-input-data" placeholder="qr to show" />
+            <input data-id="item-popup-input-data" placeholder="input qr" />
           </div>
         </div>
 
+        <!-- image input -->
+        <div
+          class="item-popup-input-layout"
+          data-id="item-popup-input-layout-image"
+        >
+          <div class="item-popup-type">
+            <span>Image Item</span>
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Image Data</label>
+            <input
+              data-id="item-popup-input-data"
+              placeholder="input image"
+            />
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Image Type</label>
+            <select data-id="item-popup-select-image-type">
+              <option value="" disabled selected>select image type</option>
+              <option value="src">Url</option>
+              <option value="blob">Upload</option>
+            </select>
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Image Width</label>
+            <input
+              data-id="item-popup-input-width"
+              placeholder="input image width"
+            />
+          </div>
+          <div class="item-popup-input-wrap">
+            <label class="none-select">Image Height</label>
+            <input
+              data-id="item-popup-input-height"
+              placeholder="input image height"
+            />
+          </div>
+        </div>
+
+        <!-- add item button -->
         <div class="item-popup-add">
           <button data-id="event-popup-add-item">Add Item</button>
         </div>
       </div>
     </div>
-    <!-- TODO: 아이템 - 이미지 타입 추가하기 (이미지input, width, height) -->
-
+    
     <!-- TODO: canvas - 전체 크기로 해놓고 가운데 drawRect 그려서, 바코드 이미지 캡쳐 구간 만들기 -->
     <!-- TODO: drawCanvas - Item 그리기 -->
     <!-- TODO: canvas - 아이템 호버시 근처에 아이템타입#아이디 표시 -->

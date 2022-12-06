@@ -10,20 +10,12 @@ const initItemData = {
   image: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src" }, // type: src, blob
 };
 
-/**
- * @param {ItemType} type
- * @param {*} data
- */
-function addItem(type, data) {
-  const newItem = new Item(type, data);
-  globalData.itemList.push(newItem);
-}
-
 class Item {
   id = null; // random
   element = null; // dom element
   type = null; // text, barcode, qr
   data = null; // item data
+  deleteListener = null; // execute when delete
 
   constructor(type, data) {
     // default type and data
@@ -66,20 +58,8 @@ class Item {
     this.initEventListener();
   }
 
-  delete() {
-    // remove element
-    this.element.remove();
-
-    // remove item in itemlist
-    const $id = this.id;
-    const itemIndex = globalData.itemList.findIndex((item) => item.id === $id);
-    globalData.itemList.splice(itemIndex, 1);
-
-    // reset data
-    this.id = null;
-    this.element = null;
-    this.type = null;
-    this.data = null;
+  setDeleteEventListener(callback) {
+    this.deleteListener = callback;
   }
 
   initEventListener() {
@@ -111,7 +91,8 @@ class Item {
 
       // delete
       if (dataID === "event-delete") {
-        this.delete();
+        if (typeof this.deleteListener !== 'function') return;
+        this.deleteListener(this);
       }
     });
 

@@ -118,7 +118,23 @@ function addItemWithPopup() {
     itemData.type = typeValue || initItemData.image.type;
   }
 
-  addItem(selectedType, itemData);
+  const newItem = new Item(selectedType, itemData);
+  newItem.setDeleteEventListener((item) => {
+    // remove element
+    item.element.remove();
+
+    // remove item in itemlist
+    const $id = item.id;
+    const itemIndex = globalData.itemList.findIndex((item) => item.id === $id);
+    globalData.itemList.splice(itemIndex, 1);
+
+    // reset data
+    item.id = null;
+    item.element = null;
+    item.type = null;
+    item.data = null;
+  })
+  globalData.itemList.push(newItem);
 
   closeAddItemPopup();
 }

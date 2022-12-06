@@ -42,6 +42,26 @@ window.addEventListener("DOMContentLoaded", () => {
   drawCanvas();
 });
 
+function addItem(type, data) {
+  const newItem = new Item(type, data);
+  newItem.setDeleteEventListener((item) => {
+    // remove element
+    item.element.remove();
+
+    // remove item in itemlist
+    const $id = item.id;
+    const itemIndex = globalData.itemList.findIndex((item) => item.id === $id);
+    globalData.itemList.splice(itemIndex, 1);
+
+    // reset data
+    item.id = null;
+    item.element = null;
+    item.type = null;
+    item.data = null;
+  });
+  globalData.itemList.push(newItem);
+}
+
 function drawCanvas() {
   syncCanvasSize();
   const canvas = document.querySelector("#main-canvas");

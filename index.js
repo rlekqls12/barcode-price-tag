@@ -26,6 +26,9 @@ window.addEventListener("DOMContentLoaded", () => {
     syncCanvasSize();
   });
 
+  // add window resize - canvas resize event listener
+  window.addEventListener("resize", syncCanvasSize);
+
   // add item - event listener
   const addItemButton = document.querySelector("#item-add");
   addItemButton.addEventListener("click", () => {
@@ -37,6 +40,9 @@ window.addEventListener("DOMContentLoaded", () => {
   const barcodeData = { x: 120, y: 30, data: "1011011001", type: "CODE128" };
   addItem("text", textData);
   addItem("barcode", barcodeData);
+
+  // sync canvas size
+  syncCanvasSize();
 
   // draw canvas
   drawCanvas();
@@ -63,7 +69,6 @@ function addItem(type, data) {
 }
 
 function drawCanvas() {
-  syncCanvasSize();
   const canvas = document.querySelector("#main-canvas");
   const context = canvas.getContext("2d");
 
@@ -71,18 +76,30 @@ function drawCanvas() {
   const image = globalData.image;
   context.clearRect(0, 0, image.width * offset, image.height * offset);
 
+  // draw canvas layout rect
+  context.fillStyle = "white";
+  context.fillRect(
+    canvas.width / 2 - globalData.image.width / 2,
+    canvas.height / 2 - globalData.image.height / 2,
+    globalData.image.width,
+    globalData.image.height
+  );
+
   // draw items
+  // todo...
 
   requestAnimationFrame(drawCanvas);
 }
 
 function syncCanvasSize() {
   const canvas = document.querySelector("#main-canvas");
+  const canvasWrap = canvas.parentNode;
+
+  const wrapWidth = canvasWrap.offsetWidth;
+  const wrapHeight = canvasWrap.offsetHeight;
+
   const offset = devicePixelRatio || 1;
 
-  canvas.width = globalData.image.width * offset;
-  canvas.height = globalData.image.height * offset;
-
-  canvas.style.width = `${globalData.image.width}px`;
-  canvas.style.height = `${globalData.image.height}px`;
+  canvas.width = wrapWidth * offset;
+  canvas.height = wrapHeight * offset;
 }

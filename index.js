@@ -29,6 +29,12 @@ window.addEventListener("DOMContentLoaded", () => {
   // canvas resize - event listener
   window.addEventListener("resize", syncCanvasSize);
 
+  // mouse event listener
+  const canvas = document.querySelector("#main-canvas");
+  canvas.addEventListener('mousemove', checkMouseEvent);
+  canvas.addEventListener('mousedown', checkMouseEvent);
+  canvas.addEventListener('mouseup', checkMouseEvent);
+
   // save image - event listener
   const saveImageButton = document.querySelector("#image-save-btn");
   saveImageButton.addEventListener("click", saveIamge);

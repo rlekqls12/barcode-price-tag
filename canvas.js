@@ -34,3 +34,7 @@ function drawCanvas() {
     canvas.height = wrapHeight * offset;
   }
   
+  function checkMouseEvent(event) {
+    const { offsetX: mouseX, offsetY: mouseY, type } = event;
+    console.log(type, mouseX, mouseY);
+  }

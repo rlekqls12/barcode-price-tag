@@ -33,10 +33,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("#main-canvas");
   canvas.addEventListener(
     'mousemove',
-    (event) => debounce(checkMouseEvent.bind(this, event)), // canvas.js
+    (event) => debounce(onCanvasMouseEvent.bind(this, event)), // canvas.js
   );
-  canvas.addEventListener('mousedown',checkMouseEvent); // canvas.js
-  canvas.addEventListener('mouseup',checkMouseEvent); // canvas.js
+  canvas.addEventListener('mousedown', onCanvasMouseEvent); // canvas.js
+  canvas.addEventListener('mouseup', onCanvasMouseEvent); // canvas.js
 
   // save image - event listener
   const saveImageButton = document.querySelector("#image-save-btn");

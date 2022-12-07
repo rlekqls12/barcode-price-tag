@@ -115,8 +115,8 @@ function addItemWithPopup() {
     ).value;
 
     itemData.data = dataValue || initItemData.image.data;
-    itemData.width = dataValue || initItemData.image.width;
-    itemData.height = dataValue || initItemData.image.height;
+    itemData.width = widthValue || initItemData.image.width;
+    itemData.height = heightValue || initItemData.image.height;
     itemData.type = typeValue || initItemData.image.type;
   }
 

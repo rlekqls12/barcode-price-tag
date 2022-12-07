@@ -5,9 +5,9 @@
 const initItemType = "text";
 const initItemData = {
   text: { x: 0, y: 0, text: "", fontSize: 14 },
-  barcode: { x: 0, y: 0, data: "", type: "CODE128" },
-  qr: { x: 0, y: 0, data: "" },
-  image: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", imageData: null }, // type: src, blob
+  barcode: { x: 0, y: 0, data: "", type: "CODE128", output: null },
+  qr: { x: 0, y: 0, data: "", output: null },
+  image: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
 };
 
 class Item {

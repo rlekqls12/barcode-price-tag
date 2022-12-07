@@ -18,7 +18,7 @@ function drawCanvas() {
     // draw items
     // todo...
   
-    requestAnimationFrame(drawCanvas);
+    window.requestAnimationFrame(drawCanvas);
   }
   
   function syncCanvasSize() {

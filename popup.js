@@ -120,7 +120,7 @@ function addItemWithPopup() {
     itemData.type = typeValue || initItemData.image.type;
   }
 
-  addItem(selectedType, itemData);
+  addItem(selectedType, itemData); // index.js
   closeAddItemPopup();
 }
 

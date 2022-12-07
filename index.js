@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
   imageSizeWidth.addEventListener("change", (event) => {
     const width = event.target.value;
     globalData.image.width = width;
-    syncCanvasSize();
+    syncCanvasSize(); // canvas.js
   });
 
   // connect image size width
@@ -23,17 +23,17 @@ window.addEventListener("DOMContentLoaded", () => {
   imageSizeHeight.addEventListener("change", (event) => {
     const height = event.target.value;
     globalData.image.height = height;
-    syncCanvasSize();
+    syncCanvasSize(); // canvas.js
   });
 
   // canvas resize - event listener
-  window.addEventListener("resize", syncCanvasSize);
+  window.addEventListener("resize", syncCanvasSize); // canvas.js
 
   // mouse event listener
   const canvas = document.querySelector("#main-canvas");
-  canvas.addEventListener('mousemove', checkMouseEvent);
-  canvas.addEventListener('mousedown', checkMouseEvent);
-  canvas.addEventListener('mouseup', checkMouseEvent);
+  canvas.addEventListener('mousemove', checkMouseEvent); // canvas.js
+  canvas.addEventListener('mousedown', checkMouseEvent); // canvas.js
+  canvas.addEventListener('mouseup', checkMouseEvent); // canvas.js
 
   // save image - event listener
   const saveImageButton = document.querySelector("#image-save-btn");
@@ -50,10 +50,10 @@ window.addEventListener("DOMContentLoaded", () => {
   addItem("barcode", barcodeData);
 
   // sync canvas size
-  syncCanvasSize();
+  syncCanvasSize(); // canvas.js
 
   // draw canvas
-  drawCanvas();
+  drawCanvas(); // canvas.js
 });
 
 function addItem(type, data) {

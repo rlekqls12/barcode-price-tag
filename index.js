@@ -83,6 +83,8 @@ function getItemList() {
   const itemList = [];
 
   const canvas = document.querySelector("#main-canvas");
+  const context = canvas.getContext("2d");
+
   const canvasItem = {
     x: canvas.width / 2 - globalData.image.width / 2,
     y: canvas.height / 2 - globalData.image.height / 2,
@@ -92,16 +94,32 @@ function getItemList() {
   itemList.push(canvasItem);
 
   const items = globalData.itemList.map((item) => {
+    const itemData = item.data;
     const itemType = item.type;
-
-    // TODO: 아이템 타입에 맞춰 w, h 구하기 (canvas context 이용)
-
-    return {
-      x: item.data.x,
-      y: item.data.y,
+    const itemInfo = {
+      x: itemData.x,
+      y: itemData.y,
       w: 0,
       h: 0,
     }
+
+    if (itemType === 'text') {
+      // canvas text type
+      context.font = `${itemData.fontSize}px sans-serif`;
+      const textMetrics = context.measureText(itemData.text);
+
+      const itemWidth = (textMetrics.actualBoundingBoxRight + textMetrics.actualBoundingBoxLeft) || textMetrics.width;
+      const itemHeight = (textMetrics.actualBoundingBoxDescent + textMetrics.actualBoundingBoxAscent) || itemData.fontSize;
+
+      itemInfo.w = itemWidth;
+      itemInfo.h = itemHeight;
+    } else {
+      // canvas image type [barcode, qr, image]
+    }
+
+    // TODO: 아이템 타입에 맞춰 w, h 구하기 (canvas context 이용)
+
+    return itemInfo;
   })
   itemList.push(...items);
 }

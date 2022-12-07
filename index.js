@@ -85,14 +85,6 @@ function getItemList() {
   const canvas = document.querySelector("#main-canvas");
   const context = canvas.getContext("2d");
 
-  const canvasItem = {
-    x: canvas.width / 2 - globalData.image.width / 2,
-    y: canvas.height / 2 - globalData.image.height / 2,
-    w: globalData.image.width,
-    h: globalData.image.height,
-  };
-  itemList.push(canvasItem);
-
   const items = globalData.itemList.map((item) => {
     const itemData = item.data;
     const itemType = item.type;

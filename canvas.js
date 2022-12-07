@@ -40,8 +40,28 @@ function drawCanvas() {
 
     const itemList = getItemList(); // index.js
 
-    // TODO: 충돌검사 (캔버스 배경 먼저 로직 짜기)
-    // 마우스 주변에 다른 아이템 없고 캔버스만 있는 경우
-    // 1. 캔버스 크기 조절 그림 표시
-    // 2. 마우스 모양 변경
+    const hitItems = [];
+
+    // TODO: 아이템 충돌 검사 로직...
+
+    const hitCanvasInfo = hitTestCanvasEdge();
+    if (hitCanvasInfo) {
+      // 마우스 주변에 다른 아이템 없고 캔버스만 있는 경우 (삼각함수로 계산하기)
+      // 1. 캔버스 크기 조절 그림 표시
+      // 2. 마우스 모양 변경
+    }
+  }
+
+  function hitTestCanvasEdge() {
+    const canvas = document.querySelector("#main-canvas");
+    const canvasItem = {
+      x: canvas.width / 2 - globalData.image.width / 2,
+      y: canvas.height / 2 - globalData.image.height / 2,
+      w: globalData.image.width,
+      h: globalData.image.height,
+    };
+
+    // 상하좌우, 좌상, 좌하, 우상, 우하 계산해서 return 하기
+
+    return null;
   }

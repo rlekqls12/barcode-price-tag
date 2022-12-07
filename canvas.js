@@ -37,4 +37,11 @@ function drawCanvas() {
   function checkMouseEvent(event) {
     const { offsetX: mouseX, offsetY: mouseY, type } = event;
     console.log(type, mouseX, mouseY);
+
+    const itemList = getItemList(); // index.js
+
+    // TODO: 충돌검사 (캔버스 배경 먼저 로직 짜기)
+    // 마우스 주변에 다른 아이템 없고 캔버스만 있는 경우
+    // 1. 캔버스 크기 조절 그림 표시
+    // 2. 마우스 모양 변경
   }

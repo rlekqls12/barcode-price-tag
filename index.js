@@ -27,13 +27,16 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // canvas resize - event listener
-  window.addEventListener("resize", syncCanvasSize); // canvas.js
+  window.addEventListener("resize", () => debounce(syncCanvasSize)); // canvas.js
 
   // mouse event listener
   const canvas = document.querySelector("#main-canvas");
-  canvas.addEventListener('mousemove', checkMouseEvent); // canvas.js
-  canvas.addEventListener('mousedown', checkMouseEvent); // canvas.js
-  canvas.addEventListener('mouseup', checkMouseEvent); // canvas.js
+  canvas.addEventListener(
+    'mousemove',
+    (event) => debounce(checkMouseEvent.bind(this, event)), // canvas.js
+  );
+  canvas.addEventListener('mousedown',checkMouseEvent); // canvas.js
+  canvas.addEventListener('mouseup',checkMouseEvent); // canvas.js
 
   // save image - event listener
   const saveImageButton = document.querySelector("#image-save-btn");
@@ -76,6 +79,33 @@ function addItem(type, data) {
   globalData.itemList.push(newItem);
 }
 
+function getItemList() {
+  const itemList = [];
+
+  const canvas = document.querySelector("#main-canvas");
+  const canvasItem = {
+    x: canvas.width / 2 - globalData.image.width / 2,
+    y: canvas.height / 2 - globalData.image.height / 2,
+    w: globalData.image.width,
+    h: globalData.image.height,
+  };
+  itemList.push(canvasItem);
+
+  const items = globalData.itemList.map((item) => {
+    const itemType = item.type;
+
+    // TODO: 아이템 타입에 맞춰 w, h 구하기 (canvas context 이용)
+
+    return {
+      x: item.data.x,
+      y: item.data.y,
+      w: 0,
+      h: 0,
+    }
+  })
+  itemList.push(...items);
+}
+
 function saveIamge() {
   const canvas = document.querySelector("#main-canvas");
   const context = canvas.getContext("2d");
@@ -98,4 +128,17 @@ function saveIamge() {
   downloadElement.download = true;
   downloadElement.href = tempCanvas.toDataURL();
   downloadElement.click();
+}
+
+const debounceRecord = {};
+function debounce(f, delay = 10) {
+  if (typeof f !== 'function') return
+
+  const timeoutID = debounceRecord[f];
+  if (timeoutID) {
+    clearTimeout(timeoutID);
+  }
+
+  const newTimeoutID = setTimeout(f, delay);
+  debounceRecord[f] = newTimeoutID;
 }

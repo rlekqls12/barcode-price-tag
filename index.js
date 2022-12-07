@@ -115,9 +115,8 @@ function getItemList() {
       itemInfo.h = itemHeight;
     } else {
       // canvas image type [barcode, qr, image]
+      // output에서 값 가져오기, output에는 getImageData 형식으로 담아보기
     }
-
-    // TODO: 아이템 타입에 맞춰 w, h 구하기 (canvas context 이용)
 
     return itemInfo;
   })

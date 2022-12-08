@@ -86,9 +86,11 @@ function getItemList() {
   const context = canvas.getContext("2d");
 
   const items = globalData.itemList.map((item) => {
+    const itemID = item.id;
     const itemData = item.data;
     const itemType = item.type;
     const itemInfo = {
+      id: itemID,
       x: itemData.x,
       y: itemData.y,
       w: 0,

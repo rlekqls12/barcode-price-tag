@@ -1,7 +1,7 @@
 const canvasInfo = {
   mouseHitBoxSize: 4,
   canvasEdgeSize: 10,
-  hitCanvasEdge: null, // L R T B LT LB RT RB
+  hitCanvasEdge: null, // HIT_EDGE_TYPE
   hitItems: [],
 }
 
@@ -67,6 +67,16 @@ function drawCanvas() {
     })
   }
 
+  const HIT_EDGE_TYPE = {
+    LEFT: 'LEFT',
+    RIGHT: 'RIGHT',
+    TOP: 'TOP',
+    BOTTOM: 'BOTTOM',
+    LEFT_TOP: 'LEFT_TOP',
+    LEFT_BOTTOM: 'LEFT_BOTTOM',
+    RIGHT_TOP: 'RIGHT_TOP',
+    RIGHT_BOTTOM: 'RIGHT_BOTTOM',
+  }
   function hitTestCanvasEdge(mouseItem) {
     const canvas = document.querySelector("#main-canvas");
     const canvasItem = {

@@ -65,3 +65,51 @@ function drawCanvas() {
 
     return null;
   }
+
+  const HIT_TYPE = {
+    HAVE: 'HAVE', // TARGET IN ORIGIN
+    GO_IN: 'GO_IN', // ORIGIN IN TARGET
+    HIT: 'HIT', // EACH OTHER HIT
+    NONE: 'NONE', // NO HIT
+  }
+  function hitTest(origin, target) {
+    const { x: ox, y: oy, w: ow, h: oh } = origin;
+    const { x: tx, y: ty, w: tw, h: th } = target;
+
+    const t_left = tx;
+    const t_right = tx + tw;
+    const t_top = ty;
+    const t_bottom = ty + th;
+    
+    const o_left = ox;
+    const o_right = ox + ow;
+    const o_top = oy;
+    const o_bottom = oy + oh;
+
+    const t_row_in_o = o_left <= t_left && t_right <= o_right;
+    const t_col_in_o = o_top <= t_top && t_bottom <= o_bottom;
+    const o_row_in_t = t_left <= o_left && o_right <= t_right;
+    const o_col_in_t = t_top <= o_top && o_bottom <= t_bottom;
+
+    const t_row_some_o = o_left <= t_right && t_left <= o_right;
+    const t_col_some_o = o_top <= t_bottom && t_top <= o_bottom;
+    const o_row_some_t = t_left <= o_right && o_left <= t_right;
+    const o_col_some_t = t_top <= o_bottom && o_top <= t_bottom;
+
+    if (t_row_in_o && t_col_in_o) {
+      return HIT_TYPE.HAVE;
+    }
+    if (o_row_in_t && o_col_in_t) {
+      return HIT_TYPE.GO_IN;
+    }
+
+    const condition1 = t_row_in_o && o_col_in_t;
+    const condition2 = o_row_in_t && t_col_in_o;
+    const condition3 = t_row_some_o && t_col_some_o;
+    const condition4 = o_row_some_t && o_row_some_t;
+    if (condition1 || condition2 || condition3 || condition4) {
+      return HIT_TYPE.HIT;
+    }
+
+    return HIT_TYPE.NONE;
+  }

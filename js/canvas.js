@@ -1,3 +1,10 @@
+const canvasInfo = {
+  mouseHitBoxSize: 4,
+  canvasEdgeSize: 10,
+  hitCanvasEdge: null, // L R T B LT LB RT RB
+  hitItems: [],
+}
+
 function drawCanvas() {
     const canvas = document.querySelector("#main-canvas");
     const context = canvas.getContext("2d");
@@ -5,15 +12,23 @@ function drawCanvas() {
     const offset = window.devicePixelRatio || 1;
     const image = globalData.image;
     context.clearRect(0, 0, image.width * offset, image.height * offset);
+
+    const canvasRect = {
+      x: canvas.width / 2 - globalData.image.width / 2,
+      y: canvas.height / 2 - globalData.image.height / 2,
+      w: globalData.image.width,
+      h: globalData.image.height
+    }
   
     // draw canvas layout rect
     context.fillStyle = "white";
-    context.fillRect(
-      canvas.width / 2 - globalData.image.width / 2,
-      canvas.height / 2 - globalData.image.height / 2,
-      globalData.image.width,
-      globalData.image.height
-    );
+    context.fillRect(canvasRect.x, canvasRect.y, canvasRect.w, canvasRect.h);
+
+    // draw canvas edge
+    // L R T B LT LB RT RB 순서대로 그리기
+    // 마우스랑 캔버스 모서리랑 충돌 했고, 다른 충돌 아이템이 없는 경우
+    // 1. 캔버스 크기 조절 그림 표시
+    // 2. 마우스 모양 변경
   
     // draw items
     // todo...
@@ -36,23 +51,23 @@ function drawCanvas() {
   
   function onCanvasMouseEvent(event) {
     const { offsetX: mouseX, offsetY: mouseY, type } = event;
-    console.log(type, mouseX, mouseY);
+
+    const mouseItem = {
+      x: mouseX - canvasInfo.mouseHitBoxSize / 2,
+      y: mouseY - canvasInfo.mouseHitBoxSize / 2,
+      w: canvasInfo.mouseHitBoxSize,
+      h: canvasInfo.mouseHitBoxSize,
+    }
+
+    canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
 
     const itemList = getItemList(); // index.js
-
-    const hitItems = [];
-
-    // TODO: 아이템 충돌 검사 로직...
-
-    const hitCanvasInfo = hitTestCanvasEdge();
-    if (hitCanvasInfo) {
-      // 마우스 주변에 다른 아이템 없고 캔버스만 있는 경우 (삼각함수로 계산하기)
-      // 1. 캔버스 크기 조절 그림 표시
-      // 2. 마우스 모양 변경
-    }
+    canvasInfo.hitItems = itemList.filter((item) => {
+      return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
+    })
   }
 
-  function hitTestCanvasEdge() {
+  function hitTestCanvasEdge(mouseItem) {
     const canvas = document.querySelector("#main-canvas");
     const canvasItem = {
       x: canvas.width / 2 - globalData.image.width / 2,
@@ -61,7 +76,12 @@ function drawCanvas() {
       h: globalData.image.height,
     };
 
-    // 상하좌우, 좌상, 좌하, 우상, 우하 계산해서 return 하기
+    const c_left = canvasItem.x;
+    const c_right = canvasItem.x + canvasItem.w;
+    const c_top = canvasItem.y;
+    const c_bottom = canvasItem.y + canvasItem.h;
+
+    // 상하좌우, 좌상, 좌하, 우상, 우하 계산해서 return하고 canvasInfo.hitCanvasEdge에 넣기
 
     return null;
   }

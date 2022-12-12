@@ -79,83 +79,6 @@ function drawCanvas() {
     canvas.width = wrapWidth * offset;
     canvas.height = wrapHeight * offset;
   }
-
-  function getCanvasEdge() {
-    const canvas = document.querySelector("#main-canvas");
-    const canvasItem = {
-      x: canvas.width / 2 - globalData.image.width / 2,
-      y: canvas.height / 2 - globalData.image.height / 2,
-      w: globalData.image.width,
-      h: globalData.image.height,
-    };
-
-    const c_left = canvasItem.x;
-    const c_right = canvasItem.x + canvasItem.w;
-    const c_top = canvasItem.y;
-    const c_bottom = canvasItem.y + canvasItem.h;
-    const c_width = canvasItem.w;
-    const c_height = canvasItem.h;
-
-    const c_edge_left = {
-      x: c_left - canvasInfo.canvasEdgeSize,
-      y: c_top,
-      w: canvasInfo.canvasEdgeSize,
-      h: c_height,
-    }
-    const c_edge_right = {
-      x: c_right,
-      y: c_top,
-      w: canvasInfo.canvasEdgeSize,
-      h: c_height,
-    }
-    const c_edge_top = {
-      x: c_left,
-      y: c_top - canvasInfo.canvasEdgeSize,
-      w: c_width,
-      h: canvasInfo.canvasEdgeSize,
-    }
-    const c_edge_bottom = {
-      x: c_left,
-      y: c_bottom,
-      w: c_width,
-      h: canvasInfo.canvasEdgeSize,
-    }
-    const c_edge_left_top = {
-      x: c_left - canvasInfo.canvasEdgeSize,
-      y: c_top - canvasInfo.canvasEdgeSize,
-      w: canvasInfo.canvasEdgeSize,
-      h: canvasInfo.canvasEdgeSize,
-    };
-    const c_edge_left_bottom = {
-      x: c_left - canvasInfo.canvasEdgeSize,
-      y: c_bottom,
-      w: canvasInfo.canvasEdgeSize,
-      h: canvasInfo.canvasEdgeSize,
-    };
-    const c_edge_right_top = {
-      x: c_right,
-      y: c_top - canvasInfo.canvasEdgeSize,
-      w: canvasInfo.canvasEdgeSize,
-      h: canvasInfo.canvasEdgeSize,
-    };
-    const c_edge_right_bottom = {
-      x: c_right,
-      y: c_bottom,
-      w: canvasInfo.canvasEdgeSize,
-      h: canvasInfo.canvasEdgeSize,
-    };
-
-    return {
-      c_edge_left,
-      c_edge_right,
-      c_edge_top,
-      c_edge_bottom,
-      c_edge_left_top,
-      c_edge_left_bottom,
-      c_edge_right_top,
-      c_edge_right_bottom,
-    }
-  }
   
   function onCanvasMouseEvent(event) {
     const { offsetX: mouseX, offsetY: mouseY, type } = event;
@@ -173,6 +96,84 @@ function drawCanvas() {
     canvasInfo.hitItems = itemList.filter((item) => {
       return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
     })
+  }
+
+  function getCanvasEdge() {
+    const canvas = document.querySelector("#main-canvas");
+    const canvasItem = {
+      x: canvas.width / 2 - globalData.image.width / 2,
+      y: canvas.height / 2 - globalData.image.height / 2,
+      w: globalData.image.width,
+      h: globalData.image.height,
+    };
+
+    const c_left = canvasItem.x;
+    const c_right = canvasItem.x + canvasItem.w;
+    const c_top = canvasItem.y;
+    const c_bottom = canvasItem.y + canvasItem.h;
+    const c_width = canvasItem.w;
+    const c_height = canvasItem.h;
+    const c_edge_size = canvasInfo.canvasEdgeSize;
+
+    const c_edge_left = {
+      x: c_left - c_edge_size,
+      y: c_top,
+      w: c_edge_size,
+      h: c_height,
+    }
+    const c_edge_right = {
+      x: c_right,
+      y: c_top,
+      w: c_edge_size,
+      h: c_height,
+    }
+    const c_edge_top = {
+      x: c_left,
+      y: c_top - c_edge_size,
+      w: c_width,
+      h: c_edge_size,
+    }
+    const c_edge_bottom = {
+      x: c_left,
+      y: c_bottom,
+      w: c_width,
+      h: c_edge_size,
+    }
+    const c_edge_left_top = {
+      x: c_left - c_edge_size,
+      y: c_top - c_edge_size,
+      w: c_edge_size,
+      h: c_edge_size,
+    };
+    const c_edge_left_bottom = {
+      x: c_left - c_edge_size,
+      y: c_bottom,
+      w: c_edge_size,
+      h: c_edge_size,
+    };
+    const c_edge_right_top = {
+      x: c_right,
+      y: c_top - c_edge_size,
+      w: c_edge_size,
+      h: c_edge_size,
+    };
+    const c_edge_right_bottom = {
+      x: c_right,
+      y: c_bottom,
+      w: c_edge_size,
+      h: c_edge_size,
+    };
+
+    return {
+      c_edge_left,
+      c_edge_right,
+      c_edge_top,
+      c_edge_bottom,
+      c_edge_left_top,
+      c_edge_left_bottom,
+      c_edge_right_top,
+      c_edge_right_bottom,
+    }
   }
 
   const HIT_EDGE_TYPE = {

@@ -1,6 +1,6 @@
 const canvasInfo = {
   mouseHitBoxSize: 4,
-  canvasEdgeSize: 10,
+  canvasEdgeSize: 20,
   hitCanvasEdge: null, // HIT_EDGE_TYPE
   hitItems: [],
 }

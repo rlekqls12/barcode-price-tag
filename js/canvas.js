@@ -48,37 +48,8 @@ function drawCanvas() {
     canvas.width = wrapWidth * offset;
     canvas.height = wrapHeight * offset;
   }
-  
-  function onCanvasMouseEvent(event) {
-    const { offsetX: mouseX, offsetY: mouseY, type } = event;
 
-    const mouseItem = {
-      x: mouseX - canvasInfo.mouseHitBoxSize / 2,
-      y: mouseY - canvasInfo.mouseHitBoxSize / 2,
-      w: canvasInfo.mouseHitBoxSize,
-      h: canvasInfo.mouseHitBoxSize,
-    }
-
-    canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
-
-    const itemList = getItemList(); // index.js
-    canvasInfo.hitItems = itemList.filter((item) => {
-      return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
-    })
-  }
-
-  const HIT_EDGE_TYPE = {
-    LEFT: 'LEFT',
-    RIGHT: 'RIGHT',
-    TOP: 'TOP',
-    BOTTOM: 'BOTTOM',
-    LEFT_TOP: 'LEFT_TOP',
-    LEFT_BOTTOM: 'LEFT_BOTTOM',
-    RIGHT_TOP: 'RIGHT_TOP',
-    RIGHT_BOTTOM: 'RIGHT_BOTTOM',
-    NONE: 'NONE',
-  }
-  function hitTestCanvasEdge(mouseItem) {
+  function getCanvasEdge() {
     const canvas = document.querySelector("#main-canvas");
     const canvasItem = {
       x: canvas.width / 2 - globalData.image.width / 2,
@@ -118,6 +89,51 @@ function drawCanvas() {
       w: c_width + canvasInfo.canvasEdgeSize * 2,
       h: canvasInfo.canvasEdgeSize,
     }
+
+    return {
+      c_edge_left,
+      c_edge_right,
+      c_edge_top,
+      c_edge_bottom,
+    }
+  }
+  
+  function onCanvasMouseEvent(event) {
+    const { offsetX: mouseX, offsetY: mouseY, type } = event;
+
+    const mouseItem = {
+      x: mouseX - canvasInfo.mouseHitBoxSize / 2,
+      y: mouseY - canvasInfo.mouseHitBoxSize / 2,
+      w: canvasInfo.mouseHitBoxSize,
+      h: canvasInfo.mouseHitBoxSize,
+    }
+
+    canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
+
+    const itemList = getItemList(); // index.js
+    canvasInfo.hitItems = itemList.filter((item) => {
+      return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
+    })
+  }
+
+  const HIT_EDGE_TYPE = {
+    LEFT: 'LEFT',
+    RIGHT: 'RIGHT',
+    TOP: 'TOP',
+    BOTTOM: 'BOTTOM',
+    LEFT_TOP: 'LEFT_TOP',
+    LEFT_BOTTOM: 'LEFT_BOTTOM',
+    RIGHT_TOP: 'RIGHT_TOP',
+    RIGHT_BOTTOM: 'RIGHT_BOTTOM',
+    NONE: 'NONE',
+  }
+  function hitTestCanvasEdge(mouseItem) {
+    const {
+      c_edge_left,
+      c_edge_right,
+      c_edge_top,
+      c_edge_bottom,
+    } = getCanvasEdge();
 
     const IS_HIT_LEFT = hitTest(c_edge_left, mouseItem) !== HIT_TYPE.NONE;
     const IS_HIT_RIGHT = hitTest(c_edge_right, mouseItem) !== HIT_TYPE.NONE;

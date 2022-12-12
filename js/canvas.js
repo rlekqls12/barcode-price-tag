@@ -24,18 +24,43 @@ function drawCanvas() {
     context.fillStyle = "white";
     context.fillRect(canvasRect.x, canvasRect.y, canvasRect.w, canvasRect.h);
 
+    // get canvas edge rects
     const {
       c_edge_left,
       c_edge_right,
       c_edge_top,
       c_edge_bottom,
+      c_edge_left_top,
+      c_edge_left_bottom,
+      c_edge_right_top,
+      c_edge_right_bottom,
     } = getCanvasEdge();
-    
-    context.fillStyle = "#333";
-    context.fillRect(c_edge_left.x, c_edge_left.y, c_edge_left.w, c_edge_left.h);
-    context.fillRect(c_edge_right.x, c_edge_right.y, c_edge_right.w, c_edge_right.h);
-    context.fillRect(c_edge_top.x, c_edge_top.y, c_edge_top.w, c_edge_top.h);
-    context.fillRect(c_edge_bottom.x, c_edge_bottom.y, c_edge_bottom.w, c_edge_bottom.h);
+
+    // canvas edge mapping
+    const targetEdgeInfoMap = {
+      [HIT_EDGE_TYPE.LEFT]: [c_edge_left, 'w-resize'],
+      [HIT_EDGE_TYPE.RIGHT]: [c_edge_right, 'w-resize'],
+      [HIT_EDGE_TYPE.TOP]: [c_edge_top, 's-resize'],
+      [HIT_EDGE_TYPE.BOTTOM]: [c_edge_bottom, 's-resize'],
+      [HIT_EDGE_TYPE.LEFT_TOP]: [c_edge_left_top, 'se-resize'],
+      [HIT_EDGE_TYPE.LEFT_BOTTOM]: [c_edge_left_bottom, 'sw-resize'],
+      [HIT_EDGE_TYPE.RIGHT_TOP]: [c_edge_right_top, 'se-resize'],
+      [HIT_EDGE_TYPE.RIGHT_BOTTOM]: [c_edge_right_bottom, 'sw-resize'],
+      [HIT_EDGE_TYPE.NONE]: null,
+    }
+    const targetEdgeInfo = targetEdgeMap[canvasInfo.hitCanvasEdge];
+
+    // reset mouse pointer
+    canvas.style.cursor = 'default';
+
+    // draw canvas edge
+    if (targetEdgeInfo) {
+      const [targetEdge, targetEdgeCurosr] = targetEdgeInfo;
+      canvas.style.cursor = targetEdgeCurosr;
+
+      context.fillStyle = "#333";
+      context.fillRect(targetEdge.x, targetEdge.y, targetEdge.w, targetEdge.h);
+    }
 
     // draw canvas edge
     // L R T B LT LB RT RB 순서대로 그리기
@@ -80,34 +105,62 @@ function drawCanvas() {
 
     const c_edge_left = {
       x: c_left - canvasInfo.canvasEdgeSize,
-      y: c_top - canvasInfo.canvasEdgeSize,
+      y: c_top,
       w: canvasInfo.canvasEdgeSize,
-      h: c_height + canvasInfo.canvasEdgeSize * 2,
+      h: c_height,
     }
     const c_edge_right = {
       x: c_right,
-      y: c_top - canvasInfo.canvasEdgeSize,
+      y: c_top,
       w: canvasInfo.canvasEdgeSize,
-      h: c_height + canvasInfo.canvasEdgeSize * 2,
+      h: c_height,
     }
     const c_edge_top = {
-      x: c_left - canvasInfo.canvasEdgeSize,
+      x: c_left,
       y: c_top - canvasInfo.canvasEdgeSize,
-      w: c_width + canvasInfo.canvasEdgeSize * 2,
+      w: c_width,
       h: canvasInfo.canvasEdgeSize,
     }
     const c_edge_bottom = {
-      x: c_left - canvasInfo.canvasEdgeSize,
+      x: c_left,
       y: c_bottom,
-      w: c_width + canvasInfo.canvasEdgeSize * 2,
+      w: c_width,
       h: canvasInfo.canvasEdgeSize,
     }
+    const c_edge_left_top = {
+      x: c_left - canvasInfo.canvasEdgeSize,
+      y: c_top - canvasInfo.canvasEdgeSize,
+      w: canvasInfo.canvasEdgeSize,
+      h: canvasInfo.canvasEdgeSize,
+    };
+    const c_edge_left_bottom = {
+      x: c_left - canvasInfo.canvasEdgeSize,
+      y: c_bottom,
+      w: canvasInfo.canvasEdgeSize,
+      h: canvasInfo.canvasEdgeSize,
+    };
+    const c_edge_right_top = {
+      x: c_right,
+      y: c_top - canvasInfo.canvasEdgeSize,
+      w: canvasInfo.canvasEdgeSize,
+      h: canvasInfo.canvasEdgeSize,
+    };
+    const c_edge_right_bottom = {
+      x: c_right,
+      y: c_bottom,
+      w: canvasInfo.canvasEdgeSize,
+      h: canvasInfo.canvasEdgeSize,
+    };
 
     return {
       c_edge_left,
       c_edge_right,
       c_edge_top,
       c_edge_bottom,
+      c_edge_left_top,
+      c_edge_left_bottom,
+      c_edge_right_top,
+      c_edge_right_bottom,
     }
   }
   
@@ -146,25 +199,29 @@ function drawCanvas() {
       c_edge_right,
       c_edge_top,
       c_edge_bottom,
+      c_edge_left_top,
+      c_edge_left_bottom,
+      c_edge_right_top,
+      c_edge_right_bottom,
     } = getCanvasEdge();
 
     const IS_HIT_LEFT = hitTest(c_edge_left, mouseItem) !== HIT_TYPE.NONE;
     const IS_HIT_RIGHT = hitTest(c_edge_right, mouseItem) !== HIT_TYPE.NONE;
     const IS_HIT_TOP = hitTest(c_edge_top, mouseItem) !== HIT_TYPE.NONE;
     const IS_HIT_BOTTOM = hitTest(c_edge_bottom, mouseItem) !== HIT_TYPE.NONE;
+    const IS_HIT_LEFT_TOP = hitTest(c_edge_left_top, mouseItem) !== HIT_TYPE.NONE;
+    const IS_HIT_LEFT_BOTTOM = hitTest(c_edge_left_bottom, mouseItem) !== HIT_TYPE.NONE;
+    const IS_HIT_RIGHT_TOP = hitTest(c_edge_right_top, mouseItem) !== HIT_TYPE.NONE;
+    const IS_HIT_RIGHT_BOTTOM = hitTest(c_edge_right_bottom, mouseItem) !== HIT_TYPE.NONE;
 
-    if (IS_HIT_LEFT) {
-      if (IS_HIT_TOP) return HIT_EDGE_TYPE.LEFT_TOP;
-      if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.LEFT_BOTTOM;
-      return HIT_EDGE_TYPE.LEFT;
-    }
-    if (IS_HIT_RIGHT) {
-      if (IS_HIT_TOP) return HIT_EDGE_TYPE.RIGHT_TOP;
-      if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.RIGHT_BOTTOM;
-      return HIT_EDGE_TYPE.RIGHT;
-    }
+    if (IS_HIT_LEFT) return HIT_EDGE_TYPE.LEFT;
+    if (IS_HIT_RIGHT) return HIT_EDGE_TYPE.RIGHT;
     if (IS_HIT_TOP) return HIT_EDGE_TYPE.TOP;
     if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.BOTTOM;
+    if (IS_HIT_LEFT_TOP) return HIT_EDGE_TYPE.LEFT_TOP;
+    if (IS_HIT_LEFT_BOTTOM) return HIT_EDGE_TYPE.LEFT_BOTTOM;
+    if (IS_HIT_RIGHT_TOP) return HIT_EDGE_TYPE.RIGHT_TOP;
+    if (IS_HIT_RIGHT_BOTTOM) return HIT_EDGE_TYPE.RIGHT_BOTTOM;
 
     return HIT_EDGE_TYPE.NONE;
   }

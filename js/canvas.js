@@ -3,6 +3,8 @@ const canvasInfo = {
   canvasEdgeSize: 20,
   hitCanvasEdge: null, // HIT_EDGE_TYPE
   hitItems: [],
+  targetStartMouse: null,
+  targetItem: null,
 }
 
 function drawCanvas() {
@@ -91,18 +93,31 @@ function drawCanvas() {
     }
 
     if (type === 'mousedown') {
-      //
+      if (canvasInfo.hitCanvasEdge !== HIT_EDGE_TYPE.NONE) {
+        canvasInfo.targetStartMouse = [mouseX, mouseY];
+        canvasInfo.targetItem = canvasInfo.hitCanvasEdge;
+      }
+      if (canvasInfo.hitItems.length > 0) {
+        const sortHitItems = canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
+        canvasInfo.targetStartMouse = [mouseX, mouseY];
+        canvasInfo.targetItem = sortHitItems[0];
+      }
     }
     if (type === 'mouseup') {
-      //
+      canvasInfo.targetStartMouse = null;
+      canvasInfo.targetItem = null;
     }
     if (type === 'mousemove') {
-      canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
+      if (canvasInfo.targetItem) {
+        // action
+      } else {
+        canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
 
-      const itemList = getItemList(); // index.js
-      canvasInfo.hitItems = itemList.filter((item) => {
-        return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
-      })
+        const itemList = getItemList(); // index.js
+        canvasInfo.hitItems = itemList.filter((item) => {
+          return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
+        })
+      }
     }
   }
 

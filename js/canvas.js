@@ -76,6 +76,7 @@ function drawCanvas() {
     LEFT_BOTTOM: 'LEFT_BOTTOM',
     RIGHT_TOP: 'RIGHT_TOP',
     RIGHT_BOTTOM: 'RIGHT_BOTTOM',
+    NONE: 'NONE',
   }
   function hitTestCanvasEdge(mouseItem) {
     const canvas = document.querySelector("#main-canvas");
@@ -90,10 +91,53 @@ function drawCanvas() {
     const c_right = canvasItem.x + canvasItem.w;
     const c_top = canvasItem.y;
     const c_bottom = canvasItem.y + canvasItem.h;
+    const c_width = canvasItem.w;
+    const c_height = canvasItem.h;
 
-    // 상하좌우, 좌상, 좌하, 우상, 우하 계산해서 return하고 canvasInfo.hitCanvasEdge에 넣기
+    const c_edge_left = {
+      x: c_left - canvasInfo.canvasEdgeSize,
+      y: c_top - canvasInfo.canvasEdgeSize,
+      w: canvasInfo.canvasEdgeSize,
+      h: c_height + canvasInfo.canvasEdgeSize * 2,
+    }
+    const c_edge_right = {
+      x: c_right,
+      y: c_top - canvasInfo.canvasEdgeSize,
+      w: canvasInfo.canvasEdgeSize,
+      h: c_height + canvasInfo.canvasEdgeSize * 2,
+    }
+    const c_edge_top = {
+      x: c_left - canvasInfo.canvasEdgeSize,
+      y: c_top - canvasInfo.canvasEdgeSize,
+      w: c_width + canvasInfo.canvasEdgeSize * 2,
+      h: canvasInfo.canvasEdgeSize,
+    }
+    const c_edge_bottom = {
+      x: c_left - canvasInfo.canvasEdgeSize,
+      y: c_bottom,
+      w: c_width + canvasInfo.canvasEdgeSize * 2,
+      h: canvasInfo.canvasEdgeSize,
+    }
 
-    return null;
+    const IS_HIT_LEFT = hitTest(c_edge_left, mouseItem) !== HIT_TYPE.NONE;
+    const IS_HIT_RIGHT = hitTest(c_edge_right, mouseItem) !== HIT_TYPE.NONE;
+    const IS_HIT_TOP = hitTest(c_edge_top, mouseItem) !== HIT_TYPE.NONE;
+    const IS_HIT_BOTTOM = hitTest(c_edge_bottom, mouseItem) !== HIT_TYPE.NONE;
+
+    if (IS_HIT_LEFT) {
+      if (IS_HIT_TOP) return HIT_EDGE_TYPE.LEFT_TOP;
+      if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.LEFT_BOTTOM;
+      return HIT_EDGE_TYPE.LEFT;
+    }
+    if (IS_HIT_RIGHT) {
+      if (IS_HIT_TOP) return HIT_EDGE_TYPE.RIGHT_TOP;
+      if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.RIGHT_BOTTOM;
+      return HIT_EDGE_TYPE.RIGHT;
+    }
+    if (IS_HIT_TOP) return HIT_EDGE_TYPE.RIGHT_TOP;
+    if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.RIGHT_BOTTOM;
+
+    return HIT_EDGE_TYPE.NONE;
   }
 
   const HIT_TYPE = {

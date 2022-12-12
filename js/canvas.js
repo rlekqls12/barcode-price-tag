@@ -10,8 +10,7 @@ function drawCanvas() {
     const context = canvas.getContext("2d");
   
     const offset = window.devicePixelRatio || 1;
-    const image = globalData.image;
-    context.clearRect(0, 0, image.width * offset, image.height * offset);
+    context.clearRect(0, 0, canvas.width * offset, canvas.height * offset);
 
     const canvasRect = {
       x: canvas.width / 2 - globalData.image.width / 2,
@@ -44,11 +43,11 @@ function drawCanvas() {
       [HIT_EDGE_TYPE.BOTTOM]: [c_edge_bottom, 's-resize'],
       [HIT_EDGE_TYPE.LEFT_TOP]: [c_edge_left_top, 'se-resize'],
       [HIT_EDGE_TYPE.LEFT_BOTTOM]: [c_edge_left_bottom, 'sw-resize'],
-      [HIT_EDGE_TYPE.RIGHT_TOP]: [c_edge_right_top, 'se-resize'],
-      [HIT_EDGE_TYPE.RIGHT_BOTTOM]: [c_edge_right_bottom, 'sw-resize'],
+      [HIT_EDGE_TYPE.RIGHT_TOP]: [c_edge_right_top, 'sw-resize'],
+      [HIT_EDGE_TYPE.RIGHT_BOTTOM]: [c_edge_right_bottom, 'se-resize'],
       [HIT_EDGE_TYPE.NONE]: null,
     }
-    const targetEdgeInfo = targetEdgeMap[canvasInfo.hitCanvasEdge];
+    const targetEdgeInfo = targetEdgeInfoMap[canvasInfo.hitCanvasEdge];
 
     // reset mouse pointer
     canvas.style.cursor = 'default';

@@ -15,6 +15,7 @@ class Item {
   element = null; // dom element
   type = null; // text, barcode, qr
   data = null; // item data
+  zIndex = 0; // item depth
   deleteListener = null; // execute when delete
 
   constructor(type, data) {

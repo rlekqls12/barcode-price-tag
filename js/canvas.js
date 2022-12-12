@@ -90,12 +90,20 @@ function drawCanvas() {
       h: canvasInfo.mouseHitBoxSize,
     }
 
-    canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
+    if (type === 'mousedown') {
+      //
+    }
+    if (type === 'mouseup') {
+      //
+    }
+    if (type === 'mousemove') {
+      canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
 
-    const itemList = getItemList(); // index.js
-    canvasInfo.hitItems = itemList.filter((item) => {
-      return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
-    })
+      const itemList = getItemList(); // index.js
+      canvasInfo.hitItems = itemList.filter((item) => {
+        return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
+      })
+    }
   }
 
   function getCanvasEdge() {

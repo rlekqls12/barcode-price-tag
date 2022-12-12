@@ -60,12 +60,6 @@ function drawCanvas() {
       context.fillStyle = "#333";
       context.fillRect(targetEdge.x, targetEdge.y, targetEdge.w, targetEdge.h);
     }
-
-    // draw canvas edge
-    // L R T B LT LB RT RB 순서대로 그리기
-    // 마우스랑 캔버스 모서리랑 충돌 했고, 다른 충돌 아이템이 없는 경우
-    // 1. 캔버스 크기 조절 그림 표시
-    // 2. 마우스 모양 변경
   
     // draw items
     // todo...

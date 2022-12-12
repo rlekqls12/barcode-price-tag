@@ -115,6 +115,8 @@ function getItemList() {
     return itemInfo;
   })
   itemList.push(...items);
+
+  return itemList;
 }
 
 function saveIamge() {

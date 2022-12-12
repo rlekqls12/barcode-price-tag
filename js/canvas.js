@@ -24,6 +24,19 @@ function drawCanvas() {
     context.fillStyle = "white";
     context.fillRect(canvasRect.x, canvasRect.y, canvasRect.w, canvasRect.h);
 
+    const {
+      c_edge_left,
+      c_edge_right,
+      c_edge_top,
+      c_edge_bottom,
+    } = getCanvasEdge();
+    
+    context.fillStyle = "#333";
+    context.fillRect(c_edge_left.x, c_edge_left.y, c_edge_left.w, c_edge_left.h);
+    context.fillRect(c_edge_right.x, c_edge_right.y, c_edge_right.w, c_edge_right.h);
+    context.fillRect(c_edge_top.x, c_edge_top.y, c_edge_top.w, c_edge_top.h);
+    context.fillRect(c_edge_bottom.x, c_edge_bottom.y, c_edge_bottom.w, c_edge_bottom.h);
+
     // draw canvas edge
     // L R T B LT LB RT RB 순서대로 그리기
     // 마우스랑 캔버스 모서리랑 충돌 했고, 다른 충돌 아이템이 없는 경우

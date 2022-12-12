@@ -180,7 +180,7 @@ function drawCanvas() {
     const condition1 = t_row_in_o && o_col_in_t;
     const condition2 = o_row_in_t && t_col_in_o;
     const condition3 = t_row_some_o && t_col_some_o;
-    const condition4 = o_row_some_t && o_row_some_t;
+    const condition4 = o_row_some_t && o_col_some_t;
     if (condition1 || condition2 || condition3 || condition4) {
       return HIT_TYPE.HIT;
     }

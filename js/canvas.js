@@ -134,8 +134,8 @@ function drawCanvas() {
       if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.RIGHT_BOTTOM;
       return HIT_EDGE_TYPE.RIGHT;
     }
-    if (IS_HIT_TOP) return HIT_EDGE_TYPE.RIGHT_TOP;
-    if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.RIGHT_BOTTOM;
+    if (IS_HIT_TOP) return HIT_EDGE_TYPE.TOP;
+    if (IS_HIT_BOTTOM) return HIT_EDGE_TYPE.BOTTOM;
 
     return HIT_EDGE_TYPE.NONE;
   }

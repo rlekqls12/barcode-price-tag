@@ -136,9 +136,8 @@ function drawCanvas() {
       canvasInfo.targetItem !== HIT_EDGE_TYPE.NONE &&
       canvasInfo.targetItem in HIT_EDGE_TYPE
     ) {
-      const offset = window.devicePixelRatio || 1;
-      const distX = Math.floor(mouseX - startX) * offset;
-      const distY = Math.floor(mouseY - startY) * offset;
+      const distX = Math.floor(mouseX - startX) * 2;
+      const distY = Math.floor(mouseY - startY) * 2;
       let canvasWidth = globalData.image.width;
       let canvasHeight = globalData.image.height;
 
@@ -160,14 +159,14 @@ function drawCanvas() {
         canvasHeight += distY;
       }
 
-      if (canvasWidth !== globalData.image.width) {
+      if (canvasWidth >= 50 && canvasWidth !== globalData.image.width) {
         globalData.image.width = canvasWidth;
 
         const imageSizeWidth = document.querySelector("#image-size-width");
         imageSizeWidth.value = globalData.image.width;
       }
 
-      if (canvasHeight !== globalData.image.height) {
+      if (canvasHeight >= 50 && canvasHeight !== globalData.image.height) {
         globalData.image.height = canvasHeight;
 
         const imageSizeHeight = document.querySelector("#image-size-height");

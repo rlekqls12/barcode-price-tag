@@ -109,7 +109,7 @@ function drawCanvas() {
     }
     if (type === 'mousemove') {
       if (canvasInfo.targetItem) {
-        // action
+        canvasMouseMoveAction({ mouseX, mouseY });
       } else {
         canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
 
@@ -118,6 +118,56 @@ function drawCanvas() {
           return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
         })
       }
+    }
+  }
+
+  function canvasMouseMoveAction({ mouseX, mouseY }) {
+    if (Boolean(canvasInfo.targetItem) === false) return;
+
+    const [startX, startY] = canvasInfo.targetStartMouse;
+
+    // resize canvas size (handle canvas edge)
+    if (typeof canvasInfo.targetItem === 'string' &&
+      canvasInfo.targetItem !== HIT_EDGE_TYPE.NONE &&
+      canvasInfo.targetItem in HIT_EDGE_TYPE
+    ) {
+      const distX = mouseX - startX;
+      const distY = mouseY - startY;
+
+      canvasInfo.targetStartMouse = [mouseX, mouseY];
+
+      if ([
+        HIT_EDGE_TYPE.LEFT,
+        HIT_EDGE_TYPE.RIGHT,
+        HIT_EDGE_TYPE.LEFT_TOP,
+        HIT_EDGE_TYPE.LEFT_BOTTOM,
+        HIT_EDGE_TYPE.RIGHT_TOP,
+        HIT_EDGE_TYPE.RIGHT_BOTTOM,
+      ].includes(canvasInfo.targetItem)) {
+        globalData.image.width += Math.floor(distX);
+
+        const imageSizeWidth = document.querySelector("#image-size-width");
+        imageSizeWidth.value = globalData.image.width;
+      }
+
+      if ([
+        HIT_EDGE_TYPE.TOP,
+        HIT_EDGE_TYPE.BOTTOM,
+        HIT_EDGE_TYPE.LEFT_TOP,
+        HIT_EDGE_TYPE.LEFT_BOTTOM,
+        HIT_EDGE_TYPE.RIGHT_TOP,
+        HIT_EDGE_TYPE.RIGHT_BOTTOM,
+      ].includes(canvasInfo.targetItem)) {
+        globalData.image.height += Math.floor(distY);
+
+        const imageSizeHeight = document.querySelector("#image-size-height");
+        imageSizeHeight.value = globalData.image.height;
+      }
+    }
+
+    // move item
+    if (canvasInfo.targetItem instanceof Item) {
+      // TODO:
     }
   }
 

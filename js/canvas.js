@@ -143,8 +143,10 @@ function drawCanvas() {
       canvasInfo.targetItem !== HIT_EDGE_TYPE.NONE &&
       canvasInfo.targetItem in HIT_EDGE_TYPE
     ) {
-      const distX = Math.floor(mouseX - startX) * 2;
-      const distY = Math.floor(mouseY - startY) * 2;
+      // TODO: dist 구할 때, 일정 비율만큼 곱해줘야함
+      // canvas와 브라우저 간의 좌표계가 달라서 마우스가 움직인만큼 canvas에 반영되지 못 함
+      const distX = Math.floor(mouseX - startX);
+      const distY = Math.floor(mouseY - startY);
       let canvasWidth = globalData.image.width;
       let canvasHeight = globalData.image.height;
 

@@ -145,6 +145,7 @@ function drawCanvas() {
     ) {
       // TODO: dist 구할 때, 일정 비율만큼 곱해줘야함
       // canvas와 브라우저 간의 좌표계가 달라서 마우스가 움직인만큼 canvas에 반영되지 못 함
+      // 마우스 좌표에 브라우저크기/canvas크기 만큼 곱해줘야 정상 반영 될 것 같음
       const distX = Math.floor(mouseX - startX);
       const distY = Math.floor(mouseY - startY);
       let canvasWidth = globalData.image.width;

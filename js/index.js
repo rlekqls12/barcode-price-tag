@@ -14,7 +14,6 @@ window.addEventListener("DOMContentLoaded", () => {
   imageSizeWidth.addEventListener("change", (event) => {
     const width = event.target.value;
     globalData.image.width = width;
-    syncCanvasSize(); // canvas.js
   });
 
   // connect image size width
@@ -23,7 +22,6 @@ window.addEventListener("DOMContentLoaded", () => {
   imageSizeHeight.addEventListener("change", (event) => {
     const height = event.target.value;
     globalData.image.height = height;
-    syncCanvasSize(); // canvas.js
   });
 
   // canvas resize - event listener
@@ -51,9 +49,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const barcodeData = { x: 120, y: 30, data: "1011011001", type: "CODE128" };
   addItem("text", textData);
   addItem("barcode", barcodeData);
-
-  // sync canvas size
-  syncCanvasSize(); // canvas.js
 
   // draw canvas
   drawCanvas(); // canvas.js

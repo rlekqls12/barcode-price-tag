@@ -1,4 +1,5 @@
 const canvasInfo = {
+  prevDevicePixelRatio: null,
   mouseHitBoxSize: 4,
   canvasEdgeSize: 20,
   hitCanvasEdge: null, // HIT_EDGE_TYPE
@@ -8,10 +9,16 @@ const canvasInfo = {
 }
 
 function drawCanvas() {
+    const offset = window.devicePixelRatio || 1;
+    if (canvasInfo.prevDevicePixelRatio !== offset) {
+      syncCanvasSize();
+      canvasInfo.prevDevicePixelRatio = offset;
+    }
+
+
     const canvas = document.querySelector("#main-canvas");
     const context = canvas.getContext("2d");
-  
-    const offset = window.devicePixelRatio || 1;
+
     context.clearRect(0, 0, canvas.width * offset, canvas.height * offset);
 
     const canvasImageWidth = globalData.image.width * offset;

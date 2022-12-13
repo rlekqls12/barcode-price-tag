@@ -14,12 +14,14 @@ function drawCanvas() {
     const offset = window.devicePixelRatio || 1;
     context.clearRect(0, 0, canvas.width * offset, canvas.height * offset);
 
+    const canvasImageWidth = globalData.image.width * offset;
+    const canvasImageHeight = globalData.image.height * offset;
     const canvasRect = {
-      x: canvas.width / 2 - globalData.image.width / 2,
-      y: canvas.height / 2 - globalData.image.height / 2,
-      w: globalData.image.width,
-      h: globalData.image.height
-    }
+      x: canvas.width / 2 - canvasImageWidth / 2,
+      y: canvas.height / 2 - canvasImageHeight / 2,
+      w: canvasImageWidth,
+      h: canvasImageHeight,
+    };
   
     // draw canvas layout rect
     context.fillStyle = "white";
@@ -85,11 +87,14 @@ function drawCanvas() {
   function onCanvasMouseEvent(event) {
     const { offsetX: mouseX, offsetY: mouseY, type } = event;
 
+    const offset = window.devicePixelRatio || 1;
+    const mouseHitBoxSize = canvasInfo.mouseHitBoxSize * offset;
+
     const mouseItem = {
-      x: mouseX - canvasInfo.mouseHitBoxSize / 2,
-      y: mouseY - canvasInfo.mouseHitBoxSize / 2,
-      w: canvasInfo.mouseHitBoxSize,
-      h: canvasInfo.mouseHitBoxSize,
+      x: mouseX * offset - mouseHitBoxSize / 2,
+      y: mouseY * offset - mouseHitBoxSize / 2,
+      w: mouseHitBoxSize,
+      h: mouseHitBoxSize,
     }
 
     if (type === 'mousedown') {
@@ -131,34 +136,39 @@ function drawCanvas() {
       canvasInfo.targetItem !== HIT_EDGE_TYPE.NONE &&
       canvasInfo.targetItem in HIT_EDGE_TYPE
     ) {
-      const distX = mouseX - startX;
-      const distY = mouseY - startY;
+      const offset = window.devicePixelRatio || 1;
+      const distX = Math.floor(mouseX - startX) * offset;
+      const distY = Math.floor(mouseY - startY) * offset;
+      let canvasWidth = globalData.image.width;
+      let canvasHeight = globalData.image.height;
 
       canvasInfo.targetStartMouse = [mouseX, mouseY];
 
-      if ([
-        HIT_EDGE_TYPE.LEFT,
-        HIT_EDGE_TYPE.RIGHT,
-        HIT_EDGE_TYPE.LEFT_TOP,
-        HIT_EDGE_TYPE.LEFT_BOTTOM,
-        HIT_EDGE_TYPE.RIGHT_TOP,
-        HIT_EDGE_TYPE.RIGHT_BOTTOM,
-      ].includes(canvasInfo.targetItem)) {
-        globalData.image.width += Math.floor(distX);
+      if (canvasInfo.targetItem.startsWith(HIT_EDGE_TYPE.LEFT)) {
+        canvasWidth -= distX;
+      }
+
+      if (canvasInfo.targetItem.startsWith(HIT_EDGE_TYPE.RIGHT)) {
+        canvasWidth += distX;
+      }
+
+      if (canvasInfo.targetItem.endsWith(HIT_EDGE_TYPE.TOP)) {
+        canvasHeight -= distY;
+      }
+
+      if (canvasInfo.targetItem.endsWith(HIT_EDGE_TYPE.BOTTOM)) {
+        canvasHeight += distY;
+      }
+
+      if (canvasWidth !== globalData.image.width) {
+        globalData.image.width = canvasWidth;
 
         const imageSizeWidth = document.querySelector("#image-size-width");
         imageSizeWidth.value = globalData.image.width;
       }
 
-      if ([
-        HIT_EDGE_TYPE.TOP,
-        HIT_EDGE_TYPE.BOTTOM,
-        HIT_EDGE_TYPE.LEFT_TOP,
-        HIT_EDGE_TYPE.LEFT_BOTTOM,
-        HIT_EDGE_TYPE.RIGHT_TOP,
-        HIT_EDGE_TYPE.RIGHT_BOTTOM,
-      ].includes(canvasInfo.targetItem)) {
-        globalData.image.height += Math.floor(distY);
+      if (canvasHeight !== globalData.image.height) {
+        globalData.image.height = canvasHeight;
 
         const imageSizeHeight = document.querySelector("#image-size-height");
         imageSizeHeight.value = globalData.image.height;
@@ -173,11 +183,15 @@ function drawCanvas() {
 
   function getCanvasEdge() {
     const canvas = document.querySelector("#main-canvas");
+
+    const offset = window.devicePixelRatio || 1;
+    const canvasImageWidth = globalData.image.width * offset;
+    const canvasImageHeight = globalData.image.height * offset;
     const canvasItem = {
-      x: canvas.width / 2 - globalData.image.width / 2,
-      y: canvas.height / 2 - globalData.image.height / 2,
-      w: globalData.image.width,
-      h: globalData.image.height,
+      x: canvas.width / 2 - canvasImageWidth / 2,
+      y: canvas.height / 2 - canvasImageHeight / 2,
+      w: canvasImageWidth,
+      h: canvasImageHeight,
     };
 
     const c_left = canvasItem.x;
@@ -186,7 +200,7 @@ function drawCanvas() {
     const c_bottom = canvasItem.y + canvasItem.h;
     const c_width = canvasItem.w;
     const c_height = canvasItem.h;
-    const c_edge_size = canvasInfo.canvasEdgeSize;
+    const c_edge_size = canvasInfo.canvasEdgeSize * offset;
 
     const c_edge_left = {
       x: c_left - c_edge_size,

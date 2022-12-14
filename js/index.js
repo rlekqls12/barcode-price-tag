@@ -11,6 +11,32 @@ const globalData = {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
+  // observe hoverItem, focusItem
+  let hoverItem = null;
+  let focusItem = null;
+  Object.defineProperties(globalData, {
+    hoverItem: {
+      get() {
+        return hoverItem;
+      },
+      set(value) {
+        hoverItem = value;
+        resetItemHoverFocus();
+        return true;
+      }
+    },
+    focusItem: {
+      get() {
+        return focusItem;
+      },
+      set(value) {
+        focusItem = value;
+        resetItemHoverFocus();
+        return true;
+      }
+    }
+  });
+  
   // connect image size width
   const imageSizeWidth = document.querySelector("#image-size-width");
   imageSizeWidth.value = globalData.image.width;
@@ -19,7 +45,7 @@ window.addEventListener("DOMContentLoaded", () => {
     globalData.image.width = width;
   });
 
-  // connect image size width
+  // connect image size height
   const imageSizeHeight = document.querySelector("#image-size-height");
   imageSizeHeight.value = globalData.image.height;
   imageSizeHeight.addEventListener("change", (event) => {
@@ -129,6 +155,23 @@ function getItemList() {
   itemList.push(...items);
 
   globalData.itemBoxList = itemList;
+}
+
+function resetItemHoverFocus() {
+  const hoverId = globalData.hoverItem?.id;
+  const focusId = globalData.focusItem?.id;
+
+  globalData.itemList.forEach((item) => {
+    item.element.classList.remove('hover');
+    item.element.classList.remove('focus');
+
+    if (item.id === hoverId) {
+      item.element.classList.add('hover');
+    }
+    if (item.id === focusId) {
+      item.element.classList.add('focus');
+    }
+  })
 }
 
 function saveIamge() {

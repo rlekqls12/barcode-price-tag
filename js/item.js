@@ -11,8 +11,8 @@ const ItemType = {
 const initItemType = ItemType.TEXT;
 const initItemData = {
   [ItemType.TEXT]: { x: 0, y: 0, text: "", fontSize: 14, color: '#000000' },
-  [ItemType.BARCODE]: { x: 0, y: 0, data: "", type: "CODE128", color: '#000000', output: null },
-  [ItemType.qr]: { x: 0, y: 0, data: "", color: '#000000', output: null },
+  [ItemType.BARCODE]: { x: 0, y: 0, width: 100, height: 100, data: "", type: "CODE128", color: '#000000', output: null },
+  [ItemType.QR]: { x: 0, y: 0, width: 100, height: 100, data: "", color: '#000000', output: null },
   [ItemType.IMAGE]: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
 };
 
@@ -260,8 +260,6 @@ class Item {
           getElement("select", "item-select-barcode-type").value = $data.type;
 
           // remove other type element
-          getElement("div", "item-layout-width").remove();
-          getElement("div", "item-layout-height").remove();
           getElement("div", "item-layout-font-size").remove();
           getElement("div", "item-layout-image-type").remove();
         }
@@ -278,8 +276,6 @@ class Item {
           getElement("input", "item-input-color").value = $data.color;
 
           // remove other type element
-          getElement("div", "item-layout-width").remove();
-          getElement("div", "item-layout-height").remove();
           getElement("div", "item-layout-font-size").remove();
           getElement("div", "item-layout-barcode-type").remove();
           getElement("div", "item-layout-image-type").remove();

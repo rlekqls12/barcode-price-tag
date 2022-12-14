@@ -99,22 +99,30 @@ function addItemWithPopup() {
       "select",
       "item-popup-select-barcode-type"
     ).value;
+    const widthValue = getElement("input", "item-popup-input-width").valueAsNumber;
+    const heightValue = getElement("input", "item-popup-input-height").valueAsNumber;
 
     itemData.data = dataValue || initItemData.barcode.data;
     itemData.color = colorValue || initItemData.barcode.color;
     itemData.type = typeValue || initItemData.barcode.type;
+    itemData.width = widthValue || initItemData.barcode.width;
+    itemData.height = heightValue || initItemData.barcode.height;
   }
   if (selectedType === ItemType.QR) {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const colorValue = getElement("input", "item-popup-input-color").value;
+    const widthValue = getElement("input", "item-popup-input-width").valueAsNumber;
+    const heightValue = getElement("input", "item-popup-input-height").valueAsNumber;
 
     itemData.data = dataValue || initItemData.qr.data;
     itemData.color = colorValue || initItemData.qr.color;
+    itemData.width = widthValue || initItemData.qr.width;
+    itemData.height = heightValue || initItemData.qr.height;
   }
   if (selectedType === ItemType.IMAGE) {
     const dataValue = getElement("input", "item-popup-input-data").value;
-    const widthValue = getElement("input", "item-popup-input-width").value;
-    const heightValue = getElement("input", "item-popup-input-height").value;
+    const widthValue = getElement("input", "item-popup-input-width").valueAsNumber;
+    const heightValue = getElement("input", "item-popup-input-height").valueAsNumber;
     const typeValue = getElement(
       "select",
       "item-popup-select-image-type"

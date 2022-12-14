@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const imageSizeWidth = document.querySelector("#image-size-width");
   imageSizeWidth.value = globalData.image.width;
   imageSizeWidth.addEventListener("change", (event) => {
-    const width = event.target.value;
+    const width = event.target.valueAsNumber;
     globalData.image.width = width;
   });
 
@@ -20,7 +20,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const imageSizeHeight = document.querySelector("#image-size-height");
   imageSizeHeight.value = globalData.image.height;
   imageSizeHeight.addEventListener("change", (event) => {
-    const height = event.target.value;
+    const height = event.target.valueAsNumber;
     globalData.image.height = height;
   });
 

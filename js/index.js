@@ -5,6 +5,7 @@ const globalData = {
     height: 150,
   },
   itemList: [],
+  itemBoxList: [],
 };
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -72,6 +73,8 @@ function addItem(type, data) {
     item.data = null;
   });
   globalData.itemList.push(newItem);
+  globalData.itemList.sort((a, b) => a.zIndex - b.zIndex);
+
 }
 
 function getItemList() {
@@ -86,6 +89,7 @@ function getItemList() {
     const itemType = item.type;
     const itemInfo = {
       id: itemID,
+      item: item,
       x: itemData.x,
       y: itemData.y,
       w: 0,
@@ -111,7 +115,7 @@ function getItemList() {
   })
   itemList.push(...items);
 
-  return itemList;
+  globalData.itemBoxList = itemList;
 }
 
 function saveIamge() {

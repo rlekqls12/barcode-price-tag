@@ -91,7 +91,9 @@ function drawCanvas() {
     }
   
     // draw items
-    // todo...
+    globalData.itemBoxList.forEach((item) => {
+
+    })
   
     window.requestAnimationFrame(drawCanvas);
   }
@@ -128,9 +130,8 @@ function drawCanvas() {
         canvasInfo.targetItem = canvasInfo.hitCanvasEdge;
       }
       if (canvasInfo.hitItems.length > 0) {
-        const sortHitItems = canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
         canvasInfo.targetStartMouse = [mouseX, mouseY];
-        canvasInfo.targetItem = sortHitItems[0];
+        canvasInfo.targetItem = canvasInfo.hitItems[0];
       }
     }
     if (type === 'mouseup') {
@@ -143,10 +144,10 @@ function drawCanvas() {
       } else {
         canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
 
-        const itemList = getItemList(); // index.js
-        canvasInfo.hitItems = itemList.filter((item) => {
+        canvasInfo.hitItems = globalData.itemBoxList.filter((item) => {
           return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
         })
+        canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
       }
     }
   }

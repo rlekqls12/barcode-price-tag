@@ -39,10 +39,10 @@ function drawCanvas() {
 
     context.clearRect(0, 0, canvas.width * offset, canvas.height * offset);
 
-    const canvasBaseX = canvas.width / 2 - canvasImageWidth / 2;
-    const canvasBaseY = canvas.height / 2 - canvasImageHeight / 2;
     const canvasImageWidth = globalData.image.width * offset;
     const canvasImageHeight = globalData.image.height * offset;
+    const canvasBaseX = canvas.width / 2 - canvasImageWidth / 2;
+    const canvasBaseY = canvas.height / 2 - canvasImageHeight / 2;
     const canvasRect = {
       x: canvasBaseX,
       y: canvasBaseY,

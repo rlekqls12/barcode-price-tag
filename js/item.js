@@ -34,7 +34,7 @@ class Item {
     }
 
     // type available check
-    const availableTypes = Object.keys(ItemType);
+    const availableTypes = Object.keys(ItemType).map((t) => t.toLowerCase());
     if (availableTypes.includes(type) === false) {
       throw new Error(`${type} is not includes [${availableTypes.join(", ")}]`);
     }
@@ -328,16 +328,20 @@ class Item {
     const x = baseX + itemData.x;
     const y = baseY + itemData.y;
 
-    if (type === ItemType.TEXT) {
+    if (itemType === ItemType.TEXT) {
       context.fillStyle = itemData.color;
+      context.font = `${itemData.fontSize}px sans-serif`;
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+
       context.fillText(itemData.text, x, y);
-    } else if (type === ItemType.BARCODE) {
+    } else if (itemType === ItemType.BARCODE) {
       context.fillStyle = itemData.color;
       // TODO:
-    } else if (type === ItemType.QR) {
+    } else if (itemType === ItemType.QR) {
       context.fillStyle = itemData.color;
       // TODO:
-    } else if (type === ItemType.IMAGE) {
+    } else if (itemType === ItemType.IMAGE) {
       // TODO:
     }
   }

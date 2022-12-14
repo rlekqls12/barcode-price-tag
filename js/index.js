@@ -46,7 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
   addItemButton.addEventListener("click", openAddItemPopup); // popup.js
 
   // add default item set (text, barcode)
-  const textData = { x: 120, y: 100, text: "barcode text", fontSize: 14, color: '#000000' };
+  const textData = { x: 150, y: 120, text: "barcode text", fontSize: 14, color: '#000000' };
   const barcodeData = { x: 120, y: 30, data: "1011011001", type: "CODE128", color: '#000000' };
   addItem(ItemType.TEXT, textData);
   addItem(ItemType.BARCODE, barcodeData);
@@ -74,6 +74,7 @@ function addItem(type, data) {
   });
   globalData.itemList.push(newItem);
   globalData.itemList.sort((a, b) => a.zIndex - b.zIndex);
+  getItemList();
 
 }
 

@@ -40,7 +40,10 @@ class Item {
     this.type = type;
 
     // set data
-    this.data = data;
+    this.data = {
+      ...initItemData[type],
+      ...data,
+    };
 
     // clone item element
     const originalItem = document.querySelector('div[data-id="item"]');

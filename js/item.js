@@ -154,44 +154,39 @@ class Item {
 
       // width
       if (dataID === "item-input-width") {
-        if (this.type === ItemType.IMAGE) {
-          this.data.width = value;
-        }
+        this.data.width = number;
       }
 
       // height
       if (dataID === "item-input-height") {
-        if (this.type === ItemType.IMAGE) {
-          this.data.height = value;
-        }
+        this.data.height = number;
+      }
+
+      // color
+      if (dataID === "item-input-color") {
+        this.data.color = value;
       }
 
       // font size
       if (dataID === "item-input-font-size") {
-        if (this.type === ItemType.TEXT) {
-          this.data.fontSize = number;
-        }
+        this.data.fontSize = number;
       }
 
       // barcode type
       if (dataID === "item-select-barcode-type") {
-        if (this.type === "barcode") {
-          this.data.type = value;
-        }
+        this.data.type = value;
       }
 
       // image type
       if (dataID === "item-select-image-type") {
-        if (this.type === ItemType.IMAGE) {
-          this.data.type = value;
-          this.data.data = "";
+        this.data.type = value;
+        this.data.data = "";
 
-          const imageDataElement = this.element.querySelector('input[data-id="item-input-data"]')
-          if (value === 'src') {
-            imageDataElement.type = 'text';
-          } else if (value === 'blob') {
-            imageDataElement.type = 'file';
-          }
+        const imageDataElement = this.element.querySelector('input[data-id="item-input-data"]')
+        if (value === 'src') {
+          imageDataElement.type = 'text';
+        } else if (value === 'blob') {
+          imageDataElement.type = 'file';
         }
       }
     });
@@ -259,6 +254,12 @@ class Item {
           // barcode type
           getElement("select", "item-select-barcode-type").value = $data.type;
 
+          // width
+          getElement("input", "item-input-width").value = $data.width;
+
+          // height
+          getElement("input", "item-input-height").value = $data.height;
+
           // remove other type element
           getElement("div", "item-layout-font-size").remove();
           getElement("div", "item-layout-image-type").remove();
@@ -274,6 +275,12 @@ class Item {
 
           // color
           getElement("input", "item-input-color").value = $data.color;
+
+          // width
+          getElement("input", "item-input-width").value = $data.width;
+
+          // height
+          getElement("input", "item-input-height").value = $data.height;
 
           // remove other type element
           getElement("div", "item-layout-font-size").remove();

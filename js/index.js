@@ -109,6 +109,14 @@ function getItemList() {
     } else {
       // canvas image type [barcode, qr, image]
       // TODO: output에서 값 가져오기, output에는 getImageData 형식으로 담아보기
+
+      if (itemType === ItemType.BARCODE) {
+        // TODO:
+      } else if (itemType === ItemType.QR) {
+        // TODO:
+      } else if (itemType === ItemType.IMAGE) {
+        // TODO:
+      }
     }
 
     return itemInfo;

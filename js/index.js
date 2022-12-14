@@ -132,8 +132,10 @@ function saveIamge() {
   const tempContext = tempCanvas.getContext("2d");
   tempContext.putImageData(cropImageData, 0, 0);
 
+  const filename = `barcode_${new Date().toISOString()}.png`;
+
   const downloadElement = document.createElement("a");
-  downloadElement.download = true;
+  downloadElement.download = filename;
   downloadElement.href = tempCanvas.toDataURL();
   downloadElement.click();
 }

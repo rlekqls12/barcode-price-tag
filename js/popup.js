@@ -27,7 +27,7 @@ function resetAddItemPopup() {
   const imageDataInput = popup.querySelector(
     'input[data-id="item-popup-input-data"]'
   );
-  imageDataInput.type = "text";
+  imageDataInput.type = ItemType.TEXT;
 
   const inputs = popup.querySelectorAll("input");
   inputs.forEach((input) => {
@@ -37,8 +37,8 @@ function resetAddItemPopup() {
   const selects = popup.querySelectorAll("select");
   selects.forEach((select) => {
     if (select.getAttribute("data-id") === "item-popup-select-item-type") {
-      select.value = "text";
-      showAddItemPopupLayout("text");
+      select.value = ItemType.TEXT;
+      showAddItemPopupLayout(ItemType.TEXT);
       return;
     }
     select.value = "";
@@ -80,7 +80,7 @@ function addItemWithPopup() {
     selectedItemInputLayout.querySelector(`${tag}[data-id="${dataId}"]`);
 
   const itemData = { x: 0, y: 0 };
-  if (selectedType === "text") {
+  if (selectedType === ItemType.TEXT) {
     const textValue = getElement("input", "item-popup-input-text").value;
     const colorValue = getElement("input", "item-popup-input-color").value;
     const fontSizeValue = getElement(
@@ -92,7 +92,7 @@ function addItemWithPopup() {
     itemData.color = colorValue || initItemData.text.color;
     itemData.fontSize = fontSizeValue || initItemData.text.fontSize;
   }
-  if (selectedType === "barcode") {
+  if (selectedType === ItemType.BARCODE) {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const colorValue = getElement("input", "item-popup-input-color").value;
     const typeValue = getElement(
@@ -104,14 +104,14 @@ function addItemWithPopup() {
     itemData.color = colorValue || initItemData.barcode.color;
     itemData.type = typeValue || initItemData.barcode.type;
   }
-  if (selectedType === "qr") {
+  if (selectedType === ItemType.QR) {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const colorValue = getElement("input", "item-popup-input-color").value;
 
     itemData.data = dataValue || initItemData.qr.data;
     itemData.color = colorValue || initItemData.qr.color;
   }
-  if (selectedType === "image") {
+  if (selectedType === ItemType.IMAGE) {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const widthValue = getElement("input", "item-popup-input-width").value;
     const heightValue = getElement("input", "item-popup-input-height").value;

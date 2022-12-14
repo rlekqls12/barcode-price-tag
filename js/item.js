@@ -1,13 +1,19 @@
 /**
  * @typedef {'text' | 'barcode' | 'qr' | 'image'} ItemType
  */
+const ItemType = {
+  TEXT: 'text',
+  BARCODE: 'barcode',
+  QR: 'qr',
+  IMAGE: 'image',
+}
 
-const initItemType = "text";
+const initItemType = ItemType.TEXT;
 const initItemData = {
-  text: { x: 0, y: 0, text: "", fontSize: 14, color: '#000000' },
-  barcode: { x: 0, y: 0, data: "", type: "CODE128", color: '#000000', output: null },
-  qr: { x: 0, y: 0, data: "", color: '#000000', output: null },
-  image: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
+  [ItemType.TEXT]: { x: 0, y: 0, text: "", fontSize: 14, color: '#000000' },
+  [ItemType.BARCODE]: { x: 0, y: 0, data: "", type: "CODE128", color: '#000000', output: null },
+  [ItemType.qr]: { x: 0, y: 0, data: "", color: '#000000', output: null },
+  [ItemType.IMAGE]: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
 };
 
 class Item {
@@ -28,7 +34,7 @@ class Item {
     }
 
     // type available check
-    const availableTypes = ["text", "barcode", "qr", "image"];
+    const availableTypes = Object.keys(ItemType);
     if (availableTypes.includes(type) === false) {
       throw new Error(`${type} is not includes [${availableTypes.join(", ")}]`);
     }
@@ -118,16 +124,16 @@ class Item {
 
       // data
       if (dataID === "item-input-data") {
-        if (this.type === "text") {
+        if (this.type === ItemType.TEXT) {
           this.data.text = value;
         }
-        if (this.type === "barcode") {
+        if (this.type === ItemType.BARCODE) {
           this.data.data = value;
         }
-        if (this.type === "qr") {
+        if (this.type === ItemType.QR) {
           this.data.data = value;
         }
-        if (this.type === "image") {
+        if (this.type === ItemType.IMAGE) {
           if (this.data.type === 'src') {
             this.data.data = value;
           } else if (this.data.type === 'blob') {
@@ -148,21 +154,21 @@ class Item {
 
       // width
       if (dataID === "item-input-width") {
-        if (this.type === "image") {
+        if (this.type === ItemType.IMAGE) {
           this.data.width = value;
         }
       }
 
       // height
       if (dataID === "item-input-height") {
-        if (this.type === "image") {
+        if (this.type === ItemType.IMAGE) {
           this.data.height = value;
         }
       }
 
       // font size
       if (dataID === "item-input-font-size") {
-        if (this.type === "text") {
+        if (this.type === ItemType.TEXT) {
           this.data.fontSize = number;
         }
       }
@@ -176,7 +182,7 @@ class Item {
 
       // image type
       if (dataID === "item-select-image-type") {
-        if (this.type === "image") {
+        if (this.type === ItemType.IMAGE) {
           this.data.type = value;
           this.data.data = "";
 
@@ -219,7 +225,7 @@ class Item {
         getElement("input", "item-input-y").value = $data.y;
 
         // -------------------------  text type
-        if ($type === "text") {
+        if ($type === ItemType.TEXT) {
           // type
           getElement("span", "item-type-text").textContent = `Text`;
 
@@ -240,7 +246,7 @@ class Item {
         }
 
         // -------------------------  barcode type
-        if ($type === "barcode") {
+        if ($type === ItemType.BARCODE) {
           // type
           getElement("span", "item-type-text").textContent = `Barcode`;
 
@@ -261,7 +267,7 @@ class Item {
         }
 
         // -------------------------  qr type
-        if ($type === "qr") {
+        if ($type === ItemType.QR) {
           // type
           getElement("span", "item-type-text").textContent = `QR`;
 
@@ -280,7 +286,7 @@ class Item {
         }
 
         // -------------------------  image type
-        if ($type === "image") {
+        if ($type === ItemType.IMAGE) {
           // type
           getElement("span", "item-type-text").textContent = `Image`;
 
@@ -316,6 +322,13 @@ class Item {
   }
 
   draw(context, baseX, baseY) {
+    const itemType = this.type;
+    const itemData = this.data;
 
+    context.fillStyle = itemData.color;
+
+    if (type === ItemType.TEXT) {
+      //
+    }
   }
 }

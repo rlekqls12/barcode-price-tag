@@ -48,8 +48,8 @@ window.addEventListener("DOMContentLoaded", () => {
   // add default item set (text, barcode)
   const textData = { x: 120, y: 100, text: "barcode text", fontSize: 14, color: '#000000' };
   const barcodeData = { x: 120, y: 30, data: "1011011001", type: "CODE128", color: '#000000' };
-  addItem("text", textData);
-  addItem("barcode", barcodeData);
+  addItem(ItemType.TEXT, textData);
+  addItem(ItemType.BARCODE, barcodeData);
 
   // draw canvas
   drawCanvas(); // canvas.js
@@ -96,7 +96,7 @@ function getItemList() {
       h: 0,
     }
 
-    if (itemType === 'text') {
+    if (itemType === ItemType.TEXT) {
       // canvas text type
       context.font = `${itemData.fontSize}px sans-serif`;
       const textMetrics = context.measureText(itemData.text);

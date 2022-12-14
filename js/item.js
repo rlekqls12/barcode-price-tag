@@ -325,10 +325,20 @@ class Item {
     const itemType = this.type;
     const itemData = this.data;
 
-    context.fillStyle = itemData.color;
+    const x = baseX + itemData.x;
+    const y = baseY + itemData.y;
 
     if (type === ItemType.TEXT) {
-      //
+      context.fillStyle = itemData.color;
+      context.fillText(itemData.text, x, y);
+    } else if (type === ItemType.BARCODE) {
+      context.fillStyle = itemData.color;
+      // TODO:
+    } else if (type === ItemType.QR) {
+      context.fillStyle = itemData.color;
+      // TODO:
+    } else if (type === ItemType.IMAGE) {
+      // TODO:
     }
   }
 }

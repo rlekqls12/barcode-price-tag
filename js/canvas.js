@@ -134,11 +134,13 @@ function drawCanvas() {
       if (canvasInfo.hitItems.length > 0) {
         canvasInfo.targetStartMouse = [mouseX, mouseY];
         canvasInfo.targetItem = canvasInfo.hitItems[0];
+        globalData.focusItem = canvasInfo.hitItems[0];
       }
     }
     if (type === 'mouseup') {
       canvasInfo.targetStartMouse = null;
       canvasInfo.targetItem = null;
+      globalData.focusItem = null;
     }
     if (type === 'mousemove') {
       if (canvasInfo.targetItem) {
@@ -163,6 +165,11 @@ function drawCanvas() {
           return hitTest(hitBox, mouseItem) !== HIT_TYPE.NONE;
         })
         canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
+
+        globalData.hoverItem = null;
+        if (canvasInfo.hitItems.length > 0) {
+          globalData.hoverItem = canvasInfo.hitItems[0];
+        }
       }
     }
   }

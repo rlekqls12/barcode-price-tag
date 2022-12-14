@@ -6,6 +6,8 @@ const globalData = {
   },
   itemList: [],
   itemBoxList: [],
+  hoverItem: null,
+  focusItem: null,
 };
 
 window.addEventListener("DOMContentLoaded", () => {

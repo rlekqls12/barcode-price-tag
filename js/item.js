@@ -317,14 +317,17 @@ class Item {
     );
   }
 
-  draw(context, baseX, baseY) {
+  draw(context, baseX, baseY, box) {
     const itemType = this.type;
     const itemData = this.data;
 
-    const x = baseX + itemData.x;
-    const y = baseY + itemData.y;
+    let x = baseX + itemData.x;
+    let y = baseY + itemData.y;
 
     if (itemType === ItemType.TEXT) {
+      x += box.w;
+      y += box.h;
+
       context.fillStyle = itemData.color;
       context.font = `${itemData.fontSize}px sans-serif`;
       context.textAlign = 'center';

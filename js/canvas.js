@@ -94,7 +94,7 @@ function drawCanvas() {
   
     // draw items
     globalData.itemBoxList.forEach((itemBox) => {
-      itemBox.item.draw(context, canvasBaseX, canvasBaseY);
+      itemBox.item.draw(context, canvasBaseX, canvasBaseY, itemBox);
     })
   
     window.requestAnimationFrame(drawCanvas);
@@ -146,8 +146,21 @@ function drawCanvas() {
       } else {
         canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
 
+        const canvas = document.querySelector("#main-canvas");
+        const canvasImageWidth = globalData.image.width * offset;
+        const canvasImageHeight = globalData.image.height * offset;
+        const canvasBaseX = canvas.width / 2 - canvasImageWidth / 2;
+        const canvasBaseY = canvas.height / 2 - canvasImageHeight / 2;
+
         canvasInfo.hitItems = globalData.itemBoxList.filter((itemBox) => {
-          return hitTest(itemBox, mouseItem) !== HIT_TYPE.NONE;
+          const hitBox = {
+            x: canvasBaseX + itemBox.x,
+            y: canvasBaseY + itemBox.y,
+            w: itemBox.w,
+            h: itemBox.h,
+          }
+
+          return hitTest(hitBox, mouseItem) !== HIT_TYPE.NONE;
         })
         canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
       }

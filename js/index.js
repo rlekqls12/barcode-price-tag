@@ -105,6 +105,8 @@ function getItemList() {
       const itemWidth = (textMetrics.actualBoundingBoxRight + textMetrics.actualBoundingBoxLeft) || textMetrics.width;
       const itemHeight = (textMetrics.actualBoundingBoxDescent + textMetrics.actualBoundingBoxAscent) || itemData.fontSize;
 
+      itemData.x -= itemWidth / 2;
+      itemData.y -= itemHeight / 2;
       itemInfo.w = itemWidth;
       itemInfo.h = itemHeight;
     } else {

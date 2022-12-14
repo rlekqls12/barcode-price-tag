@@ -314,4 +314,8 @@ class Item {
       }
     );
   }
+
+  draw(context, baseX, baseY) {
+
+  }
 }

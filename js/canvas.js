@@ -39,11 +39,13 @@ function drawCanvas() {
 
     context.clearRect(0, 0, canvas.width * offset, canvas.height * offset);
 
+    const canvasBaseX = canvas.width / 2 - canvasImageWidth / 2;
+    const canvasBaseY = canvas.height / 2 - canvasImageHeight / 2;
     const canvasImageWidth = globalData.image.width * offset;
     const canvasImageHeight = globalData.image.height * offset;
     const canvasRect = {
-      x: canvas.width / 2 - canvasImageWidth / 2,
-      y: canvas.height / 2 - canvasImageHeight / 2,
+      x: canvasBaseX,
+      y: canvasBaseY,
       w: canvasImageWidth,
       h: canvasImageHeight,
     };
@@ -91,8 +93,8 @@ function drawCanvas() {
     }
   
     // draw items
-    globalData.itemBoxList.forEach((item) => {
-
+    globalData.itemBoxList.forEach((itemBox) => {
+      itemBox.item.draw(context, canvasBaseX, canvasBaseY);
     })
   
     window.requestAnimationFrame(drawCanvas);
@@ -144,8 +146,8 @@ function drawCanvas() {
       } else {
         canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
 
-        canvasInfo.hitItems = globalData.itemBoxList.filter((item) => {
-          return hitTest(item, mouseItem) !== HIT_TYPE.NONE;
+        canvasInfo.hitItems = globalData.itemBoxList.filter((itemBox) => {
+          return hitTest(itemBox, mouseItem) !== HIT_TYPE.NONE;
         })
         canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
       }

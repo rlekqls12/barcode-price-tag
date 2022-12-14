@@ -4,9 +4,9 @@
 
 const initItemType = "text";
 const initItemData = {
-  text: { x: 0, y: 0, text: "", fontSize: 14 },
-  barcode: { x: 0, y: 0, data: "", type: "CODE128", output: null },
-  qr: { x: 0, y: 0, data: "", output: null },
+  text: { x: 0, y: 0, text: "", fontSize: 14, color: '#000000' },
+  barcode: { x: 0, y: 0, data: "", type: "CODE128", color: '#000000', output: null },
+  qr: { x: 0, y: 0, data: "", color: '#000000', output: null },
   image: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
 };
 
@@ -217,11 +217,14 @@ class Item {
 
         // -------------------------  text type
         if ($type === "text") {
-          // type text
+          // type
           getElement("span", "item-type-text").textContent = `Text`;
 
-          // data text
+          // data
           getElement("input", "item-input-data").value = $data.text;
+
+          // color
+          getElement("input", "item-input-color").value = $data.color;
 
           // font size
           getElement("input", "item-input-font-size").value = $data.fontSize;
@@ -235,11 +238,14 @@ class Item {
 
         // -------------------------  barcode type
         if ($type === "barcode") {
-          // type text
+          // type
           getElement("span", "item-type-text").textContent = `Barcode`;
 
-          // data text
+          // data
           getElement("input", "item-input-data").value = $data.data;
+
+          // color
+          getElement("input", "item-input-color").value = $data.color;
 
           // barcode type
           getElement("select", "item-select-barcode-type").value = $data.type;
@@ -253,11 +259,14 @@ class Item {
 
         // -------------------------  qr type
         if ($type === "qr") {
-          // type text
+          // type
           getElement("span", "item-type-text").textContent = `QR`;
 
-          // data text
+          // data
           getElement("input", "item-input-data").value = $data.data;
+
+          // color
+          getElement("input", "item-input-color").value = $data.color;
 
           // remove other type element
           getElement("div", "item-layout-width").remove();
@@ -269,10 +278,10 @@ class Item {
 
         // -------------------------  image type
         if ($type === "image") {
-          // type text
+          // type
           getElement("span", "item-type-text").textContent = `Image`;
 
-          // data text
+          // data
           if ($data.type === 'src') {
             getElement("input", "item-input-data").type = 'text';
             getElement("input", "item-input-data").value = $data.data;
@@ -291,6 +300,7 @@ class Item {
           getElement("select", "item-select-image-type").value = $data.type;
 
           // remove other type element
+          getElement("div", "item-layout-color").remove();
           getElement("div", "item-layout-font-size").remove();
           getElement("div", "item-layout-barcode-type").remove();
         }

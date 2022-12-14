@@ -82,28 +82,34 @@ function addItemWithPopup() {
   const itemData = { x: 0, y: 0 };
   if (selectedType === "text") {
     const textValue = getElement("input", "item-popup-input-text").value;
+    const colorValue = getElement("input", "item-popup-input-color").value;
     const fontSizeValue = getElement(
       "input",
       "item-popup-input-font-size"
     ).valueAsNumber;
 
     itemData.text = textValue || initItemData.text.text;
+    itemData.color = colorValue || initItemData.text.color;
     itemData.fontSize = fontSizeValue || initItemData.text.fontSize;
   }
   if (selectedType === "barcode") {
     const dataValue = getElement("input", "item-popup-input-data").value;
+    const colorValue = getElement("input", "item-popup-input-color").value;
     const typeValue = getElement(
       "select",
       "item-popup-select-barcode-type"
     ).value;
 
     itemData.data = dataValue || initItemData.barcode.data;
+    itemData.color = colorValue || initItemData.barcode.color;
     itemData.type = typeValue || initItemData.barcode.type;
   }
   if (selectedType === "qr") {
     const dataValue = getElement("input", "item-popup-input-data").value;
+    const colorValue = getElement("input", "item-popup-input-color").value;
 
     itemData.data = dataValue || initItemData.qr.data;
+    itemData.color = colorValue || initItemData.qr.color;
   }
   if (selectedType === "image") {
     const dataValue = getElement("input", "item-popup-input-data").value;

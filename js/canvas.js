@@ -1,8 +1,27 @@
+const HIT_TYPE = {
+  HAVE: 'HAVE', // TARGET IN ORIGIN
+  GO_IN: 'GO_IN', // ORIGIN IN TARGET
+  HIT: 'HIT', // EACH OTHER HIT
+  NONE: 'NONE', // NO HIT
+}
+
+const HIT_EDGE_TYPE = {
+  LEFT: 'LEFT',
+  RIGHT: 'RIGHT',
+  TOP: 'TOP',
+  BOTTOM: 'BOTTOM',
+  LEFT_TOP: 'LEFT_TOP',
+  LEFT_BOTTOM: 'LEFT_BOTTOM',
+  RIGHT_TOP: 'RIGHT_TOP',
+  RIGHT_BOTTOM: 'RIGHT_BOTTOM',
+  NONE: 'NONE',
+}
+
 const canvasInfo = {
   prevDevicePixelRatio: null,
   mouseHitBoxSize: 4,
   canvasEdgeSize: 20,
-  hitCanvasEdge: null, // HIT_EDGE_TYPE
+  hitCanvasEdge: HIT_EDGE_TYPE.NONE, // HIT_EDGE_TYPE
   hitItems: [],
   targetStartMouse: null,
   targetItem: null,
@@ -14,7 +33,6 @@ function drawCanvas() {
       syncCanvasSize();
       canvasInfo.prevDevicePixelRatio = offset;
     }
-
 
     const canvas = document.querySelector("#main-canvas");
     const context = canvas.getContext("2d");
@@ -270,17 +288,6 @@ function drawCanvas() {
     }
   }
 
-  const HIT_EDGE_TYPE = {
-    LEFT: 'LEFT',
-    RIGHT: 'RIGHT',
-    TOP: 'TOP',
-    BOTTOM: 'BOTTOM',
-    LEFT_TOP: 'LEFT_TOP',
-    LEFT_BOTTOM: 'LEFT_BOTTOM',
-    RIGHT_TOP: 'RIGHT_TOP',
-    RIGHT_BOTTOM: 'RIGHT_BOTTOM',
-    NONE: 'NONE',
-  }
   function hitTestCanvasEdge(mouseItem) {
     const {
       c_edge_left,
@@ -314,12 +321,6 @@ function drawCanvas() {
     return HIT_EDGE_TYPE.NONE;
   }
 
-  const HIT_TYPE = {
-    HAVE: 'HAVE', // TARGET IN ORIGIN
-    GO_IN: 'GO_IN', // ORIGIN IN TARGET
-    HIT: 'HIT', // EACH OTHER HIT
-    NONE: 'NONE', // NO HIT
-  }
   function hitTest(origin, target) {
     const { x: ox, y: oy, w: ow, h: oh } = origin;
     const { x: tx, y: ty, w: tw, h: th } = target;

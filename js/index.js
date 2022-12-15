@@ -75,7 +75,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // add default item set (text, barcode)
   const textData = { x: 150, y: 120, text: "barcode text", fontSize: 14, color: '#000000' };
-  const barcodeData = { x: 120, y: 30, data: "1011011001", type: "CODE128", color: '#000000' };
+  const barcodeData = { x: 150, y: 50, data: "1011011001", type: "CODE128", color: '#000000' };
   addItem(ItemType.TEXT, textData);
   addItem(ItemType.BARCODE, barcodeData);
 
@@ -133,21 +133,15 @@ function getItemList() {
       const itemWidth = (textMetrics.actualBoundingBoxRight + textMetrics.actualBoundingBoxLeft) || textMetrics.width;
       const itemHeight = (textMetrics.actualBoundingBoxDescent + textMetrics.actualBoundingBoxAscent) || itemData.fontSize;
 
-      itemData.x -= itemWidth / 2;
-      itemData.y -= itemHeight / 2;
+      itemInfo.x -= itemWidth / 2;
+      itemInfo.y -= itemHeight / 2;
       itemInfo.w = itemWidth;
       itemInfo.h = itemHeight;
     } else {
-      // canvas image type [barcode, qr, image]
-      // TODO: output에서 값 가져오기, output에는 getImageData 형식으로 담아보기
-
-      if (itemType === ItemType.BARCODE) {
-        // TODO:
-      } else if (itemType === ItemType.QR) {
-        // TODO:
-      } else if (itemType === ItemType.IMAGE) {
-        // TODO:
-      }
+      itemInfo.x -= itemData.width / 2;
+      itemInfo.y -= itemData.height / 2;
+      itemInfo.w = itemData.width;
+      itemInfo.h = itemData.height;
     }
 
     return itemInfo;

@@ -163,13 +163,14 @@ function drawCanvas() {
 
         return hitTest(hitBox, mouseItem) !== HIT_TYPE.NONE;
       })
+      canvasInfo.hitItems.reverse();
       canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
 
       globalData.hoverItem = null;
       if (canvasInfo.hitItems.length > 0) {
         globalData.hoverItem = canvasInfo.hitItems[0];
       }
-      
+
       if (canvasInfo.targetItem) {
         canvasMouseMoveAction({ mouseX, mouseY });
       }

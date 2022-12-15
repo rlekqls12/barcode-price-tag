@@ -11,7 +11,7 @@ const ItemType = {
 const initItemType = ItemType.TEXT;
 const initItemData = {
   [ItemType.TEXT]: { x: 0, y: 0, text: "", fontSize: 14, color: '#000000' },
-  [ItemType.BARCODE]: { x: 0, y: 0, width: 100, height: 100, data: "", type: "CODE128", color: '#000000', output: null },
+  [ItemType.BARCODE]: { x: 0, y: 0, width: 200, height: 80, data: "", type: "CODE128", color: '#000000', output: null },
   [ItemType.QR]: { x: 0, y: 0, width: 100, height: 100, data: "", color: '#000000', output: null },
   [ItemType.IMAGE]: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
 };
@@ -325,7 +325,8 @@ class Item {
     );
   }
 
-  draw(context, baseX, baseY, box) {
+  async draw(context, baseX, baseY, box) {
+    const itemID = this.id;
     const itemType = this.type;
     const itemData = this.data;
 
@@ -333,9 +334,6 @@ class Item {
     let y = baseY + itemData.y;
 
     if (itemType === ItemType.TEXT) {
-      x += box.w;
-      y += box.h;
-
       context.fillStyle = itemData.color;
       context.font = `${itemData.fontSize}px sans-serif`;
       context.textAlign = 'center';
@@ -343,7 +341,54 @@ class Item {
 
       context.fillText(itemData.text, x, y);
     } else if (itemType === ItemType.BARCODE) {
-      context.fillStyle = itemData.color;
+      if (Boolean(itemData.output) === false && itemData.data) {
+        const domID = `barcode${itemID}`
+        const findMyCanvas = document.querySelector(`#${domID}`);
+        if (findMyCanvas) return;
+      
+        const offset = window.devicePixelRatio || 1;
+        const itemWidth = itemData.width * offset;
+        const itemHeight = itemData.height * offset;
+
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.id = domID;
+        tempCanvas.width = itemWidth;
+        tempCanvas.height = itemHeight;
+        tempCanvas.style.width = `${itemWidth}px`;
+        tempCanvas.style.height = `${itemHeight}px`;
+        tempCanvas.style.position = 'absolute';
+        tempCanvas.style.top = `${window.innerHeight * 2}px`;
+        tempCanvas.style.backgroundColor = 'transparent';
+
+        document.body.appendChild(tempCanvas);
+        try {
+          await delayTime(100);
+
+          const context = tempCanvas.getContext('2d');
+          context.clearRect(0, 0, itemData.width, itemData.height);
+          JsBarcode(`#${domID}`, itemData.data, {
+            width: 1.1,
+            height: itemData.height * offset,
+            margin: 0,
+            format: itemData.type,
+            lineColor: itemData.color,
+            displayValue: false,
+            background: "#ff0000",
+          });
+          await delayTime(100);
+  
+          const output = context.getImageData(0, 0, itemWidth, itemHeight);
+          itemData.output = output;
+        } finally {
+          tempCanvas.remove();
+        }
+      }
+
+      if (itemData.output) {
+        x -= box.w / 2;
+        y -= box.h / 2;
+        context.putImageData(itemData.output, x, y);
+      }
       // TODO:
     } else if (itemType === ItemType.QR) {
       context.fillStyle = itemData.color;

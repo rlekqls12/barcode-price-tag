@@ -383,8 +383,6 @@ class Item {
 
           const tempContext = tempCanvas.getContext('2d');
           tempContext.clearRect(0, 0, itemData.width, itemData.height);
-          tempContext.fillStyle = globalData.image.color;
-          tempContext.fillRect(0, 0, itemData.width, itemData.height);
           tempContext.fillStyle = itemData.color;
           barcodeData.forEach((fill, index) => {
             if (fill === '0') return;
@@ -401,7 +399,30 @@ class Item {
       if (itemData.output) {
         x -= box.w / 2;
         y -= box.h / 2;
-        context.putImageData(itemData.output, x, y);
+      
+        const offset = window.devicePixelRatio || 1;
+        const itemWidth = itemData.width * offset;
+        const itemHeight = itemData.height * offset;
+
+        const backgroundImageData = context.getImageData(x, y, itemWidth, itemHeight);
+        const itemImageData = itemData.output.data;
+        
+        for (let i = 0, len = itemImageData.length / 4; i < len; i++) {
+          const baseIndex = i * 4;
+          const alpha = itemImageData[baseIndex + 3];
+          if (alpha !== 0) {
+            const red = itemImageData[baseIndex + 0];
+            const green = itemImageData[baseIndex + 1];
+            const blue = itemImageData[baseIndex + 2];
+
+            backgroundImageData.data[baseIndex + 0] = red;
+            backgroundImageData.data[baseIndex + 1] = green;
+            backgroundImageData.data[baseIndex + 2] = blue;
+            backgroundImageData.data[baseIndex + 3] = alpha;
+          }
+        }
+
+        context.putImageData(backgroundImageData, x, y);
       }
     } else if (itemType === ItemType.QR) {
       context.fillStyle = itemData.color;

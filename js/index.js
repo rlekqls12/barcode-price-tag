@@ -162,14 +162,18 @@ function resetItemHoverFocus() {
   const focusId = globalData.focusItem?.id;
 
   globalData.itemList.forEach((item) => {
-    item.element.classList.remove('hover');
-    item.element.classList.remove('focus');
+    const element = item.element;
+    const classList = element.classList;
+    classList.remove('hover');
+    classList.remove('focus');
 
     if (item.id === hoverId) {
-      item.element.classList.add('hover');
+      classList.add('hover');
+      element.scrollIntoView();
     }
     if (item.id === focusId) {
-      item.element.classList.add('focus');
+      classList.add('focus');
+      element.scrollIntoView();
     }
   })
 }

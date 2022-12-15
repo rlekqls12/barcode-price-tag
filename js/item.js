@@ -362,17 +362,18 @@ class Item {
         try {
           const tempData = {};
           JsBarcode(tempData, itemData.data, { format: itemData.type });
-          const barcodeData = tempData.encodings?.[0].data;
-          console.log(barcodeData);
+          const barcodeData = tempData.encodings?.[0].data?.split('');
+          const barcodeSize = itemWidth / barcodeData.length;
 
           const tempContext = tempCanvas.getContext('2d');
           tempContext.clearRect(0, 0, itemData.width, itemData.height);
-          // TODO: barcodeData로 tempCanvas에 바코드 그리고 getImageData로 저장
-          // TODO: putImageData로 불러올 때는 비어있는 부분(0,0,0,0)은 흰색으로, 채워져있는 부분(0,0,0,255)은 검정색으로 그리기
+          barcodeData.forEach((fill, index) => {
+            tempContext.fillStyle = fill === '1' ? '#000000' : '#ffffff';
+            tempContext.fillRect(index * barcodeSize, 0, barcodeSize, itemHeight);
+          })
   
           const output = tempContext.getImageData(0, 0, itemWidth, itemHeight);
           itemData.output = output;
-          console.log(output);
         } finally {
           tempCanvas.remove();
         }

@@ -367,13 +367,17 @@ class Item {
         const itemHeight = itemData.height * offset;
 
         const tempCanvas = document.createElement('canvas');
-        tempCanvas.id = domID;
-        tempCanvas.width = itemWidth;
-        tempCanvas.height = itemHeight;
-        tempCanvas.style.width = `${itemWidth}px`;
-        tempCanvas.style.height = `${itemHeight}px`;
-        tempCanvas.style.display = 'none';
-        tempCanvas.style.backgroundColor = 'transparent';
+        Object.assign(tempCanvas, {
+          id: domID,
+          width: itemWidth,
+          height: itemHeight,
+          style: {
+            width: `${itemWidth}px`,
+            height: `${itemHeight}px`,
+            display: 'none',
+            backgroundColor: 'transparent',
+          }
+        })
 
         try {
           const tempData = {};

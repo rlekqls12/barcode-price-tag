@@ -145,33 +145,33 @@ function drawCanvas() {
       }
     }
     if (type === 'mousemove') {
+      canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
+
+      const canvas = document.querySelector("#main-canvas");
+      const canvasImageWidth = globalData.image.width * offset;
+      const canvasImageHeight = globalData.image.height * offset;
+      const canvasBaseX = canvas.width / 2 - canvasImageWidth / 2;
+      const canvasBaseY = canvas.height / 2 - canvasImageHeight / 2;
+
+      canvasInfo.hitItems = globalData.itemBoxList.filter((itemBox) => {
+        const hitBox = {
+          x: canvasBaseX + itemBox.x,
+          y: canvasBaseY + itemBox.y,
+          w: itemBox.w,
+          h: itemBox.h,
+        }
+
+        return hitTest(hitBox, mouseItem) !== HIT_TYPE.NONE;
+      })
+      canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
+
+      globalData.hoverItem = null;
+      if (canvasInfo.hitItems.length > 0) {
+        globalData.hoverItem = canvasInfo.hitItems[0];
+      }
+      
       if (canvasInfo.targetItem) {
         canvasMouseMoveAction({ mouseX, mouseY });
-      } else {
-        canvasInfo.hitCanvasEdge = hitTestCanvasEdge(mouseItem);
-
-        const canvas = document.querySelector("#main-canvas");
-        const canvasImageWidth = globalData.image.width * offset;
-        const canvasImageHeight = globalData.image.height * offset;
-        const canvasBaseX = canvas.width / 2 - canvasImageWidth / 2;
-        const canvasBaseY = canvas.height / 2 - canvasImageHeight / 2;
-
-        canvasInfo.hitItems = globalData.itemBoxList.filter((itemBox) => {
-          const hitBox = {
-            x: canvasBaseX + itemBox.x,
-            y: canvasBaseY + itemBox.y,
-            w: itemBox.w,
-            h: itemBox.h,
-          }
-
-          return hitTest(hitBox, mouseItem) !== HIT_TYPE.NONE;
-        })
-        canvasInfo.hitItems.sort((a, b) => b.zIndex - a.zIndex);
-
-        globalData.hoverItem = null;
-        if (canvasInfo.hitItems.length > 0) {
-          globalData.hoverItem = canvasInfo.hitItems[0];
-        }
       }
     }
   }

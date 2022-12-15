@@ -267,6 +267,7 @@ button {
 #main-canvas-layout {
   flex: 1;
   max-height: 100vh;
+  overflow: hidden;
 }
 
 #main-canvas {

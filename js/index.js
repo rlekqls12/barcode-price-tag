@@ -3,6 +3,7 @@ const globalData = {
   image: {
     width: 300,
     height: 150,
+    color: '#ffffff',
   },
   itemList: [],
   itemBoxList: [],

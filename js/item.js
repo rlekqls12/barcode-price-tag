@@ -383,8 +383,11 @@ class Item {
 
           const tempContext = tempCanvas.getContext('2d');
           tempContext.clearRect(0, 0, itemData.width, itemData.height);
+          tempContext.fillStyle = globalData.image.color;
+          tempContext.fillRect(0, 0, itemData.width, itemData.height);
+          tempContext.fillStyle = itemData.color;
           barcodeData.forEach((fill, index) => {
-            tempContext.fillStyle = fill === '1' ? '#000000' : '#ffffff';
+            if (fill === '0') return;
             tempContext.fillRect(index * barcodeSize, 0, barcodeSize, itemHeight);
           })
   

@@ -127,6 +127,9 @@ button {
   padding: 0.6rem;
   background-color: slategray;
 }
+.item.hidden {
+  display: none;
+}
 .item.hover {
   border: 0.3rem solid skyblue;
   padding: 0.3rem;

@@ -56,6 +56,7 @@ class Item {
     this.element = originalItem.cloneNode(true);
     this.element.setAttribute("data-id", `item#${this.id}`);
     this.element.classList.add(`item-type-${type}`);
+    this.element.classList.remove('hidden');
 
     // init data element
     this.initDataElement();

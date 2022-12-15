@@ -138,9 +138,11 @@ function drawCanvas() {
       }
     }
     if (type === 'mouseup') {
-      canvasInfo.targetStartMouse = null;
-      canvasInfo.targetItem = null;
-      globalData.focusItem = null;
+      if (canvasInfo.hitItems.length === 0) {
+        canvasInfo.targetStartMouse = null;
+        canvasInfo.targetItem = null;
+        globalData.focusItem = null;
+      }
     }
     if (type === 'mousemove') {
       if (canvasInfo.targetItem) {

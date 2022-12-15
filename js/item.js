@@ -356,29 +356,23 @@ class Item {
         tempCanvas.height = itemHeight;
         tempCanvas.style.width = `${itemWidth}px`;
         tempCanvas.style.height = `${itemHeight}px`;
-        tempCanvas.style.position = 'absolute';
-        tempCanvas.style.top = `${window.innerHeight * 2}px`;
+        tempCanvas.style.display = 'none';
         tempCanvas.style.backgroundColor = 'transparent';
 
-        document.body.appendChild(tempCanvas);
         try {
-          await delayTime(100);
+          const tempData = {};
+          JsBarcode(tempData, itemData.data, { format: itemData.type });
+          const barcodeData = tempData.encodings?.[0].data;
+          console.log(barcodeData);
 
-          const context = tempCanvas.getContext('2d');
-          context.clearRect(0, 0, itemData.width, itemData.height);
-          JsBarcode(`#${domID}`, itemData.data, {
-            width: 1.1,
-            height: itemData.height * offset,
-            margin: 0,
-            format: itemData.type,
-            lineColor: itemData.color,
-            displayValue: false,
-            background: "#ff0000",
-          });
-          await delayTime(100);
+          const tempContext = tempCanvas.getContext('2d');
+          tempContext.clearRect(0, 0, itemData.width, itemData.height);
+          // TODO: barcodeData로 tempCanvas에 바코드 그리고 getImageData로 저장
+          // TODO: putImageData로 불러올 때는 비어있는 부분(0,0,0,0)은 흰색으로, 채워져있는 부분(0,0,0,255)은 검정색으로 그리기
   
-          const output = context.getImageData(0, 0, itemWidth, itemHeight);
+          const output = tempContext.getImageData(0, 0, itemWidth, itemHeight);
           itemData.output = output;
+          console.log(output);
         } finally {
           tempCanvas.remove();
         }
@@ -389,7 +383,6 @@ class Item {
         y -= box.h / 2;
         context.putImageData(itemData.output, x, y);
       }
-      // TODO:
     } else if (itemType === ItemType.QR) {
       context.fillStyle = itemData.color;
       // TODO:

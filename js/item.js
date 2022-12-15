@@ -191,6 +191,7 @@ class Item {
       if (dataID === "item-select-image-type") {
         this.data.type = value;
         this.data.data = "";
+        this.data.output = null;
 
         const imageDataElement = this.element.querySelector('input[data-id="item-input-data"]')
         if (value === 'src') {
@@ -355,6 +356,8 @@ class Item {
       context.fillText(itemData.text, x, y);
     } else if (itemType === ItemType.BARCODE) {
       if (Boolean(itemData.output) === false && itemData.data) {
+        if (itemData.width === 0 || itemData.height === 0) return;
+
         const domID = `barcode${itemID}`
         const findMyCanvas = document.querySelector(`#${domID}`);
         if (findMyCanvas) return;

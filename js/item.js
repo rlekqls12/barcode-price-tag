@@ -22,6 +22,7 @@ class Item {
   type = null; // text, barcode, qr
   data = null; // item data
   zIndex = 0; // item depth
+  changeListener = null; // execute when change
   deleteListener = null; // execute when delete
 
   constructor(type, data) {
@@ -67,6 +68,10 @@ class Item {
 
     // init event listener
     this.initEventListener();
+  }
+
+  setChangeEventListener(callback) {
+    this.changeListener = callback;
   }
 
   setDeleteEventListener(callback) {
@@ -156,16 +161,19 @@ class Item {
       // width
       if (dataID === "item-input-width") {
         this.data.width = number;
+        this.data.output = null;
       }
 
       // height
       if (dataID === "item-input-height") {
         this.data.height = number;
+        this.data.output = null;
       }
 
       // color
       if (dataID === "item-input-color") {
         this.data.color = value;
+        this.data.output = null;
       }
 
       // font size
@@ -176,6 +184,7 @@ class Item {
       // barcode type
       if (dataID === "item-select-barcode-type") {
         this.data.type = value;
+        this.data.output = null;
       }
 
       // image type
@@ -189,6 +198,10 @@ class Item {
         } else if (value === 'blob') {
           imageDataElement.type = 'file';
         }
+      }
+
+      if (typeof this.changeListener === 'function') {
+        this.changeListener(this);
       }
     });
   }

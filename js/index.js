@@ -85,6 +85,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
 function addItem(type, data) {
   const newItem = new Item(type, data);
+  newItem.setChangeEventListener((item) => {
+    const $id = item.id;
+    const findIndex = globalData.itemBoxList.findIndex((item) => item.id === $id);
+
+    const itemBox = getItemBox(item);
+    globalData.itemBoxList.splice(findIndex, 1, itemBox);
+  });
   newItem.setDeleteEventListener((item) => {
     // remove element
     item.element.remove();

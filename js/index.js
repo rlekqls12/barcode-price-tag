@@ -109,46 +109,48 @@ function addItem(type, data) {
 function getItemList() {
   const itemList = [];
 
-  const canvas = document.querySelector("#main-canvas");
-  const context = canvas.getContext("2d");
-
-  const items = globalData.itemList.map((item) => {
-    const itemID = item.id;
-    const itemData = item.data;
-    const itemType = item.type;
-    const itemInfo = {
-      id: itemID,
-      item: item,
-      x: itemData.x,
-      y: itemData.y,
-      w: 0,
-      h: 0,
-    }
-
-    if (itemType === ItemType.TEXT) {
-      // canvas text type
-      context.font = `${itemData.fontSize}px sans-serif`;
-      const textMetrics = context.measureText(itemData.text);
-
-      const itemWidth = (textMetrics.actualBoundingBoxRight + textMetrics.actualBoundingBoxLeft) || textMetrics.width;
-      const itemHeight = (textMetrics.actualBoundingBoxDescent + textMetrics.actualBoundingBoxAscent) || itemData.fontSize;
-
-      itemInfo.x -= itemWidth / 2;
-      itemInfo.y -= itemHeight / 2;
-      itemInfo.w = itemWidth;
-      itemInfo.h = itemHeight;
-    } else {
-      itemInfo.x -= itemData.width / 2;
-      itemInfo.y -= itemData.height / 2;
-      itemInfo.w = itemData.width;
-      itemInfo.h = itemData.height;
-    }
-
-    return itemInfo;
-  })
+  const items = globalData.itemList.map(getItemBox)
   itemList.push(...items);
 
   globalData.itemBoxList = itemList;
+}
+
+function getItemBox(item) {
+  const canvas = document.querySelector("#main-canvas");
+  const context = canvas.getContext("2d");
+
+  const itemID = item.id;
+  const itemData = item.data;
+  const itemType = item.type;
+  const itemBox = {
+    id: itemID,
+    item: item,
+    x: itemData.x,
+    y: itemData.y,
+    w: 0,
+    h: 0,
+  }
+
+  if (itemType === ItemType.TEXT) {
+    // canvas text type
+    context.font = `${itemData.fontSize}px sans-serif`;
+    const textMetrics = context.measureText(itemData.text);
+
+    const itemWidth = (textMetrics.actualBoundingBoxRight + textMetrics.actualBoundingBoxLeft) || textMetrics.width;
+    const itemHeight = (textMetrics.actualBoundingBoxDescent + textMetrics.actualBoundingBoxAscent) || itemData.fontSize;
+
+    itemBox.x -= itemWidth / 2;
+    itemBox.y -= itemHeight / 2;
+    itemBox.w = itemWidth;
+    itemBox.h = itemHeight;
+  } else {
+    itemBox.x -= itemData.width / 2;
+    itemBox.y -= itemData.height / 2;
+    itemBox.w = itemData.width;
+    itemBox.h = itemData.height;
+  }
+
+  return itemBox;
 }
 
 function resetItemHoverFocus() {

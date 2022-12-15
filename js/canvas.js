@@ -181,6 +181,9 @@ function drawCanvas() {
     if (Boolean(canvasInfo.targetItem) === false) return;
 
     const [startX, startY] = canvasInfo.targetStartMouse;
+    let distX = Math.floor(mouseX - startX);
+    let distY = Math.floor(mouseY - startY);
+    canvasInfo.targetStartMouse = [mouseX, mouseY];
 
     // resize canvas size (handle canvas edge)
     if (typeof canvasInfo.targetItem === 'string' &&
@@ -188,12 +191,10 @@ function drawCanvas() {
       canvasInfo.targetItem in HIT_EDGE_TYPE
     ) {
       // 가운데 정렬 + 양쪽으로 늘어나기 때문에, 마우스 움직인 거리의 2배만큼 늘려줘야지만 마우스 움직인 거리만큼 늘어난 것으로 보임
-      const distX = Math.floor(mouseX - startX) * 2;
-      const distY = Math.floor(mouseY - startY) * 2;
+      distX *= 2;
+      distY *= 2;
       let canvasWidth = globalData.image.width;
       let canvasHeight = globalData.image.height;
-
-      canvasInfo.targetStartMouse = [mouseX, mouseY];
 
       if (canvasInfo.targetItem.startsWith(HIT_EDGE_TYPE.LEFT)) {
         canvasWidth -= distX;

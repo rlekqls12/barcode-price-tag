@@ -347,6 +347,8 @@ class Item {
     let x = baseX + itemData.x;
     let y = baseY + itemData.y;
 
+    // TODO: 아이템 hover, focus시 주변에 네모박스 그려주기
+
     if (itemType === ItemType.TEXT) {
       context.fillStyle = itemData.color;
       context.font = `${itemData.fontSize}px sans-serif`;

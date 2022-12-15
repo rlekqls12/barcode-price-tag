@@ -216,3 +216,9 @@ function debounce(f, delay = 10) {
   const newTimeoutID = setTimeout(f, delay);
   debounceRecord[f] = newTimeoutID;
 }
+
+function delayTime(ms = 0) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  })
+}

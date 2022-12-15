@@ -75,7 +75,7 @@ window.addEventListener("DOMContentLoaded", () => {
   addItemButton.addEventListener("click", openAddItemPopup); // popup.js
 
   // add default item set (text, barcode)
-  const textData = { x: 150, y: 120, text: "barcode text", fontSize: 14, color: '#000000' };
+  const textData = { x: 150, y: 120, text: "example text", fontSize: 28, color: '#000000' };
   const barcodeData = { x: 150, y: 50, data: "1011011001", type: "CODE128", color: '#000000' };
   addItem(ItemType.TEXT, textData);
   addItem(ItemType.BARCODE, barcodeData);

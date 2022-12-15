@@ -107,11 +107,7 @@ function addItem(type, data) {
 }
 
 function getItemList() {
-  const itemList = [];
-
-  const items = globalData.itemList.map(getItemBox)
-  itemList.push(...items);
-
+  const itemList = globalData.itemList.map(getItemBox);
   globalData.itemBoxList = itemList;
 }
 

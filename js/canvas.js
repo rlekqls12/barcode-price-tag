@@ -234,7 +234,7 @@ function drawCanvas() {
 
     // move item
     if (canvasInfo.targetItem instanceof Item) {
-      // TODO:
+      // TODO: 아이템 마우스 이동
     }
   }
 

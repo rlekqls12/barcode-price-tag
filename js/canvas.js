@@ -94,7 +94,12 @@ function drawCanvas() {
   
     // draw items
     globalData.itemBoxList.forEach((itemBox) => {
-      itemBox.item.draw(context, canvasBaseX, canvasBaseY, itemBox);
+      const base = { x: canvasBaseX, y: canvasBaseY };
+      const state = {
+        hover: itemBox.id === globalData.hoverItem.id,
+        focus: itemBox.id === globalData.focusItem.id,
+      };
+      itemBox.item.draw(context, base, itemBox, state);
     })
   
     window.requestAnimationFrame(drawCanvas);

@@ -339,13 +339,13 @@ class Item {
     );
   }
 
-  async draw(context, baseX, baseY, box) {
+  async draw(context, base, box, state) {
     const itemID = this.id;
     const itemType = this.type;
     const itemData = this.data;
 
-    let x = baseX + itemData.x;
-    let y = baseY + itemData.y;
+    let x = base.x + itemData.x;
+    let y = base.y + itemData.y;
 
     // TODO: 아이템 hover, focus시 주변에 네모박스 그려주기
 
@@ -356,6 +356,23 @@ class Item {
       context.textBaseline = 'middle';
 
       context.fillText(itemData.text, x, y);
+
+      if (state.hover || state.focus) {
+        context.lineWidth = 1;
+
+        if (state.hover) context.strokeStyle = 'skyblue';
+        if (state.focus) context.strokeStyle = 'deepskyblue';
+
+        const itemWidth = box.w * offset;
+        const itemHeight = box.h * offset;
+
+        const borderMargin = 2;
+        const borderX = x - itemWidth / 2 - borderMargin;
+        const borderY = y - itemHeight / 2 - borderMargin;
+        const borderW = itemWidth + borderMargin;
+        const borderH = itemHeight + borderMargin;
+        context.strokeRect(borderX, borderY, borderW, borderH);
+      }
     } else if (itemType === ItemType.BARCODE) {
       if (Boolean(itemData.output) === false && itemData.data) {
         if (itemData.width === 0 || itemData.height === 0) return;
@@ -429,6 +446,20 @@ class Item {
         }
 
         context.putImageData(backgroundImageData, x, y);
+
+        if (state.hover || state.focus) {
+          context.lineWidth = 1;
+  
+          if (state.hover) context.strokeStyle = 'skyblue';
+          if (state.focus) context.strokeStyle = 'deepskyblue';
+  
+          const borderMargin = 2;
+          const borderX = x - borderMargin;
+          const borderY = y - borderMargin;
+          const borderW = itemWidth + borderMargin;
+          const borderH = itemHeight + borderMargin;
+          context.strokeRect(borderX, borderY, borderW, borderH);
+        }
       }
     } else if (itemType === ItemType.QR) {
       context.fillStyle = itemData.color;

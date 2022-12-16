@@ -96,8 +96,8 @@ function drawCanvas() {
     globalData.itemBoxList.forEach((itemBox) => {
       const base = { x: canvasBaseX, y: canvasBaseY };
       const state = {
-        hover: itemBox.id === globalData.hoverItem.id,
-        focus: itemBox.id === globalData.focusItem.id,
+        hover: itemBox.id === globalData.hoverItem?.id,
+        focus: itemBox.id === globalData.focusItem?.id,
       };
       itemBox.item.draw(context, base, itemBox, state);
     })

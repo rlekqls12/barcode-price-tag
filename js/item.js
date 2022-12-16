@@ -340,14 +340,13 @@ class Item {
   }
 
   async draw(context, base, box, state) {
+    const offset = window.devicePixelRatio || 1;
     const itemID = this.id;
     const itemType = this.type;
     const itemData = this.data;
 
     let x = base.x + itemData.x;
     let y = base.y + itemData.y;
-
-    // TODO: 아이템 hover, focus시 주변에 네모박스 그려주기
 
     if (itemType === ItemType.TEXT) {
       context.fillStyle = itemData.color;
@@ -358,7 +357,7 @@ class Item {
       context.fillText(itemData.text, x, y);
 
       if (state.hover || state.focus) {
-        context.lineWidth = 1;
+        context.lineWidth = 3;
 
         if (state.hover) context.strokeStyle = 'skyblue';
         if (state.focus) context.strokeStyle = 'deepskyblue';
@@ -366,11 +365,11 @@ class Item {
         const itemWidth = box.w * offset;
         const itemHeight = box.h * offset;
 
-        const borderMargin = 2;
+        const borderMargin = 3;
         const borderX = x - itemWidth / 2 - borderMargin;
         const borderY = y - itemHeight / 2 - borderMargin;
-        const borderW = itemWidth + borderMargin;
-        const borderH = itemHeight + borderMargin;
+        const borderW = itemWidth + borderMargin * 2;
+        const borderH = itemHeight + borderMargin * 2;
         context.strokeRect(borderX, borderY, borderW, borderH);
       }
     } else if (itemType === ItemType.BARCODE) {
@@ -381,7 +380,6 @@ class Item {
         const findMyCanvas = document.querySelector(`#${domID}`);
         if (findMyCanvas) return;
       
-        const offset = window.devicePixelRatio || 1;
         const itemWidth = itemData.width * offset;
         const itemHeight = itemData.height * offset;
 
@@ -448,16 +446,16 @@ class Item {
         context.putImageData(backgroundImageData, x, y);
 
         if (state.hover || state.focus) {
-          context.lineWidth = 1;
+          context.lineWidth = 3;
   
           if (state.hover) context.strokeStyle = 'skyblue';
           if (state.focus) context.strokeStyle = 'deepskyblue';
   
-          const borderMargin = 2;
+          const borderMargin = 3;
           const borderX = x - borderMargin;
           const borderY = y - borderMargin;
-          const borderW = itemWidth + borderMargin;
-          const borderH = itemHeight + borderMargin;
+          const borderW = itemWidth + borderMargin * 2;
+          const borderH = itemHeight + borderMargin * 2;
           context.strokeRect(borderX, borderY, borderW, borderH);
         }
       }

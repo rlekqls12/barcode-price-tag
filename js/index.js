@@ -74,11 +74,11 @@ window.addEventListener("DOMContentLoaded", () => {
   const addItemButton = document.querySelector("#item-add");
   addItemButton.addEventListener("click", openAddItemPopup); // popup.js
 
-  // add default item set (text, barcode)
-  const textData = { x: 150, y: 120, text: "example text", fontSize: 28, color: '#000000' };
+  // add default item set (barcode, text)
   const barcodeData = { x: 150, y: 50, data: "1011011001", type: "CODE128", color: '#000000' };
-  addItem(ItemType.TEXT, textData);
+  const textData = { x: 150, y: 120, text: "example text", fontSize: 28, color: '#000000' };
   addItem(ItemType.BARCODE, barcodeData);
+  addItem(ItemType.TEXT, textData);
 
   // draw canvas
   drawCanvas(); // canvas.js

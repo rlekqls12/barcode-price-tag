@@ -93,6 +93,14 @@ function addItem(type, data) {
     const itemBox = getItemBox(item);
     globalData.itemBoxList.splice(findIndex, 1, itemBox);
   });
+  newItem.setStateChangeEventListener((item, state, value) => {
+    if (state === ItemState.HOVER) {
+      globalData.hoverItem = value ? item : null;
+    }
+    if (state === ItemState.FOCUS) {
+      globalData.focusItem = value ? item : null;
+    }
+  })
   newItem.setDeleteEventListener((item) => {
     // remove element
     item.element.remove();

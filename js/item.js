@@ -1,11 +1,13 @@
-/**
- * @typedef {'text' | 'barcode' | 'qr' | 'image'} ItemType
- */
 const ItemType = {
   TEXT: 'text',
   BARCODE: 'barcode',
   QR: 'qr',
   IMAGE: 'image',
+}
+
+const ItemState = {
+  FOCUS: 'focus',
+  HOVER: 'hover',
 }
 
 const initItemType = ItemType.TEXT;
@@ -23,6 +25,7 @@ class Item {
   data = null; // item data
   zIndex = 0; // item depth
   changeListener = null; // execute when change
+  stateChangeListener = null; // execute when state change
   deleteListener = null; // execute when delete
 
   constructor(type, data) {
@@ -74,13 +77,37 @@ class Item {
     this.changeListener = callback;
   }
 
+  setStateChangeEventListener(callback) {
+    this.stateChangeListener = callback;
+  }
+
   setDeleteEventListener(callback) {
     this.deleteListener = callback;
   }
 
   initEventListener() {
+    // ------------------------- hover event
+    this.element.addEventListener("mouseenter", () => {
+      if (this.id === null) return;
+
+      if (typeof this.stateChangeListener === 'function') {
+        this.stateChangeListener(this, ItemState.HOVER, true);
+      }
+    });
+
+    // ------------------------- hover out event
+    this.element.addEventListener("mouseleave", () => {
+      if (this.id === null) return;
+
+      if (typeof this.stateChangeListener === 'function') {
+        this.stateChangeListener(this, ItemState.HOVER, false);
+      }
+    });
+
     // ------------------------- click event
     this.element.addEventListener("click", (event) => {
+      if (this.id === null) return;
+      
       // get item dom
       const currentItemDOM = event.currentTarget;
       // get clicked dom data-id
@@ -109,11 +136,19 @@ class Item {
       if (dataID === "event-delete") {
         if (typeof this.deleteListener !== 'function') return;
         this.deleteListener(this);
+        return;
+      }
+      
+      // focus
+      if (typeof this.stateChangeListener === 'function') {
+        this.stateChangeListener(this, ItemState.FOCUS, true);
       }
     });
 
     // ------------------------- change event
     this.element.addEventListener("change", (event) => {
+      if (this.id === null) return;
+      
       // get item dom
       const currentItemDOM = event.currentTarget;
       // get changed dom data-id
@@ -340,6 +375,8 @@ class Item {
   }
 
   async draw(context, base, box, state) {
+    if (this.id === null) return;
+    
     const offset = window.devicePixelRatio || 1;
     const itemID = this.id;
     const itemType = this.type;

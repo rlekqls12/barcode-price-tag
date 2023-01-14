@@ -1,12 +1,12 @@
 // canvas edge cursor mapping
 const CANVAS_EDGE_CURSOR_MAP = {
   [HIT_EDGE_TYPE.LEFT]: ['w-resize'],
-  [HIT_EDGE_TYPE.RIGHT]: ['w-resize'],
-  [HIT_EDGE_TYPE.TOP]: ['s-resize'],
+  [HIT_EDGE_TYPE.RIGHT]: ['e-resize'],
+  [HIT_EDGE_TYPE.TOP]: ['n-resize'],
   [HIT_EDGE_TYPE.BOTTOM]: ['s-resize'],
-  [HIT_EDGE_TYPE.LEFT_TOP]: ['se-resize'],
+  [HIT_EDGE_TYPE.LEFT_TOP]: ['nw-resize'],
   [HIT_EDGE_TYPE.LEFT_BOTTOM]: ['sw-resize'],
-  [HIT_EDGE_TYPE.RIGHT_TOP]: ['sw-resize'],
+  [HIT_EDGE_TYPE.RIGHT_TOP]: ['ne-resize'],
   [HIT_EDGE_TYPE.RIGHT_BOTTOM]: ['se-resize'],
   [HIT_EDGE_TYPE.NONE]: null,
 }

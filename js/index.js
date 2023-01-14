@@ -61,10 +61,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector("#main-canvas");
   canvas.addEventListener(
     'mousemove',
-    (event) => debounce(onCanvasMouseEvent.bind(this, event)), // canvas.js
+    (event) => debounce(onMouseEvent.bind(this, event)), // matrix.js
   );
-  canvas.addEventListener('mousedown', onCanvasMouseEvent); // canvas.js
-  canvas.addEventListener('mouseup', onCanvasMouseEvent); // canvas.js
+  canvas.addEventListener('mousedown', onMouseEvent); // matrix.js
+  canvas.addEventListener('mouseup', onMouseEvent); // matrix.js
 
   // save image - event listener
   const saveImageButton = document.querySelector("#image-save-btn");

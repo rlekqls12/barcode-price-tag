@@ -1,21 +1,21 @@
-const ItemType = {
+const ITEM_TYPE = {
   TEXT: 'text',
   BARCODE: 'barcode',
   QR: 'qr',
   IMAGE: 'image',
 }
 
-const ItemState = {
+const ITEM_STATE = {
   FOCUS: 'focus',
   HOVER: 'hover',
 }
 
-const initItemType = ItemType.TEXT;
+const initItemType = ITEM_TYPE.TEXT;
 const initItemData = {
-  [ItemType.TEXT]: { x: 0, y: 0, text: "", fontSize: 14, color: '#000000' },
-  [ItemType.BARCODE]: { x: 0, y: 0, width: 200, height: 80, data: "", type: "CODE128", color: '#000000', output: null },
-  [ItemType.QR]: { x: 0, y: 0, width: 100, height: 100, data: "", color: '#000000', output: null },
-  [ItemType.IMAGE]: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
+  [ITEM_TYPE.TEXT]: { x: 0, y: 0, text: "", fontSize: 14, color: '#000000' },
+  [ITEM_TYPE.BARCODE]: { x: 0, y: 0, width: 200, height: 80, data: "", type: "CODE128", color: '#000000', output: null },
+  [ITEM_TYPE.QR]: { x: 0, y: 0, width: 100, height: 100, data: "", color: '#000000', output: null },
+  [ITEM_TYPE.IMAGE]: { x: 0, y: 0, width: 100, height: 100, data: "", type: "src", output: null }, // type: src, blob
 };
 
 class Item {
@@ -38,7 +38,7 @@ class Item {
     }
 
     // type available check
-    const availableTypes = Object.keys(ItemType).map((t) => t.toLowerCase());
+    const availableTypes = Object.keys(ITEM_TYPE).map((t) => t.toLowerCase());
     if (availableTypes.includes(type) === false) {
       throw new Error(`${type} is not includes [${availableTypes.join(", ")}]`);
     }
@@ -91,7 +91,7 @@ class Item {
       if (this.id === null) return;
 
       if (typeof this.stateChangeListener === 'function') {
-        this.stateChangeListener(this, ItemState.HOVER, true);
+        this.stateChangeListener(this, ITEM_STATE.HOVER, true);
       }
     });
 
@@ -100,7 +100,7 @@ class Item {
       if (this.id === null) return;
 
       if (typeof this.stateChangeListener === 'function') {
-        this.stateChangeListener(this, ItemState.HOVER, false);
+        this.stateChangeListener(this, ITEM_STATE.HOVER, false);
       }
     });
 
@@ -141,7 +141,7 @@ class Item {
       
       // focus
       if (typeof this.stateChangeListener === 'function') {
-        this.stateChangeListener(this, ItemState.FOCUS, true);
+        this.stateChangeListener(this, ITEM_STATE.FOCUS, true);
       }
     });
 
@@ -165,16 +165,16 @@ class Item {
 
       // data
       if (dataID === "item-input-data") {
-        if (this.type === ItemType.TEXT) {
+        if (this.type === ITEM_TYPE.TEXT) {
           this.data.text = value;
         }
-        if (this.type === ItemType.BARCODE) {
+        if (this.type === ITEM_TYPE.BARCODE) {
           this.data.data = value;
         }
-        if (this.type === ItemType.QR) {
+        if (this.type === ITEM_TYPE.QR) {
           this.data.data = value;
         }
-        if (this.type === ItemType.IMAGE) {
+        if (this.type === ITEM_TYPE.IMAGE) {
           if (this.data.type === 'src') {
             this.data.data = value;
           } else if (this.data.type === 'blob') {
@@ -270,7 +270,7 @@ class Item {
         getElement("input", "item-input-y").value = $data.y;
 
         // -------------------------  text type
-        if ($type === ItemType.TEXT) {
+        if ($type === ITEM_TYPE.TEXT) {
           // type
           getElement("span", "item-type-text").textContent = `Text`;
 
@@ -291,7 +291,7 @@ class Item {
         }
 
         // -------------------------  barcode type
-        if ($type === ItemType.BARCODE) {
+        if ($type === ITEM_TYPE.BARCODE) {
           // type
           getElement("span", "item-type-text").textContent = `Barcode`;
 
@@ -316,7 +316,7 @@ class Item {
         }
 
         // -------------------------  qr type
-        if ($type === ItemType.QR) {
+        if ($type === ITEM_TYPE.QR) {
           // type
           getElement("span", "item-type-text").textContent = `QR`;
 
@@ -339,7 +339,7 @@ class Item {
         }
 
         // -------------------------  image type
-        if ($type === ItemType.IMAGE) {
+        if ($type === ITEM_TYPE.IMAGE) {
           // type
           getElement("span", "item-type-text").textContent = `Image`;
 
@@ -385,7 +385,7 @@ class Item {
     let x = base.x + itemData.x;
     let y = base.y + itemData.y;
 
-    if (itemType === ItemType.TEXT) {
+    if (itemType === ITEM_TYPE.TEXT) {
       context.fillStyle = itemData.color;
       context.font = `${itemData.fontSize}px sans-serif`;
       context.textAlign = 'center';
@@ -409,7 +409,7 @@ class Item {
         const borderH = itemHeight + borderMargin * 2;
         context.strokeRect(borderX, borderY, borderW, borderH);
       }
-    } else if (itemType === ItemType.BARCODE) {
+    } else if (itemType === ITEM_TYPE.BARCODE) {
       if (Boolean(itemData.output) === false && itemData.data) {
         if (itemData.width === 0 || itemData.height === 0) return;
 
@@ -496,10 +496,10 @@ class Item {
           context.strokeRect(borderX, borderY, borderW, borderH);
         }
       }
-    } else if (itemType === ItemType.QR) {
+    } else if (itemType === ITEM_TYPE.QR) {
       context.fillStyle = itemData.color;
       // TODO:
-    } else if (itemType === ItemType.IMAGE) {
+    } else if (itemType === ITEM_TYPE.IMAGE) {
       // TODO:
     }
   }

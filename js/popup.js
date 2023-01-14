@@ -1,5 +1,5 @@
 /**
- * @typedef {'text' | 'barcode' | 'qr' | 'image'} ItemType
+ * @typedef {'text' | 'barcode' | 'qr' | 'image'} ITEM_TYPE
  */
 
 function openAddItemPopup() {
@@ -27,7 +27,7 @@ function resetAddItemPopup() {
   const imageDataInput = popup.querySelector(
     'input[data-id="item-popup-input-data"]'
   );
-  imageDataInput.type = ItemType.TEXT;
+  imageDataInput.type = ITEM_TYPE.TEXT;
 
   const inputs = popup.querySelectorAll("input");
   inputs.forEach((input) => {
@@ -37,8 +37,8 @@ function resetAddItemPopup() {
   const selects = popup.querySelectorAll("select");
   selects.forEach((select) => {
     if (select.getAttribute("data-id") === "item-popup-select-item-type") {
-      select.value = ItemType.TEXT;
-      showAddItemPopupLayout(ItemType.TEXT);
+      select.value = ITEM_TYPE.TEXT;
+      showAddItemPopupLayout(ITEM_TYPE.TEXT);
       return;
     }
     select.value = "";
@@ -46,7 +46,7 @@ function resetAddItemPopup() {
 }
 
 /**
- * @param {ItemType} layout
+ * @param {ITEM_TYPE} layout
  */
 function showAddItemPopupLayout(layout) {
   const popup = document.querySelector("#item-popup-layout");
@@ -80,7 +80,7 @@ function addItemWithPopup() {
     selectedItemInputLayout.querySelector(`${tag}[data-id="${dataId}"]`);
 
   const itemData = { x: 0, y: 0 };
-  if (selectedType === ItemType.TEXT) {
+  if (selectedType === ITEM_TYPE.TEXT) {
     const textValue = getElement("input", "item-popup-input-text").value;
     const colorValue = getElement("input", "item-popup-input-color").value;
     const fontSizeValue = getElement(
@@ -92,7 +92,7 @@ function addItemWithPopup() {
     itemData.color = colorValue || initItemData.text.color;
     itemData.fontSize = fontSizeValue || initItemData.text.fontSize;
   }
-  if (selectedType === ItemType.BARCODE) {
+  if (selectedType === ITEM_TYPE.BARCODE) {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const colorValue = getElement("input", "item-popup-input-color").value;
     const typeValue = getElement(
@@ -108,7 +108,7 @@ function addItemWithPopup() {
     itemData.width = widthValue || initItemData.barcode.width;
     itemData.height = heightValue || initItemData.barcode.height;
   }
-  if (selectedType === ItemType.QR) {
+  if (selectedType === ITEM_TYPE.QR) {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const colorValue = getElement("input", "item-popup-input-color").value;
     const widthValue = getElement("input", "item-popup-input-width").valueAsNumber;
@@ -119,7 +119,7 @@ function addItemWithPopup() {
     itemData.width = widthValue || initItemData.qr.width;
     itemData.height = heightValue || initItemData.qr.height;
   }
-  if (selectedType === ItemType.IMAGE) {
+  if (selectedType === ITEM_TYPE.IMAGE) {
     const dataValue = getElement("input", "item-popup-input-data").value;
     const widthValue = getElement("input", "item-popup-input-width").valueAsNumber;
     const heightValue = getElement("input", "item-popup-input-height").valueAsNumber;

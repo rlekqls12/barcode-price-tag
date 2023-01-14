@@ -77,8 +77,8 @@ window.addEventListener("DOMContentLoaded", () => {
   // add default item set (barcode, text)
   const barcodeData = { x: 150, y: 50, data: "1011011001", type: "CODE128", color: '#000000' };
   const textData = { x: 150, y: 120, text: "example text", fontSize: 28, color: '#000000' };
-  addItem(ItemType.BARCODE, barcodeData);
-  addItem(ItemType.TEXT, textData);
+  addItem(ITEM_TYPE.BARCODE, barcodeData);
+  addItem(ITEM_TYPE.TEXT, textData);
 
   // draw canvas
   drawCanvas(); // canvas.js
@@ -94,10 +94,10 @@ function addItem(type, data) {
     globalData.itemBoxList.splice(findIndex, 1, itemBox);
   });
   newItem.setStateChangeEventListener((item, state, value) => {
-    if (state === ItemState.HOVER) {
+    if (state === ITEM_STATE.HOVER) {
       globalData.hoverItem = value ? item : null;
     }
-    if (state === ItemState.FOCUS) {
+    if (state === ITEM_STATE.FOCUS) {
       globalData.focusItem = value ? item : null;
     }
   })
@@ -143,7 +143,7 @@ function getItemBox(item) {
     h: 0,
   }
 
-  if (itemType === ItemType.TEXT) {
+  if (itemType === ITEM_TYPE.TEXT) {
     // canvas text type
     context.font = `${itemData.fontSize}px sans-serif`;
     const textMetrics = context.measureText(itemData.text);

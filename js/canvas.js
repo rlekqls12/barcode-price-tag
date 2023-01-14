@@ -67,16 +67,16 @@ function drawCanvas() {
   
     // canvas edge matrix mapping
     const CANVAS_EDGE_MATRIX_MAP = {
-      [HIT_EDGE_TYPE.LEFT]: [c_edge_left],
-      [HIT_EDGE_TYPE.RIGHT]: [c_edge_right],
-      [HIT_EDGE_TYPE.TOP]: [c_edge_top],
-      [HIT_EDGE_TYPE.BOTTOM]: [c_edge_bottom],
-      [HIT_EDGE_TYPE.LEFT_TOP]: [c_edge_left_top],
-      [HIT_EDGE_TYPE.LEFT_BOTTOM]: [c_edge_left_bottom],
-      [HIT_EDGE_TYPE.RIGHT_TOP]: [c_edge_right_top],
-      [HIT_EDGE_TYPE.RIGHT_BOTTOM]: [c_edge_right_bottom],
+      [HIT_EDGE_TYPE.LEFT]: c_edge_left,
+      [HIT_EDGE_TYPE.RIGHT]: c_edge_right,
+      [HIT_EDGE_TYPE.TOP]: c_edge_top,
+      [HIT_EDGE_TYPE.BOTTOM]: c_edge_bottom,
+      [HIT_EDGE_TYPE.LEFT_TOP]: c_edge_left_top,
+      [HIT_EDGE_TYPE.LEFT_BOTTOM]: c_edge_left_bottom,
+      [HIT_EDGE_TYPE.RIGHT_TOP]: c_edge_right_top,
+      [HIT_EDGE_TYPE.RIGHT_BOTTOM]: c_edge_right_bottom,
       [HIT_EDGE_TYPE.NONE]: null,
-    }
+    };
 
     const targetEdge = CANVAS_EDGE_MATRIX_MAP[canvasInfo.hitCanvasEdge];
     const targetEdgeCurosr = CANVAS_EDGE_CURSOR_MAP[canvasInfo.hitCanvasEdge];

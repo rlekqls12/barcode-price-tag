@@ -59,10 +59,10 @@ function onMouseEvent(event) {
 
     canvasInfo.hitItems = globalData.itemBoxList.filter((itemBox) => {
       const hitBox = {
-        x: canvasBaseX + itemBox.x,
-        y: canvasBaseY + itemBox.y,
-        w: itemBox.w,
-        h: itemBox.h,
+        x: canvasBaseX + itemBox.x * offset,
+        y: canvasBaseY + itemBox.y * offset,
+        w: itemBox.w * offset,
+        h: itemBox.h * offset,
       }
 
       return hitTest(hitBox, mouseItem) !== HIT_TYPE.NONE;

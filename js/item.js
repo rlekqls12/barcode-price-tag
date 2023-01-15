@@ -382,16 +382,16 @@ class Item {
     const itemType = this.type;
     const itemData = this.data;
 
-    let x = base.x + itemData.x;
-    let y = base.y + itemData.y;
-
     if (itemType === ITEM_TYPE.TEXT) {
+      const baseX = base.x + itemData.x * offset;
+      const baseY = base.y + itemData.y * offset;
+
       context.fillStyle = itemData.color;
-      context.font = `${itemData.fontSize}px sans-serif`;
+      context.font = `${itemData.fontSize * offset}px sans-serif`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
 
-      context.fillText(itemData.text, x, y);
+      context.fillText(itemData.text, baseX, baseY);
 
       if (state.hover || state.focus) {
         context.lineWidth = 3;
@@ -402,9 +402,9 @@ class Item {
         const itemWidth = box.w * offset;
         const itemHeight = box.h * offset;
 
-        const borderMargin = 3;
-        const borderX = x - itemWidth / 2 - borderMargin;
-        const borderY = y - itemHeight / 2 - borderMargin;
+        const borderMargin = 3 * offset;
+        const borderX = baseX - itemWidth / 2 - borderMargin;
+        const borderY = baseY - itemHeight / 2 - borderMargin;
         const borderW = itemWidth + borderMargin * 2;
         const borderH = itemHeight + borderMargin * 2;
         context.strokeRect(borderX, borderY, borderW, borderH);
@@ -417,7 +417,7 @@ class Item {
         const findMyCanvas = document.querySelector(`#${domID}`);
         if (findMyCanvas) return;
       
-        const itemWidth = itemData.width * offset;
+        const itemWidth = itemData.width * offset; 
         const itemHeight = itemData.height * offset;
 
         const tempCanvas = document.createElement('canvas');
@@ -426,8 +426,8 @@ class Item {
           width: itemWidth,
           height: itemHeight,
           style: {
-            width: `${itemWidth}px`,
-            height: `${itemHeight}px`,
+            width: `${itemData.width}px`,
+            height: `${itemData.height}px`,
             display: 'none',
             backgroundColor: 'transparent',
           }
@@ -455,14 +455,13 @@ class Item {
       }
 
       if (itemData.output) {
-        x -= box.w / 2;
-        y -= box.h / 2;
+        const baseX = base.x + itemData.x * offset - (box.w / 2) * offset;
+        const baseY = base.y + itemData.y * offset - (box.h / 2) * offset;
       
-        const offset = window.devicePixelRatio || 1;
         const itemWidth = itemData.width * offset;
         const itemHeight = itemData.height * offset;
 
-        const backgroundImageData = context.getImageData(x, y, itemWidth, itemHeight);
+        const backgroundImageData = context.getImageData(baseX, baseY, itemWidth, itemHeight);
         const itemImageData = itemData.output.data;
         
         for (let i = 0, len = itemImageData.length / 4; i < len; i++) {
@@ -480,7 +479,7 @@ class Item {
           }
         }
 
-        context.putImageData(backgroundImageData, x, y);
+        context.putImageData(backgroundImageData, baseX, baseY);
 
         if (state.hover || state.focus) {
           context.lineWidth = 3;
@@ -488,9 +487,9 @@ class Item {
           if (state.hover) context.strokeStyle = 'skyblue';
           if (state.focus) context.strokeStyle = 'deepskyblue';
   
-          const borderMargin = 3;
-          const borderX = x - borderMargin;
-          const borderY = y - borderMargin;
+          const borderMargin = 3 * offset;
+          const borderX = baseX - borderMargin;
+          const borderY = baseY - borderMargin;
           const borderW = itemWidth + borderMargin * 2;
           const borderH = itemHeight + borderMargin * 2;
           context.strokeRect(borderX, borderY, borderW, borderH);

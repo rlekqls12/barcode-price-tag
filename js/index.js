@@ -186,7 +186,11 @@ function resetItemHoverFocus() {
   })
 }
 
+window.devicePixelRatio = 2;
+
 async function saveIamge() {
+  const offset = window.devicePixelRatio || 1;
+  
   const tempHoverItem = globalData.hoverItem;
   const tempFocusItem = globalData.focusItem;
   globalData.hoverItem = null;
@@ -195,20 +199,21 @@ async function saveIamge() {
 
   const canvas = document.querySelector("#main-canvas");
   const context = canvas.getContext("2d");
+  const globalImageWidth = globalData.image.width * offset;
+  const globalImageHeight = globalData.image.height * offset;
   const cropImageData = context.getImageData(
-    canvas.width / 2 - globalData.image.width / 2,
-    canvas.height / 2 - globalData.image.height / 2,
-    globalData.image.width,
-    globalData.image.height
+    canvas.width / 2 - globalImageWidth / 2,
+    canvas.height / 2 - globalImageHeight / 2,
+    globalImageWidth,
+    globalImageHeight
   );
 
   globalData.hoverItem = tempHoverItem;
   globalData.focusItem = tempFocusItem;
 
-  const offset = window.devicePixelRatio || 1;
   const tempCanvas = document.createElement("canvas");
-  tempCanvas.width = globalData.image.width * offset;
-  tempCanvas.height = globalData.image.height * offset;
+  tempCanvas.width = globalImageWidth;
+  tempCanvas.height = globalImageHeight;
 
   const tempContext = tempCanvas.getContext("2d");
   tempContext.putImageData(cropImageData, 0, 0);

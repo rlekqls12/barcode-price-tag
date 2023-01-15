@@ -410,6 +410,14 @@ class Item {
         context.strokeRect(borderX, borderY, borderW, borderH);
       }
     } else if (itemType === ITEM_TYPE.BARCODE) {
+      if (Boolean(itemData.output)) {
+        const isChangedWidth = itemData.width * offset !== itemData.output.width;
+        const isChangedHeight = itemData.height * offset !== itemData.output.height;
+        if (isChangedWidth || isChangedHeight) {
+          itemData.output = null;
+        }
+      }
+
       if (Boolean(itemData.output) === false && itemData.data) {
         if (itemData.width === 0 || itemData.height === 0) return;
 
@@ -455,8 +463,8 @@ class Item {
       }
 
       if (itemData.output) {
-        const baseX = base.x + itemData.x * offset - (box.w / 2) * offset;
-        const baseY = base.y + itemData.y * offset - (box.h / 2) * offset;
+        const baseX = base.x + itemData.x * offset - box.w / 2 * offset;
+        const baseY = base.y + itemData.y * offset - box.h / 2 * offset;
       
         const itemWidth = itemData.width * offset;
         const itemHeight = itemData.height * offset;

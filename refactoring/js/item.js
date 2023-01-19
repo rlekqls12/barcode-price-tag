@@ -1,24 +1,10 @@
-const ItemConstantType = {
-  TEXT: "TEXT",
-  BARCODE: "BARCODE",
-  QR: "QR",
-  IMAGE: "IMAGE",
-};
-
 class ItemConstant {
-  static DETAULT_DATA = {
-    render: { x: 0, y: 0, w: 0, h: 0 },
-    data: "",
-    options: {},
+  static TYPE = {
+    TEXT: "TEXT",
+    BARCODE: "BARCODE",
+    QR: "QR",
+    IMAGE: "IMAGE",
   };
-  static DETAULT_TYPE_DATA_OPTIONS = {
-    [ItemConstantType.TEXT]: { fontSize: 14, color: "#000000" },
-    [ItemConstantType.BARCODE]: { type: "CODE128", color: "#000000" },
-    [ItemConstantType.QR]: { color: "#000000" },
-    [ItemConstantType.IMAGE]: { type: "src" },
-  };
-
-  static TYPE = ItemConstantType;
 
   static EVENT = {
     CHANGE: "CHANGE",
@@ -37,6 +23,18 @@ class ItemConstant {
     NONE: "NONE",
     HOVER: "HOVER",
     SELECT: "SELECT",
+  };
+
+  static DETAULT_DATA = {
+    render: { x: 0, y: 0, w: 0, h: 0 },
+    data: "",
+    options: {},
+  };
+  static DETAULT_TYPE_DATA_OPTIONS = {
+    [ItemConstant.TYPE.TEXT]: { fontSize: 14, color: "#000000" },
+    [ItemConstant.TYPE.BARCODE]: { type: "CODE128", color: "#000000" },
+    [ItemConstant.TYPE.QR]: { color: "#000000" },
+    [ItemConstant.TYPE.IMAGE]: { type: "src" },
   };
 
   static checkAvailType(types, type) {

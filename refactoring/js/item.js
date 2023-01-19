@@ -30,6 +30,7 @@ class ItemConstant {
     data: "",
     options: {},
   };
+
   static DETAULT_TYPE_DATA_OPTIONS = {
     [ItemConstant.TYPE.TEXT]: { fontSize: 14, color: "#000000" },
     [ItemConstant.TYPE.BARCODE]: { type: "CODE128", color: "#000000" },
@@ -43,13 +44,24 @@ class ItemConstant {
       throw new TypeError(`'${type}' is not include [${textTypes}]`);
     }
   }
+
+  static dataKeyAbbreviates(dataKey) {
+    const abbreviateKeyMap = {
+      fontSize: "font",
+      color: "color",
+    };
+    const abbreviateKey = abbreviateKeyMap[dataKey] ?? dataKey;
+    return abbreviateKey.toUpperCase();
+  }
 }
 
 class Item {
   // ------------------------------------ [Base]
-  id = null; // random
-  type = null; // item type
-  data = null; // item data
+  /**
+   * id: getter
+   * type: getter
+   * data: getter, setter
+   */
   // ------------------------------------ [Render]
   element = null; // item element
   imageData = null; // rendered image data (canvas)
@@ -67,9 +79,11 @@ class Item {
     const itemElement = new ItemElement(id, type);
     itemElement.updateData(data);
 
-    this.id = id;
-    this.type = type;
-    this.data = data;
+    // data observable - setter(ItemElement updateData)
+
+    this.#watchValue("id", () => id);
+    this.#watchValue("type", () => type);
+    this.#watchValue("data", () => data);
     this.element = itemElement;
 
     this.#addElementEventListener(ItemConstant.ELEMENT_EVENT.HOVER);
@@ -106,12 +120,126 @@ class Item {
     return this.imageData;
   }
 
+  #watchValue = (key, getter, setter) => {
+    Object.defineProperty(this, key, {
+      get: getter,
+      set: setter ?? (() => {}),
+    });
+  };
+
+  /**
+   * @param {*} value
+   * @param {{ getter?: Function, setter?: Function }} options
+   */
+  _observable = function observable(target, options, $parent, $key) {
+    // TODO: private 함수로 변경하기 #
+    if (
+      Array.isArray(target) &&
+      (Boolean($parent) === false || Boolean($key) === false)
+    ) {
+      // can't alone observe array
+      return target;
+    }
+
+    // options init
+    const { getter = (obj, key) => {}, setter = (obj, key, value) => {} } =
+      options;
+
+    if (Array.isArray(target)) {
+      // array observable
+      const observableArray = [];
+      target.forEach((value, index) => {
+        observableArray[index] = observable(
+          value,
+          { getter, setter },
+          observableArray,
+          index
+        );
+      });
+      Object.defineProperty($parent, $key, {
+        get(_, key) {
+          const getValue = getter?.(observableArray, key);
+          return getValue ?? observableArray[key];
+        },
+        set(_, key, value) {
+          const isDone = setter?.(observableArray, key, value);
+          if (Boolean(isDone) === false) {
+            /**
+             * TEST CODE
+              a = {
+                  a: 3,
+                  b: [1, 2],
+              };
+              b = new Item('TEXT')._observable(a, {
+                  getter(obj, key) {
+                      console.log('getter', obj, key);
+                  },
+                  setter(obj, key, value) {
+                      console.log('setter', obj, key, value);
+                  }
+              });
+             */
+            // TODO: 배열에 값을 대입하면 setter가 계속 실행되서 max callstack이 쌓임
+            $parent[$key] = observable(
+              value,
+              { getter, setter },
+              $parent,
+              $key
+            );
+          }
+        },
+      });
+    } else if (target !== null && typeof target === "object") {
+      // object observable
+      const observableObject = {};
+      Object.entries(target).forEach(([key, value]) => {
+        if (value !== null && typeof value === "object") {
+          // object(or array) observable
+          observableObject[key] = observable(
+            value,
+            { getter, setter },
+            observableObject,
+            key
+          );
+        } else {
+          // other observable
+          Object.defineProperty(observableObject, key, {
+            get() {
+              const getValue = getter?.(target, key);
+              return getValue ?? target[key];
+            },
+            set(_, __, value) {
+              const isDone = setter?.(target, key, value);
+              if (Boolean(isDone) === false) {
+                const observeValue = observable(
+                  value,
+                  { getter, setter },
+                  target,
+                  key
+                );
+                if (Array.isArray(value) === false) {
+                  target[key] = observeValue;
+                }
+              }
+            },
+          });
+        }
+      });
+
+      return observableObject;
+    }
+
+    // other value
+    return target;
+  };
+
   #addElementEventListener = (type) => {
     this.element.addEventListener(
       type,
       this.#elementEventCallback.bind(this, type)
     );
   };
+
   #elementEventCallback = (type, data) => {
     switch (type) {
       case ItemConstant.ELEMENT_EVENT.HOVER:
@@ -127,7 +255,7 @@ class Item {
 }
 
 class ItemElement {
-  element = null; // dom element
+  target = null; // dom element
   listeners = {}; // listeners
 
   constructor(id, type) {
@@ -172,12 +300,12 @@ class ItemElement {
         </div>
       </div>
     </div>
-    <div data-id="data-layout" class="p-2 cursor-default text-white font-bold"></div>
+    <div data-id="data-layout" class="p-1 pt-0 cursor-default text-white font-bold"></div>
     </div>`;
 
     const template = document.createElement("template");
     template.innerHTML = textElement;
-    this.element = template.content.firstChild;
+    this.target = template.content.firstChild;
   }
 
   updateState(state) {
@@ -185,8 +313,30 @@ class ItemElement {
   }
 
   updateData(data) {
-    `<span class="cursor-pointer bg-sky-500 rounded-full px-2">X32</span>`;
+    const dataKeyValueMappings = [];
+
+    const dataEntries = [
+      ...Object.entries(data),
+      ...Object.entries(data.options),
+    ];
+    dataEntries.forEach(([key, value]) => {
+      if (key === "render") return;
+      if (key === "options") return;
+
+      const keyValueMap = this.#keyValueMapping(key, value);
+      dataKeyValueMappings.push(keyValueMap);
+    });
+
+    const dataLayout = this.target.querySelector('div[data-id="data-layout"]');
+    dataKeyValueMappings.forEach((keyValueMap) => {
+      dataLayout.innerHTML += `<span class="inline-block cursor-pointer bg-sky-500 rounded-full text-xs px-2 mr-1">${keyValueMap}</span>`;
+    });
   }
+
+  #keyValueMapping = (key, value) => {
+    const dataKeyText = ItemConstant.dataKeyAbbreviates(key);
+    return `${dataKeyText}-${value}`;
+  };
 
   addEventListener(type, callback) {
     ItemConstant.checkAvailType(ItemConstant.ELEMENT_EVENT, type);
@@ -195,13 +345,5 @@ class ItemElement {
       this.listeners[type] = [];
     }
     this.listeners[type].push(callback);
-  }
-
-  insert(parent) {
-    parent.appendChild(this.element);
-  }
-
-  remove() {
-    return this.element?.remove();
   }
 }

@@ -53,6 +53,97 @@ class ItemConstant {
     const abbreviateKey = abbreviateKeyMap[dataKey] ?? dataKey;
     return abbreviateKey.toUpperCase();
   }
+
+  /**
+   * @param {*} value
+   * @param {{ getter?: Function, setter?: Function }} options
+   */
+  static observable(target, options, $parent, $key) {
+    // TODO: private 함수로 변경하기 #
+    if (
+      Array.isArray(target) &&
+      (Boolean($parent) === false || Boolean($key) === false)
+    ) {
+      // can't alone observe array
+      return target;
+    }
+
+    // options init
+    const { getter = (obj, key) => {}, setter = (obj, key, value) => {} } =
+      options;
+
+    if (Array.isArray(target)) {
+      // array observable (not yet)
+      const observableArray = [];
+      target.forEach((value, index) => {
+        observableArray[index] = this.observable(
+          value,
+          { getter, setter },
+          observableArray,
+          index
+        );
+      });
+      return observableArray;
+      // Object.defineProperty($parent, $key, {
+      //   get(_, key) {
+      //     const getValue = getter?.(observableArray, key);
+      //     return getValue ?? observableArray[key];
+      //   },
+      //   set(_, key, value) {
+      //     const isDone = setter?.(observableArray, key, value);
+      //     if (Boolean(isDone) === false) {
+      //       $parent[$key] = this.observable(
+      //         value,
+      //         { getter, setter },
+      //         $parent,
+      //         $key
+      //       );
+      //     }
+      //   },
+      // });
+    } else if (target !== null && typeof target === "object") {
+      // object observable
+      const observableObject = {};
+      Object.entries(target).forEach(([key, value]) => {
+        if (value !== null && typeof value === "object") {
+          // object(or array) observable
+          observableObject[key] = this.observable(
+            value,
+            { getter, setter },
+            observableObject,
+            key
+          );
+        } else {
+          // other observable
+          Object.defineProperty(observableObject, key, {
+            get() {
+              const getValue = getter?.(target, key);
+              return getValue ?? target[key];
+            },
+            set(_, __, value) {
+              const isDone = setter?.(target, key, value);
+              if (Boolean(isDone) === false) {
+                const observeValue = this.observable(
+                  value,
+                  { getter, setter },
+                  target,
+                  key
+                );
+                if (Array.isArray(value) === false) {
+                  target[key] = observeValue;
+                }
+              }
+            },
+          });
+        }
+      });
+
+      return observableObject;
+    }
+
+    // other value
+    return target;
+  }
 }
 
 class Item {
@@ -125,112 +216,6 @@ class Item {
       get: getter,
       set: setter ?? (() => {}),
     });
-  };
-
-  /**
-   * @param {*} value
-   * @param {{ getter?: Function, setter?: Function }} options
-   */
-  _observable = function observable(target, options, $parent, $key) {
-    // TODO: private 함수로 변경하기 #
-    if (
-      Array.isArray(target) &&
-      (Boolean($parent) === false || Boolean($key) === false)
-    ) {
-      // can't alone observe array
-      return target;
-    }
-
-    // options init
-    const { getter = (obj, key) => {}, setter = (obj, key, value) => {} } =
-      options;
-
-    if (Array.isArray(target)) {
-      // array observable
-      const observableArray = [];
-      target.forEach((value, index) => {
-        observableArray[index] = observable(
-          value,
-          { getter, setter },
-          observableArray,
-          index
-        );
-      });
-      Object.defineProperty($parent, $key, {
-        get(_, key) {
-          const getValue = getter?.(observableArray, key);
-          return getValue ?? observableArray[key];
-        },
-        set(_, key, value) {
-          const isDone = setter?.(observableArray, key, value);
-          if (Boolean(isDone) === false) {
-            /**
-             * TEST CODE
-              a = {
-                  a: 3,
-                  b: [1, 2],
-              };
-              b = new Item('TEXT')._observable(a, {
-                  getter(obj, key) {
-                      console.log('getter', obj, key);
-                  },
-                  setter(obj, key, value) {
-                      console.log('setter', obj, key, value);
-                  }
-              });
-             */
-            // TODO: 배열에 값을 대입하면 setter가 계속 실행되서 max callstack이 쌓임
-            $parent[$key] = observable(
-              value,
-              { getter, setter },
-              $parent,
-              $key
-            );
-          }
-        },
-      });
-    } else if (target !== null && typeof target === "object") {
-      // object observable
-      const observableObject = {};
-      Object.entries(target).forEach(([key, value]) => {
-        if (value !== null && typeof value === "object") {
-          // object(or array) observable
-          observableObject[key] = observable(
-            value,
-            { getter, setter },
-            observableObject,
-            key
-          );
-        } else {
-          // other observable
-          Object.defineProperty(observableObject, key, {
-            get() {
-              const getValue = getter?.(target, key);
-              return getValue ?? target[key];
-            },
-            set(_, __, value) {
-              const isDone = setter?.(target, key, value);
-              if (Boolean(isDone) === false) {
-                const observeValue = observable(
-                  value,
-                  { getter, setter },
-                  target,
-                  key
-                );
-                if (Array.isArray(value) === false) {
-                  target[key] = observeValue;
-                }
-              }
-            },
-          });
-        }
-      });
-
-      return observableObject;
-    }
-
-    // other value
-    return target;
   };
 
   #addElementEventListener = (type) => {

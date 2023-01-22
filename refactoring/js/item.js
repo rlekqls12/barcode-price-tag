@@ -64,8 +64,11 @@ class ItemConstant {
       (Boolean($parent) === false || Boolean($key) === false)
     ) {
       // can't alone observe array
+      console.warn("can't observe array alone", target);
       return target;
     }
+
+    console.log("[#observe]", target, options, $parent, $key);
 
     // options init
     const { getter = (obj, key) => {}, setter = (obj, key, value) => {} } =
@@ -82,7 +85,7 @@ class ItemConstant {
           index
         );
       });
-      // return observableArray;
+      // TODO: a =[], a[0] = 3 하면 getter가 무한정 불려짐 ({ a: [1, 2] }를 observe 하면 a에 1, 2 한 번씩 들어가고 a에 [1, 2] 통째로 들어가다 setter 오류남)
       Object.defineProperty($parent, $key, {
         get(_, key) {
           const getValue = getter?.(observableArray, key);

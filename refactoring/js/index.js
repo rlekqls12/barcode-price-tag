@@ -1,4 +1,8 @@
 (() => {
+  const CONSTANT = {
+    ITEM_LAYOUT: document.querySelector('div[data-layout="items"]'),
+  };
+
   const dataInfo = {
     items: [],
   };
@@ -13,7 +17,6 @@
 
   /** @param {Item} item */
   function drawItem(item) {
-    const itemLayout = document.querySelector('div[data-layout="items"]');
-    itemLayout.appendChild(item.element.target);
+    CONSTANT.ITEM_LAYOUT.appendChild(item.element.target);
   }
 })();

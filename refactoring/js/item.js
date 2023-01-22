@@ -58,8 +58,7 @@ class ItemConstant {
    * @param {*} value
    * @param {{ getter?: Function, setter?: Function }} options
    */
-  static observable(target, options, $parent, $key) {
-    // TODO: private 함수로 변경하기 #
+  static observable = function observable(target, options, $parent, $key) {
     if (
       Array.isArray(target) &&
       (Boolean($parent) === false || Boolean($key) === false)
@@ -76,38 +75,39 @@ class ItemConstant {
       // array observable (not yet)
       const observableArray = [];
       target.forEach((value, index) => {
-        observableArray[index] = this.observable(
+        observableArray[index] = observable(
           value,
           { getter, setter },
           observableArray,
           index
         );
       });
-      return observableArray;
-      // Object.defineProperty($parent, $key, {
-      //   get(_, key) {
-      //     const getValue = getter?.(observableArray, key);
-      //     return getValue ?? observableArray[key];
-      //   },
-      //   set(_, key, value) {
-      //     const isDone = setter?.(observableArray, key, value);
-      //     if (Boolean(isDone) === false) {
-      //       $parent[$key] = this.observable(
-      //         value,
-      //         { getter, setter },
-      //         $parent,
-      //         $key
-      //       );
-      //     }
-      //   },
-      // });
+      // return observableArray;
+      Object.defineProperty($parent, $key, {
+        get(_, key) {
+          const getValue = getter?.(observableArray, key);
+          return getValue ?? observableArray[key];
+        },
+        set(value) {
+          const isDone = setter?.(observableArray, $key, value);
+          if (Boolean(isDone) === false) {
+            $parent[$key] = observable(
+              value,
+              { getter, setter },
+              $parent,
+              $key
+            );
+          }
+          return true;
+        },
+      });
     } else if (target !== null && typeof target === "object") {
       // object observable
       const observableObject = {};
       Object.entries(target).forEach(([key, value]) => {
         if (value !== null && typeof value === "object") {
           // object(or array) observable
-          observableObject[key] = this.observable(
+          observableObject[key] = observable(
             value,
             { getter, setter },
             observableObject,
@@ -120,19 +120,22 @@ class ItemConstant {
               const getValue = getter?.(target, key);
               return getValue ?? target[key];
             },
-            set(_, __, value) {
+            set(value) {
               const isDone = setter?.(target, key, value);
               if (Boolean(isDone) === false) {
-                const observeValue = this.observable(
+                const observeValue = observable(
                   value,
                   { getter, setter },
                   target,
                   key
                 );
+                // if not array value:
                 if (Array.isArray(value) === false) {
                   target[key] = observeValue;
                 }
+                // else if array value: go to array observable($parent, $key)
               }
+              return true;
             },
           });
         }
@@ -143,7 +146,7 @@ class ItemConstant {
 
     // other value
     return target;
-  }
+  };
 }
 
 class Item {

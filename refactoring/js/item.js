@@ -53,103 +53,6 @@ class ItemConstant {
     const abbreviateKey = abbreviateKeyMap[dataKey] ?? dataKey;
     return abbreviateKey.toUpperCase();
   }
-
-  /**
-   * @param {*} value
-   * @param {{ getter?: Function, setter?: Function }} options
-   */
-  static observable = function observable(target, options, $parent, $key) {
-    if (
-      Array.isArray(target) &&
-      (Boolean($parent) === false || Boolean($key) === false)
-    ) {
-      // can't alone observe array
-      console.warn("can't observe array alone", target);
-      return target;
-    }
-
-    console.log("[#observe]", target, options, $parent, $key);
-
-    // options init
-    const { getter = (obj, key) => {}, setter = (obj, key, value) => {} } =
-      options;
-
-    if (Array.isArray(target)) {
-      // array observable (not yet)
-      const observableArray = [];
-      target.forEach((value, index) => {
-        observableArray[index] = observable(
-          value,
-          { getter, setter },
-          observableArray,
-          index
-        );
-      });
-      // TODO: a =[], a[0] = 3 하면 getter가 무한정 불려짐 ({ a: [1, 2] }를 observe 하면 a에 1, 2 한 번씩 들어가고 a에 [1, 2] 통째로 들어가다 setter 오류남)
-      Object.defineProperty($parent, $key, {
-        get(_, key) {
-          const getValue = getter?.(observableArray, key);
-          return getValue ?? observableArray[key];
-        },
-        set(value) {
-          const isDone = setter?.(observableArray, $key, value);
-          if (Boolean(isDone) === false) {
-            $parent[$key] = observable(
-              value,
-              { getter, setter },
-              $parent,
-              $key
-            );
-          }
-          return true;
-        },
-      });
-    } else if (target !== null && typeof target === "object") {
-      // object observable
-      const observableObject = {};
-      Object.entries(target).forEach(([key, value]) => {
-        if (value !== null && typeof value === "object") {
-          // object(or array) observable
-          observableObject[key] = observable(
-            value,
-            { getter, setter },
-            observableObject,
-            key
-          );
-        } else {
-          // other observable
-          Object.defineProperty(observableObject, key, {
-            get() {
-              const getValue = getter?.(target, key);
-              return getValue ?? target[key];
-            },
-            set(value) {
-              const isDone = setter?.(target, key, value);
-              if (Boolean(isDone) === false) {
-                const observeValue = observable(
-                  value,
-                  { getter, setter },
-                  target,
-                  key
-                );
-                // if not array value:
-                if (Array.isArray(value) === false) {
-                  target[key] = observeValue;
-                }
-                // else if array value: go to array observable($parent, $key)
-              }
-              return true;
-            },
-          });
-        }
-      });
-
-      return observableObject;
-    }
-
-    // other value
-    return target;
-  };
 }
 
 class Item {
@@ -176,11 +79,11 @@ class Item {
     const itemElement = new ItemElement(id, type);
     itemElement.updateData(data);
 
-    // data observable - setter(ItemElement updateData)
-
-    this.#watchValue("id", () => id);
-    this.#watchValue("type", () => type);
-    this.#watchValue("data", () => data);
+    Object.defineProperties(this, {
+      id: { get: () => id },
+      type: { get: () => type },
+    });
+    this.data = observable(data, itemElement.updateData.bind(itemElement));
     this.element = itemElement;
 
     this.#addElementEventListener(ItemConstant.ELEMENT_EVENT.HOVER);
@@ -216,13 +119,6 @@ class Item {
   render() {
     return this.imageData;
   }
-
-  #watchValue = (key, getter, setter) => {
-    Object.defineProperty(this, key, {
-      get: getter,
-      set: setter ?? (() => {}),
-    });
-  };
 
   #addElementEventListener = (type) => {
     this.element.addEventListener(
@@ -319,6 +215,7 @@ class ItemElement {
     });
 
     const dataLayout = this.target.querySelector('div[data-id="data-layout"]');
+    dataLayout.replaceChildren();
     dataKeyValueMappings.forEach((keyValueMap) => {
       dataLayout.innerHTML += `<span class="inline-block cursor-pointer bg-sky-500 rounded-full text-xs px-2 mr-1">${keyValueMap}</span>`;
     });

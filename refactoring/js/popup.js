@@ -41,9 +41,7 @@ class Popup {
     template.innerHTML = PopupConstant.DEFAULT_POPUP_LAYOUT;
     const popup = template.content.firstChild;
 
-    const itemInputLayout = popup.querySelector(
-      'div[data-id="layout-item-input"]'
-    );
+    const itemInputLayout = popup.querySelector('div[data-id="layout-item-input"]');
     itemInputLayout.innerHTML = PopupConstant.ADD_POPUP_TYPE[type];
     itemInputLayout.addEventListener("click", (e) => {
       const dataId = e.target.getAttribute("data-id");
@@ -65,9 +63,7 @@ class Popup {
       }
     });
 
-    const selectItemType = popup.querySelector(
-      'select[data-id="select-item-type"]'
-    );
+    const selectItemType = popup.querySelector('select[data-id="select-item-type"]');
     selectItemType.addEventListener("change", (e) => {
       type = e.target.value;
       const changedItemType = PopupConstant.ADD_POPUP_TYPE[type];

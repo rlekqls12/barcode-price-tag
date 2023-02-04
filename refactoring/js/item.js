@@ -108,10 +108,7 @@ class Item {
   }
 
   #addElementEventListener = (type) => {
-    this.element.addEventListener(
-      type,
-      this.#elementEventCallback.bind(this, type)
-    );
+    this.element.addEventListener(type, this.#elementEventCallback.bind(this, type));
   };
 
   #elementEventCallback = (type, data) => {
@@ -189,10 +186,7 @@ class ItemElement {
   updateData(data) {
     const dataKeyValueMappings = [];
 
-    const dataEntries = [
-      ...Object.entries(data),
-      ...Object.entries(data.options),
-    ];
+    const dataEntries = [...Object.entries(data), ...Object.entries(data.options)];
     dataEntries.forEach(([key, value]) => {
       if (key === "render") return;
       if (key === "options") return;

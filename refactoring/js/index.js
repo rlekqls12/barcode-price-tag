@@ -9,9 +9,7 @@
 
   window.addEventListener("DOMContentLoaded", () => {
     // connect event
-    document.body
-      .querySelector('div[data-id="add-item"]')
-      .addEventListener("click", showItemPopup);
+    document.body.querySelector('div[data-id="add-item"]').addEventListener("click", showItemPopup);
 
     // default items
     const textItem = createItem(ItemConstant.TYPE.TEXT);

@@ -44,15 +44,6 @@ class ItemConstant {
       throw new TypeError(`'${type}' is not include [${textTypes}]`);
     }
   }
-
-  static dataKeyAbbreviates(dataKey) {
-    const abbreviateKeyMap = {
-      fontSize: "font",
-      color: "color",
-    };
-    const abbreviateKey = abbreviateKeyMap[dataKey] ?? dataKey;
-    return abbreviateKey.toUpperCase();
-  }
 }
 
 class Item {
@@ -222,8 +213,12 @@ class ItemElement {
   }
 
   #keyValueMapping = (key, value) => {
-    const dataKeyText = ItemConstant.dataKeyAbbreviates(key);
-    return `${dataKeyText}-${value}`;
+    const abbreviateKeyMap = {
+      fontSize: "font",
+      color: "color",
+    };
+    const abbreviateKey = (abbreviateKeyMap[key] ?? key).toUpperCase();
+    return `${abbreviateKey}-${value}`;
   };
 
   addEventListener(type, callback) {

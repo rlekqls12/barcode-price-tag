@@ -9,6 +9,7 @@ class ItemConstant {
   static EVENT = {
     CHANGE: "CHANGE",
     STATE_CHANGE: "STATE_CHANGE",
+    EDIT: "EDIT",
     DELETE: "DELETE",
   };
 
@@ -77,9 +78,10 @@ class Item {
 
     // TODO: 먼저 ELEMENT 부분 다 만들고 canvas 들어가기 (아이템 생성 및 수정은 popup.js에서, 생성popup, 수정key-valuePopup 두 개 만들기)
     // 기본 데이터 삽입 및 element 생성 및 기본 값이랑 이벤트 연결 후 렌더링 1회 실행
-    // 데이터 감시해서 변경 시 render 발생시키기
-    // 외부에서는 CHANGE 발생하면 모든 아이템의 imageData 다시 그리게하고
-    // STATE_CHANGE 발생하면 인터렉션 영역 다시 그리게 하기
+    // 데이터 감시해서 변경 시 index.js에서 render 발생시키기
+    // index.js에서는 CHANGE 발생하면 모든 아이템의 imageData 다시 그리게하고
+    // STATE_CHANGE 발생하면 index.js에서 canvas.js 인터렉션 영역 다시 그리게 하기
+    // element hover 및 select 시 state_change 이벤트 발생시키고, index.js에서는 element의 updateState로 상태변경 표시하기 (hover 및 select 데이터는 index.js에서 가지고 컨트롤하기)
   }
 
   addEventListener(type, callback) {
@@ -101,6 +103,7 @@ class Item {
   }
 
   render() {
+    // TODO: 데이터 가지고 canvas 임시로 만들어서 imageData 그리기
     return this.imageData;
   }
 

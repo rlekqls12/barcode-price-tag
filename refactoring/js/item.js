@@ -37,13 +37,6 @@ class ItemConstant {
     [ItemConstant.TYPE.QR]: { color: "#000000" },
     [ItemConstant.TYPE.IMAGE]: { type: "src" },
   };
-
-  static checkAvailType(types, type) {
-    if (type in types === false) {
-      const textTypes = Object.keys(types).join(", ");
-      throw new TypeError(`'${type}' is not include [${textTypes}]`);
-    }
-  }
 }
 
 class Item {
@@ -61,7 +54,7 @@ class Item {
   listeners = {}; // listeners
 
   constructor(type) {
-    ItemConstant.checkAvailType(ItemConstant.TYPE, type);
+    checkAvailType(ItemConstant.TYPE, type);
 
     const id = Math.random().toString(16).slice(2, 6).toUpperCase();
     const data = Object.assign(ItemConstant.DETAULT_DATA, {
@@ -90,7 +83,7 @@ class Item {
   }
 
   addEventListener(type, callback) {
-    ItemConstant.checkAvailType(ItemConstant.EVENT, type);
+    checkAvailType(ItemConstant.EVENT, type);
 
     if (Array.isArray(this.listeners[type]) === false) {
       this.listeners[type] = [];
@@ -99,7 +92,7 @@ class Item {
   }
 
   removeEventListener(type, callback) {
-    ItemConstant.checkAvailType(ItemConstant.EVENT, type);
+    checkAvailType(ItemConstant.EVENT, type);
 
     if (Array.isArray(this.listeners[type]) === false) return;
 
@@ -222,7 +215,7 @@ class ItemElement {
   };
 
   addEventListener(type, callback) {
-    ItemConstant.checkAvailType(ItemConstant.ELEMENT_EVENT, type);
+    checkAvailType(ItemConstant.ELEMENT_EVENT, type);
 
     if (Array.isArray(this.listeners[type]) === false) {
       this.listeners[type] = [];

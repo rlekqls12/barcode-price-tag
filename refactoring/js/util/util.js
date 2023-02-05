@@ -8,3 +8,7 @@ function checkAvailType(types, type) {
 function isIn(list, target) {
   return target in list;
 }
+
+function onMaxLengthInput(target, max) {
+  target.value = target.value.slice(0, max);
+}

@@ -24,8 +24,8 @@ class PopupConstant {
           </div>
           <hr />
           <div class="flex gap-4">
-            <label for="select-item-type">Type</label>
-            <select id="select-item-type" data-id="select-item-type" class="flex-1 pr-1 text-right">
+            <label for="popup-select-item-type">Type</label>
+            <select id="popup-select-item-type" data-id="select-item-type" class="flex-1 pr-1 text-right">
               ${Object.entries(ItemConstant.TYPE).map(([key, value]) => `<option value="${key}">${value}</option>`)}
             </select>
           </div>
@@ -34,40 +34,55 @@ class PopupConstant {
         <!-- item input layout -->
         </div>
         <div class="row-span-1 flex flex-row gap-2 items-end justify-center">
-          <button data-id="create" class="w-48 h-fit px-2 py-1 border-transparent border-2 rounded-md text-white bg-sky-500">Create</button>
-          <button data-id="close" class="w-24 h-fit px-2 py-1 border-transparent border-2 rounded-md text-white bg-slate-500">Close</button>
+          <button data-id="create" class="w-48 h-fit px-2 py-1 border-transparent border-2 rounded-md text-white bg-sky-500 hover:bg-sky-400">Create</button>
+          <button data-id="close" class="w-24 h-fit px-2 py-1 border-transparent border-2 rounded-md text-white bg-slate-500 hover:bg-slate-400">Close</button>
         </div>
       </div>
     </div>
   </div>`;
 
   static ADD_POPUP_TYPE = {
-    [ItemConstant.TYPE.TEXT]: `<p>ItemText</p>`,
+    [ItemConstant.TYPE.TEXT]: `
+      <div class="flex gap-4">
+        <label for="popup-fontSize">Font Size</label>
+        <input id="popup-fontSize" data-id="fontSize" type="number" value="14" max="999" min="1" maxlength="3" class="flex-1 text-right" oninput="onMaxLengthInput(this, 3)" />
+      </div>
+      <div class="flex gap-4">
+        <label for="popup-color">Color</label>
+        <input id="popup-color" data-id="color" value="#000000"  maxlength="7" class="flex-1 text-right" />
+      </div>
+    `,
     [ItemConstant.TYPE.BARCODE]: `<p>ItemBarcode</p>`,
     [ItemConstant.TYPE.QR]: `<p>ItemQr</p>`,
     [ItemConstant.TYPE.IMAGE]: `<p>ItemImage</p>`,
   };
 
-  static connectInputToData(layoutItemInput, initData = {}) {
-    const data = { ...initData };
+  static connectInputToData(layoutItemInput, initOptions = {}) {
+    const options = { ...initOptions };
 
-    Object.keys(data).forEach((key) => {
-      layoutItemInput
-        // TODO: DOM이랑 데이터랑 어떤 이름(key)으로 연결할건지 정하기
-        .querySelector(`input[data-id="${key}"]`)
-        .addEventListener((e) => {
-          data[key] = e.target.value;
-        });
+    const inputs = layoutItemInput.querySelectorAll(`*[data-id]`);
+    [...inputs].forEach((input) => {
+      const key = input.getAttribute("data-id");
+      options[key] = input.value;
+
+      input.addEventListener("change", (e) => {
+        options[key] = e.target.value;
+      });
     });
 
-    return data;
+    return options;
+  }
+
+  static validateInputs(options) {
+    // TODO: 유효성검사
+    return options;
   }
 }
 
 class Popup {
   static async showItemPopup(item) {
     const isEdit = item instanceof Item;
-    let data,
+    let options,
       type = ItemConstant.TYPE.TEXT,
       resolveFunction;
     const promise = new Promise((resolve) => (resolveFunction = resolve));
@@ -79,15 +94,15 @@ class Popup {
       const dataId = e.target.getAttribute("data-id") || e.target.parentNode.getAttribute("data-id");
 
       if (dataId === "create") {
-        // TODO: 입력값 유효성 검사하기
+        options = PopupConstant.validateInputs(options);
 
         popup.remove();
         if (isEdit) {
-          item.data = data; // TODO: 반응형 안 깨지게 저장해야함 (item.data를 Object.definePropertyKey로 만들기 [그럼 원본 데이터는 어디에 저장할지 생각해보기])
+          item.data.options = options;
           resolveFunction(item);
         } else {
           const newItem = new Item(type);
-          newItem.data = data; // TODO: 반응형 안 깨지게 저장해야함 (item.data를 Object.definePropertyKey로 만들기 [그럼 원본 데이터는 어디에 저장할지 생각해보기])
+          newItem.data.options = options;
           resolveFunction(newItem);
         }
       }
@@ -109,14 +124,14 @@ class Popup {
       itemInputLayout.innerHTML = changedItemType;
 
       setTimeout(() => {
-        data = PopupConstant.connectInputToData(itemInputLayout, {});
+        options = PopupConstant.connectInputToData(itemInputLayout, {});
       }, 0);
     });
 
     if (isEdit) {
-      data = PopupConstant.connectInputToData(itemInputLayout, item.data);
+      options = PopupConstant.connectInputToData(itemInputLayout, item.data.options);
     } else {
-      data = PopupConstant.connectInputToData(itemInputLayout, {});
+      options = PopupConstant.connectInputToData(itemInputLayout, {});
     }
 
     document.body.appendChild(popup);

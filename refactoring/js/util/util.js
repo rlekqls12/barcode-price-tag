@@ -12,3 +12,13 @@ function isIn(list, target) {
 function onMaxLengthInput(target, max) {
   target.value = target.value.slice(0, max);
 }
+
+function initColorPicker(target) {
+  $(target).spectrum({
+    type: "component",
+    showInitial: true,
+    showAlpha: false,
+    showButtons: true,
+    allowEmpty: false,
+  });
+}

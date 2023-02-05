@@ -45,11 +45,16 @@ class PopupConstant {
     [ItemConstant.TYPE.TEXT]: `
       <div class="flex gap-4">
         <label for="popup-fontSize">Font Size</label>
-        <input id="popup-fontSize" data-id="fontSize" type="number" value="14" max="999" min="1" maxlength="3" class="flex-1 text-right" oninput="onMaxLengthInput(this, 3)" />
+        <div class="flex-1 text-right">
+          <input id="popup-fontSize" data-id="fontSize" type="number" value="14" max="999" min="1" maxlength="3" class="w-20 text-right" oninput="onMaxLengthInput(this, 3)" />
+        </div>
       </div>
       <div class="flex gap-4">
         <label for="popup-color">Color</label>
-        <input id="popup-color" data-id="color" value="#000000"  maxlength="7" class="flex-1 text-right" />
+        <div class="flex-1 text-right">
+          <input id="popup-color" data-id="color" value="#000000" class="w-20 text-right" />
+          <img src onerror="initColorPicker('#popup-color')" />
+        </div>
       </div>
     `,
     [ItemConstant.TYPE.BARCODE]: `<p>ItemBarcode</p>`,
@@ -57,17 +62,13 @@ class PopupConstant {
     [ItemConstant.TYPE.IMAGE]: `<p>ItemImage</p>`,
   };
 
-  static connectInputToData(layoutItemInput, initOptions = {}) {
+  static getInputData(layoutItemInput, initOptions = {}) {
     const options = { ...initOptions };
 
     const inputs = layoutItemInput.querySelectorAll(`*[data-id]`);
     [...inputs].forEach((input) => {
       const key = input.getAttribute("data-id");
       options[key] = input.value;
-
-      input.addEventListener("change", (e) => {
-        options[key] = e.target.value;
-      });
     });
 
     return options;
@@ -81,9 +82,7 @@ class PopupConstant {
 
 class Popup {
   static async showItemPopup(item) {
-    const isEdit = item instanceof Item;
-    let options,
-      type = ItemConstant.TYPE.TEXT,
+    let type = ItemConstant.TYPE.TEXT,
       resolveFunction;
     const promise = new Promise((resolve) => (resolveFunction = resolve));
 
@@ -94,18 +93,16 @@ class Popup {
       const dataId = e.target.getAttribute("data-id") || e.target.parentNode.getAttribute("data-id");
 
       if (dataId === "create") {
+        if (item instanceof Item === false) item = new Item(type);
+
+        let options = PopupConstant.getInputData(itemInputLayout, item.data.options);
         options = PopupConstant.validateInputs(options);
+        item.data.options = options;
 
         popup.remove();
-        if (isEdit) {
-          item.data.options = options;
-          resolveFunction(item);
-        } else {
-          const newItem = new Item(type);
-          newItem.data.options = options;
-          resolveFunction(newItem);
-        }
+        resolveFunction(item);
       }
+
       if (dataId === "close") {
         popup.remove();
         resolveFunction(null);
@@ -122,17 +119,7 @@ class Popup {
 
       itemInputLayout.replaceChildren();
       itemInputLayout.innerHTML = changedItemType;
-
-      setTimeout(() => {
-        options = PopupConstant.connectInputToData(itemInputLayout, {});
-      }, 0);
     });
-
-    if (isEdit) {
-      options = PopupConstant.connectInputToData(itemInputLayout, item.data.options);
-    } else {
-      options = PopupConstant.connectInputToData(itemInputLayout, {});
-    }
 
     document.body.appendChild(popup);
 
